@@ -13,9 +13,6 @@ Die Webapplikation stellt einen Webshop dar, über den Landkarten gekauft und ve
 
 Für die Attribute siehe das Schema im Buch, Abschnitt 6.6
 
-## Mockup
-![mockup][basic]<br/>
-
 ## Version 1.0
 ![first version][version1]<br/>
 
@@ -23,5 +20,4 @@ Für die Attribute siehe das Schema im Buch, Abschnitt 6.6
 ...
 
 
-[basic]: /res/basic.png "basic mockup"
 [version1]: /res/minesweeper_start.PNG "first version"
