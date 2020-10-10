@@ -42,7 +42,7 @@ public class Item implements Serializable {
 	
 	//bi-directional many-to-one association to Status
 	//@ManyToOne
-	private int status;
+	private Status status;
 
 	//bi-directional many-to-one association to Customer
 	@ManyToOne
@@ -127,12 +127,12 @@ public class Item implements Serializable {
 		this.sold = sold;
 	}
 	
-	public int getStatus() {
+	public Status getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setStatus(Status s) {
+		this.status = s;
 	}
 
 	public Customer getSeller() {

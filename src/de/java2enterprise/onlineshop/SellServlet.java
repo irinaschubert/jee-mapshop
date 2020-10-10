@@ -93,7 +93,8 @@ public class SellServlet extends HttpServlet {
             }else {
             	baos = null;
             }
-            item.setStatus(0);
+            Status status = em.find(Status.class, 0L);
+            item.setStatus(status);
             
             try {
             	ut.begin();
