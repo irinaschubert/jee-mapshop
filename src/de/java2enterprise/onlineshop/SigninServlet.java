@@ -2,6 +2,9 @@ package de.java2enterprise.onlineshop;
 
 import java.io.IOException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,34 +17,40 @@ import de.java2enterprise.onlineshop.model.Customer;
 
 @WebServlet("/signin")
 public class SigninServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected void doPost(
-		HttpServletRequest request, 
-		HttpServletResponse response) 
-				throws ServletException, IOException {
-		response.setContentType(
-				"text/html;charset=UTF-8");
-		
-		final String email =
-			request.getParameter("email");
-		final String password = 
-			request.getParameter("password");
-		
-		// If Customer could be found !!!
-		if(true) { 
-			final Customer customer = new Customer();
-			customer.setEmail(email);
-			customer.setPassword(password);
-			
-			final HttpSession session = request.getSession();
-			session.setAttribute("customer", customer);
+    @PersistenceContext
+    private EntityManager em;
 
-			final RequestDispatcher dispatcher = 
-					request.getRequestDispatcher("index.jsp");
-				dispatcher.forward(request, response);
-		} else {
-			// Redirect to an "UNAUTHORIZED MESSAGE"
-		}
-	}
+    protected void doPost(
+            HttpServletRequest request, 
+            HttpServletResponse response) 
+                    throws ServletException, IOException {
+    	
+    	response.setContentType("text/html;charset=UTF-8");
+    	
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+                
+        HttpSession session = request.getSession();
+        try {        	
+            TypedQuery<Customer> query = 
+                    em.createQuery(
+                    "FROM " + 
+                    Customer.class.getSimpleName() + " c " +
+                    "WHERE c.email = ?1 " +
+                    "AND c.password = ?2",
+                    Customer.class);
+            query.setParameter(1, email);
+            query.setParameter(2, password);
+            Customer customer = query.getSingleResult();
+            
+            session.setAttribute("customer", customer);
+        } catch (Exception e) {
+        	request.setAttribute("message",e.getMessage());
+        }
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+        dispatcher.forward(request, response);
+    }
 }

@@ -16,24 +16,24 @@
             <hgroup>
             <h1 class="title"><fmt:message key="title"/></h1>
             </hgroup>
-			<a href="index.jsp?locale=de_DE"><img src="resources/img/de.gif"/></a>
-			<a href="index.jsp?locale=en_US"><img src="resources/img/us.gif"/></a>
-		<nav>
-			<a href="index.jsp"><fmt:message key="home"/></a>
-			<c:choose>
-			<c:when test="${empty customer}">
-				<a href="register.jsp">
-					<fmt:message key="register"/>
-				</a>
-				<a href="signin.jsp">
-					<fmt:message key="signin"/>
-				</a>
-			</c:when>
-			<c:otherwise>
-				<a href="signout.jsp"><fmt:message key="signout"/></a>
-				<a href="sell.jsp"><fmt:message key="sell"/></a>
-			</c:otherwise>
-			</c:choose>
-			<a href="search.jsp"><fmt:message key="search"/></a>
-		</nav>
-	</header>
+            <a href="index.jsp?locale=de_DE"><img src="resources/img/de.gif"/></a>
+            <a href="index.jsp?locale=en_US"><img src="resources/img/us.gif"/></a>
+        <nav>
+            <a href="index.jsp"><fmt:message key="home"/></a>
+            <c:choose>
+            <c:when test="${empty customer}">
+                <a href="register.jsp">
+                    <fmt:message key="register"/>
+                </a>
+                <a href="signin.jsp">
+                    <fmt:message key="signin"/>
+                </a>
+            </c:when>
+            <c:otherwise>
+                <a href="signout.jsp"><fmt:message key="signout"/></a>
+                <a href="sell.jsp"><fmt:message key="sell"/></a>
+            </c:otherwise>
+            </c:choose>
+            <a href="search.jsp"><fmt:message key="search"/></a>
+        </nav>
+    </header>
