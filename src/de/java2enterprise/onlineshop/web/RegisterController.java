@@ -6,43 +6,34 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import de.java2enterprise.onlineshop.ejb.RegisterBeanLocal;
+import de.java2enterprise.onlineshop.model.Customer;
 
 @Named
 @RequestScoped
 public class RegisterController implements Serializable {    
     private static final long serialVersionUID = 1L;
     
-    private String email;
-    
-    private String password;
+    @Inject
+    private Customer customer;   
     
     @EJB
     private RegisterBeanLocal registerBeanLocal;
 
     public String persist() {
-        String msg = 
-            registerBeanLocal.persist(email, password);
-        FacesContext.getCurrentInstance().
-            addMessage(null, new FacesMessage(msg));
+        String msg = registerBeanLocal.persist(customer);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
         return "register";
     }
 
-    public String getEmail() {
-        return email;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

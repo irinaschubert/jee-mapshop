@@ -74,8 +74,7 @@ public class SigninController implements Serializable {
                 customer = customers.get(0);
                 FacesMessage m = new FacesMessage(
                         "Succesfully signed in!",
-                        "You signed in under id " +
-                                customer.getId());
+                        "You signed in under id " + customer.getId());
                 FacesContext
                         .getCurrentInstance()
                         .addMessage("signinForm", m);
