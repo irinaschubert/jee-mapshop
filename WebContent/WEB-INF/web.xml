@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/Java EE" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/Java EE/web-app_4_0.xsd http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="4.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+    http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>mapshop-war</display-name>
   <servlet>
-    <servlet-name>JDBC</servlet-name>
-    <jsp-file>
-			jdbc.jsp
-		</jsp-file>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>
+			javax.faces.webapp.FacesServlet
+		</servlet-class>
+    <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>JDBC</servlet-name>
-    <url-pattern>/db_settings</url-pattern>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
+  <context-param>
+        <param-name>
+            javax.faces.WEBAPP_RESOURCES_DIRECTORY
+        </param-name>
+        <param-value>
+			/WEB-INF/resources
+		</param-value>
+  </context-param>
+  <welcome-file-list>
+    <welcome-file>
+			index.jsf
+		</welcome-file>
+  </welcome-file-list>
 </web-app>

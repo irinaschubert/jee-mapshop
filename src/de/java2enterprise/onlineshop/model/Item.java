@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(
-		schema = "MAPSHOP",
-		name = "ITEM"
+		schema="MAPSHOP",
+		name="ITEM"
 		)
 @NamedQuery(name="Item.findAll", query="SELECT i FROM Item i")
 public class Item implements Serializable {
@@ -21,27 +21,19 @@ public class Item implements Serializable {
 	@SequenceGenerator(name="ITEM_ID_GENERATOR", sequenceName="SEQ_ITEM", schema="MAPSHOP", allocationSize=1, initialValue=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ITEM_ID_GENERATOR")
 	private Long id;
-
 	private String title;
-	
 	private String description;
-
 	private int year;
-	
 	private String publisher;
-	
 	private String isbn;
-	
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
 	private byte[] foto;
-	
 	private Double price;
-	
 	private LocalDateTime sold;
 	
 	//bi-directional many-to-one association to Status
-	//@ManyToOne
+	@ManyToOne
 	private Status status;
 
 	//bi-directional many-to-one association to Customer
@@ -135,13 +127,14 @@ public class Item implements Serializable {
 		this.status = s;
 	}
 
-	public Customer getSeller() {
-		return this.seller;
-	}
 
-	public void setSeller(Customer seller) {
-		this.seller = seller;
-	}
+    public Customer getSeller() {
+        return this.seller;
+    }
+
+    public void setSeller(Customer seller) {
+        this.seller = seller;
+    }
 
 	public Customer getBuyer() {
 		return this.buyer;

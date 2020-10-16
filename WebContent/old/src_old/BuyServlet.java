@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-import de.java2enterprise.onlineshop.model.Customer;
+import de.java2enterprise.onlineshop.model.Customer_;
 
 @WebServlet("/buy")
 public class BuyServlet extends HttpServlet {
@@ -31,7 +31,7 @@ public class BuyServlet extends HttpServlet {
         Long itemId = Long
                 .parseLong(request.getParameter("item_id"));
         HttpSession session = request.getSession();
-        Customer customer = (Customer) session
+        Customer_ customer = (Customer_) session
                 .getAttribute("customer");
 
         try {

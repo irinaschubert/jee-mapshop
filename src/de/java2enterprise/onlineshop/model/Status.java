@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 /**
- * The persistent class for the ITEM database table.
+ * The persistent class for the STATUS database table.
  * 
  */
 @Entity
@@ -21,12 +21,11 @@ public class Status implements Serializable {
 
 	@Id
 	private Long id;
-	
 	private String description;
 
 	//bi-directional one-to-many association to Item
-	//@OneToMany(mappedBy="status",cascade = CascadeType.PERSIST)
-	//private Set<Item> items;
+	@OneToMany(mappedBy="status")
+	private Set<Item> items;
 
 	public Status() {
 	}
@@ -47,7 +46,7 @@ public class Status implements Serializable {
 		this.description = description;
 	}
 	
-	/*public Set<Item> getItems(){
+	public Set<Item> getItems(){
 		return this.items;
 	}
 	
@@ -71,7 +70,7 @@ public class Status implements Serializable {
 		item.setStatus(null);
 
 		return item;
-	}*/
+	}
 
     @Override
     public String toString() {

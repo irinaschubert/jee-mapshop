@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
-import de.java2enterprise.onlineshop.model.Customer;
+import de.java2enterprise.onlineshop.model.Customer_;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
@@ -35,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         
-        Customer customer = new Customer();
+        Customer_ customer = new Customer_();
         customer.setEmail(email);
         customer.setPassword(password);
         

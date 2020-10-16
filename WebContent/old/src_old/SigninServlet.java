@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import de.java2enterprise.onlineshop.model.Customer;
+import de.java2enterprise.onlineshop.model.Customer_;
 
 @WebServlet("/signin")
 public class SigninServlet extends HttpServlet {
@@ -34,20 +34,20 @@ public class SigninServlet extends HttpServlet {
                 
         HttpSession session = request.getSession();
         try {        	
-            TypedQuery<Customer> query = 
+            TypedQuery<Customer_> query = 
                     em.createQuery(
                     "FROM " + 
-                    Customer.class.getSimpleName() + " c " +
+                    Customer_.class.getSimpleName() + " c " +
                     "WHERE c.email = ?1 " +
                     "AND c.password = ?2",
-                    Customer.class);
+                    Customer_.class);
             query.setParameter(1, email);
             query.setParameter(2, password);
-            Customer customer = query.getSingleResult();
+            Customer_ customer = query.getSingleResult();
             
             session.setAttribute("customer", customer);
         } catch (Exception e) {
-        	request.setAttribute("message",e.getMessage());
+        	request.setAttribute("message", e.getMessage());
         }
         
         RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
