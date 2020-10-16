@@ -1,4 +1,4 @@
-package de.java2enterprise.onlineshop;
+package de.java2enterprise.onlineshop.web;
 
 import java.io.Serializable;
 
@@ -16,7 +16,7 @@ import de.java2enterprise.onlineshop.model.Customer;
 
 @Named
 @RequestScoped
-public class RegisterController implements Serializable {
+public class RegisterController_ implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @PersistenceContext

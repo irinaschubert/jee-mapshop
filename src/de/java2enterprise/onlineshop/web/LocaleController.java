@@ -1,4 +1,4 @@
-package de.java2enterprise.onlineshop;
+package de.java2enterprise.onlineshop.web;
 
 import java.io.Serializable;
 
