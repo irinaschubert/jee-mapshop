@@ -11,18 +11,16 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
-import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.Part;
-import javax.transaction.UserTransaction;
 
+import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
 
@@ -33,14 +31,10 @@ public class SellController implements Serializable {
 
     public final static int MAX_IMAGE_LENGTH = 400;
 
-    private final static Logger log = Logger
-            .getLogger(SellController.class.toString());
-
-    @PersistenceContext
-    private EntityManager em;
-
-    @Resource
-    private UserTransaction ut;
+    private final static Logger log = Logger.getLogger(SellController.class.toString());
+    
+    @EJB
+    private SellBeanLocal sellBeanLocal;
 
     private Part part;
 
@@ -65,7 +59,6 @@ public class SellController implements Serializable {
 
     public String persist(SigninController signinController) {
         try {
-            ut.begin();
             InputStream input = part.getInputStream();
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             byte[] buffer = new byte[10240];
@@ -74,28 +67,14 @@ public class SellController implements Serializable {
                 output.write(buffer, 0, length);
             }
             item.setFoto(scale(output.toByteArray()));
-
-            Customer customer = signinController
-                    .getCustomer();
-
-            customer = em.find(
-                    Customer.class,
-                    customer.getId());
-
+            
+            Customer customer = signinController.getCustomer();
+            customer = sellBeanLocal.find(customer.getId());
             item.setSeller(customer);
-            em.persist(item);
-
-            ut.commit();
-
-            log.info("Offered item: " + item);
-
-            FacesMessage m = new FacesMessage(
-                    "Succesfully saved item!",
-                    "You offered the item " +
-                            item);
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("sellForm", m);
+            
+            String msg = sellBeanLocal.persist(item);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+            return "sell";
         } catch (Exception e) {
             log.severe(e.getMessage());
         }
