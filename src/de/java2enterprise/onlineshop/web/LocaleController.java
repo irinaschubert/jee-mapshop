@@ -11,6 +11,10 @@ public class LocaleController implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String lang;
+    
+    public LocaleController(){
+    	lang = "de";
+    }
 
     public String getLang() {
         return lang;
