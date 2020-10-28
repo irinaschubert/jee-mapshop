@@ -24,8 +24,13 @@ public class RegisterController implements Serializable {
     private RegisterBeanLocal registerBeanLocal;
 
     public String persist() {
-        String msg = registerBeanLocal.persist(customer);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+    	try {
+    		String msg = registerBeanLocal.persist(customer);
+    		FacesContext.getCurrentInstance().addMessage("registerForm", new FacesMessage(msg));
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    		FacesContext.getCurrentInstance().addMessage("registerForm", new FacesMessage(e.getMessage()));
+    	}
         return "register";
     }
 

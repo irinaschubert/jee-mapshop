@@ -50,7 +50,7 @@ public class BuyController implements Serializable {
             item.setBuyer(customer);
             item.setSold(LocalDateTime.now());
             ut.commit();
-            log.info(item + " bought by " + customer);
+            log.info(item + " bought by " + customer.getEmail());
         } catch (Exception e) {
             log.severe(e.getMessage());
         }

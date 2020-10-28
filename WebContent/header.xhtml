@@ -25,6 +25,9 @@
         <h:link
             outcome="search"
             value="#{msg['search']}" />
+        <h:link
+            outcome="account"
+            value="#{msg['account']}" />
         <br />
     </nav>
     <h:form>
@@ -36,7 +39,7 @@
             image="#{resource['img:de.gif']}" />
         <h:commandButton
             action="#{localeController.change('de')}"
-            image="#{resource['img:de.gif']}" />
+            image="#{resource['img:logout.svg']}" />
     </h:form>
 </header>
 </html>

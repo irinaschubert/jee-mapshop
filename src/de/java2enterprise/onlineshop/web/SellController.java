@@ -35,7 +35,6 @@ public class SellController implements Serializable {
     
     @Inject
     private Item item;
-    
     private Part part;
     
     @EJB

@@ -19,3 +19,8 @@ a:hover, .title {
 input:not([type='image']), textarea {
   width: 200px;
 }
+
+input[type='image']{
+  width: 37px;
+  height: 31px;
+}

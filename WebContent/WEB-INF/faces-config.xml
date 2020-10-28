@@ -50,6 +50,13 @@
 		<redirect/>
 	</navigation-case>
 	<navigation-case>
+		<from-outcome>account</from-outcome>
+		<to-view-id>
+			/account.xhtml
+		</to-view-id>
+		<redirect/>
+	</navigation-case>
+	<navigation-case>
 		<from-outcome>customer persisted</from-outcome>
 		<to-view-id>
 			/home.xhtml
