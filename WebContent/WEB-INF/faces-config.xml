@@ -36,9 +36,23 @@
 		<redirect/>
 	</navigation-case>
 	<navigation-case>
+		<from-outcome>sellFail</from-outcome>
+		<to-view-id>
+			/index.xhtml
+		</to-view-id>
+		<redirect/>
+	</navigation-case>
+	<navigation-case>
 		<from-outcome>search</from-outcome>
 		<to-view-id>
 			/search.xhtml
+		</to-view-id>
+		<redirect/>
+	</navigation-case>
+	<navigation-case>
+		<from-outcome>customer persisted</from-outcome>
+		<to-view-id>
+			/home.xhtml
 		</to-view-id>
 		<redirect/>
 	</navigation-case>

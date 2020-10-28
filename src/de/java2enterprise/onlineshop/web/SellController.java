@@ -33,10 +33,37 @@ public class SellController implements Serializable {
 
     private final static Logger log = Logger.getLogger(SellController.class.toString());
     
+    @Inject
+    private Item item;
+    
+    private Part part;
+    
     @EJB
     private SellBeanLocal sellBeanLocal;
-
-    private Part part;
+    
+    public String persist(SigninController signinController) {
+        try {
+            InputStream input = part.getInputStream();
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            byte[] buffer = new byte[10240];
+            for (int length = 0; (length = input.read(buffer)) > 0;) {
+                output.write(buffer, 0, length);
+            }
+            item.setFoto(scale(output.toByteArray()));
+            Customer customer = signinController.getCustomer();
+            customer = sellBeanLocal.find(customer.getId());
+            System.out.println("customer is: " + customer.getEmail());
+            item.setSeller(customer);
+            
+            String msg = sellBeanLocal.persist(item);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+            return "sell";
+        } catch (Exception e) {
+        	System.out.println("error is: " + e.getMessage());
+            log.severe(e.getMessage());
+            return "sellFail";
+        }
+    }
 
     public Part getPart() {
         return part;
@@ -46,39 +73,13 @@ public class SellController implements Serializable {
         this.part = part;
     }
 
-    @Inject
-    private Item item;
-
+    
     public Item getItem() {
         return item;
     }
 
     public void setItem(Item item) {
         this.item = item;
-    }
-
-    public String persist(SigninController signinController) {
-        try {
-            InputStream input = part.getInputStream();
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            byte[] buffer = new byte[10240];
-            for (int length = 0; (length = input
-                    .read(buffer)) > 0;) {
-                output.write(buffer, 0, length);
-            }
-            item.setFoto(scale(output.toByteArray()));
-            
-            Customer customer = signinController.getCustomer();
-            customer = sellBeanLocal.find(customer.getId());
-            item.setSeller(customer);
-            
-            String msg = sellBeanLocal.persist(item);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-            return "sell";
-        } catch (Exception e) {
-            log.severe(e.getMessage());
-        }
-        return "/sell.jsf";
     }
 
     public byte[] scale(byte[] foto) throws IOException {

@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf16026673362491" configfile="/maps-web/WebContent/WEB-INF/faces-config.xml"/>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf16026673362491" configfile="/maps-web/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="946" id="pf16038813058420" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf16038813058421 pf16038813058424 pf160388138251812 pf160388138487614 pf160388139869216 pf160388237524219 pf160388312406523" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="index.xhtml" x="338" y="178" id="pf16038813058426" referenceLink="//@navigationRule.0/@navigationCase.4/@toViewId|" inlinks="pf16038813058421 pf160388312406523" path="/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="search.xhtml" x="338" y="1714" id="pf16038813058429" referenceLink="//@navigationRule.0/@navigationCase.6/@toViewId|" inlinks="pf16038813058424" path="/search.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="signin.xhtml" id="pf160388138251813" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf160388138251812" path="/signin.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="sell.xhtml" id="pf160388138487615" referenceLink="//@navigationRule.0/@navigationCase.4/@toViewId|" inlinks="pf160388138487614" path="/sell.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="register.xhtml" id="pf160388139869217" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf160388139869216" path="/register.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="home.xhtml" id="pf160388237524220" referenceLink="//@navigationRule.0/@navigationCase.4/@toViewId|" inlinks="pf160388237524219" path="/home.xhtml"/>
+  <links id="pf16038813058421" target="pf16038813058426" source="pf16038813058420" outcome="index" redirect="true"/>
+  <links id="pf16038813058424" target="pf16038813058429" source="pf16038813058420" outcome="search" redirect="true"/>
+  <links id="pf160388138251812" target="pf160388138251813" source="pf16038813058420" outcome="signin" redirect="true"/>
+  <links id="pf160388138487614" target="pf160388138487615" source="pf16038813058420" outcome="sell" redirect="true"/>
+  <links id="pf160388139869216" target="pf160388139869217" source="pf16038813058420" outcome="register" redirect="true"/>
+  <links id="pf160388237524219" target="pf160388237524220" source="pf16038813058420" outcome="customer persisted" redirect="true"/>
+  <links id="pf160388312406523" target="pf16038813058426" source="pf16038813058420" outcome="sellFail" redirect="true"/>
+</pageflow:Pageflow>
