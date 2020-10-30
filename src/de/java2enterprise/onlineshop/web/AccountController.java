@@ -32,6 +32,7 @@ public class AccountController implements Serializable {
     private List<Item> items;
     private List<Item> offeredItems;
     private List<Item> boughtItems;
+    private List<Item> soldItems;
     private Status status1;
     private Status status3;
     
@@ -69,11 +70,11 @@ public class AccountController implements Serializable {
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "SELECT i FROM Item i "
-                            + "WHERE i.seller = :seller AND (i.status = :status1 OR i.status = :status3)",
+                            + "WHERE i.seller = :seller "
+                    		+ "AND i.status = :status1",
                     Item.class);
             query.setParameter("seller", customer);
             query.setParameter("status1", status1); //active
-            query.setParameter("status3", status3); //sold
             offeredItems = query.getResultList();
             if(offeredItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
@@ -105,6 +106,53 @@ public class AccountController implements Serializable {
                             fm);
         }
         return offeredItems;
+    }
+    
+    public List<Item> findSoldItems(SigninController signinController) {
+    	Customer customer = signinController.getCustomer();
+        customer = sellBeanLocal.findCustomer(customer.getId());
+        status3 = sellBeanLocal.findStatus(3L);
+        
+    	System.out.println("customer is: " + customer.getEmail());
+    	try {
+            TypedQuery<Item> query = em.createQuery(
+                    "SELECT i FROM Item i "
+                            + "WHERE i.seller = :seller "
+                    		+ "AND i.status = :status3",
+                    Item.class);
+            query.setParameter("seller", customer);
+            query.setParameter("status3", status3); //sold
+            soldItems = query.getResultList();
+            if(soldItems.isEmpty()) {
+                FacesMessage m = new FacesMessage(
+                        "No sold items!",
+                        "No sold items found for this user!");
+                FacesContext
+                        .getCurrentInstance()
+                        .addMessage("signinForm", m);
+            } else {
+            	for(int i = 0; i < offeredItems.size(); i++) {
+            	}
+            	
+                FacesMessage m = new FacesMessage(
+                        "Success",
+                        "Sold items successfully retrieved");
+                FacesContext
+                        .getCurrentInstance()
+                        .addMessage("accountForm", m);
+            }
+        } catch (Exception e) {
+            FacesMessage fm = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage(
+                            "accountForm",
+                            fm);
+        }
+        return soldItems;
     }
     
     public List<Item> findBoughtItems(SigninController signinController) {

@@ -21,6 +21,8 @@
                         <h:outputText value="#{item.price}" />
                         <h:outputText value="#{msg['item.sold']}:" />
                         <h:outputText value="#{item.sold}" />
+                        <h:outputText value="#{msg['item.status.description']}:" />
+                        <h:outputText value="#{item.status.description}" />
                         <h:commandButton
                             value="#{msg['buy']}"
                             action="#{buyController.buyItem(item.id)}" />
