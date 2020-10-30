@@ -17,6 +17,7 @@ import javax.persistence.TypedQuery;
 import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
+import de.java2enterprise.onlineshop.model.Status;
 
 @Named
 @RequestScoped
@@ -34,6 +35,8 @@ public class AccountController implements Serializable {
     
     @EJB
     private SellBeanLocal sellBeanLocal;
+
+	private Status status;
 
     public List<Item> getItems() {
         items = findAll();
@@ -59,13 +62,17 @@ public class AccountController implements Serializable {
     public List<Item> findOfferedItems(SigninController signinController) {
     	Customer customer = signinController.getCustomer();
         customer = sellBeanLocal.findCustomer(customer.getId());
+        status = sellBeanLocal.findStatus(1L);
+        
     	System.out.println("customer is: " + customer.getEmail());
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "SELECT i FROM Item i "
-                            + "WHERE i.seller= :seller ",
+                            + "WHERE i.seller= :seller "
+                            + "AND i.status = :status",
                     Item.class);
             query.setParameter("seller", customer);
+            query.setParameter("status", status);
             offeredItems = query.getResultList();
             if(offeredItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
