@@ -31,12 +31,10 @@ public class BuyController implements Serializable {
     @Resource
     private UserTransaction ut;
 
-    public String update(Long id) {
-        FacesContext ctx = FacesContext
-                .getCurrentInstance();
+    public String buyItem(Long id) {
+        FacesContext ctx = FacesContext.getCurrentInstance();
         ELContext elc = ctx.getELContext();
-        ELResolver elr = ctx.getApplication()
-                .getELResolver();
+        ELResolver elr = ctx.getApplication().getELResolver();
         SigninController signinController = (SigninController) elr
                 .getValue(
                         elc,
