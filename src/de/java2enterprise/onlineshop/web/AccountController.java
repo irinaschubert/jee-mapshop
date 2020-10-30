@@ -59,7 +59,6 @@ public class AccountController implements Serializable {
     public List<Item> findOfferedItems(SigninController signinController) {
     	Customer customer = signinController.getCustomer();
         customer = sellBeanLocal.find(customer.getId());
-        System.out.println("customer is: " + customer.getEmail());
     	
     	try {
             TypedQuery<Item> query = em.createQuery(
@@ -77,7 +76,6 @@ public class AccountController implements Serializable {
                         .addMessage("signinForm", m);
             } else {
             	for(int i = 0; i < offeredItems.size(); i++) {
-            		System.out.println("item is: " + offeredItems.get(i).getTitle());
             	}
             	
                 FacesMessage m = new FacesMessage(
@@ -104,7 +102,6 @@ public class AccountController implements Serializable {
     public List<Item> findBoughtItems(SigninController signinController) {
     	Customer customer = signinController.getCustomer();
         customer = sellBeanLocal.find(customer.getId());
-        System.out.println("customer is: " + customer.getEmail());
     	
     	try {
             TypedQuery<Item> query = em.createQuery(

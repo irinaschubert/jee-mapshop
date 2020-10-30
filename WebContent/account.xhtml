@@ -8,12 +8,6 @@
 	    
     	<h:form 
     		prependId="false">
-    		<!--<h:commandButton
-			    value="#{msg['account']}"
-			    action="#{accountController.findOfferedItems(signinController)}" />
-			<h:commandButton
-			    value="#{msg['account']}"
-			    action="#{accountController.findBoughtItems(signinController)}" />-->
             <h:dataTable
                 value="#{accountController.findOfferedItems(signinController)}"
                 var="item">
@@ -32,6 +26,9 @@
                         <h:outputText value="#{item.price}" />
                         <h:outputText value="#{msg['item.sold']}:" />
                         <h:outputText value="#{item.sold}" />
+                        <h:commandButton
+                            value="#{msg['delete']}"
+                            action="#{removeController.removeItem(item.id)}" />
                     </h:panelGrid>
                 </h:column>
                 <h:column>
