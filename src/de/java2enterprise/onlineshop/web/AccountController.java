@@ -32,7 +32,8 @@ public class AccountController implements Serializable {
     private List<Item> items;
     private List<Item> offeredItems;
     private List<Item> boughtItems;
-    private Status status;
+    private Status status1;
+    private Status status3;
     
     @EJB
     private SellBeanLocal sellBeanLocal;
@@ -61,17 +62,18 @@ public class AccountController implements Serializable {
     public List<Item> findOfferedItems(SigninController signinController) {
     	Customer customer = signinController.getCustomer();
         customer = sellBeanLocal.findCustomer(customer.getId());
-        status = sellBeanLocal.findStatus(1L);
+        status1 = sellBeanLocal.findStatus(1L);
+        status3 = sellBeanLocal.findStatus(3L);
         
     	System.out.println("customer is: " + customer.getEmail());
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "SELECT i FROM Item i "
-                            + "WHERE i.seller= :seller "
-                            + "AND i.status = :status",
+                            + "WHERE i.seller = :seller AND (i.status = :status1 OR i.status = :status3)",
                     Item.class);
             query.setParameter("seller", customer);
-            query.setParameter("status", status);
+            query.setParameter("status1", status1); //active
+            query.setParameter("status3", status3); //sold
             offeredItems = query.getResultList();
             if(offeredItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
