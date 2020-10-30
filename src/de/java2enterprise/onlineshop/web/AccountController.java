@@ -32,11 +32,10 @@ public class AccountController implements Serializable {
     private List<Item> items;
     private List<Item> offeredItems;
     private List<Item> boughtItems;
+    private Status status;
     
     @EJB
     private SellBeanLocal sellBeanLocal;
-
-	private Status status;
 
     public List<Item> getItems() {
         items = findAll();
