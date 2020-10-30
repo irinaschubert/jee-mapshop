@@ -29,6 +29,8 @@ public class AccountController implements Serializable {
     private EntityManager em;
 
     private List<Item> items;
+    private List<Item> offeredItems;
+    private List<Item> boughtItems;
     
     @EJB
     private SellBeanLocal sellBeanLocal;
@@ -65,7 +67,7 @@ public class AccountController implements Serializable {
                             + "WHERE i.seller= :seller ",
                     Item.class);
             query.setParameter("seller", customer);
-            List<Item> offeredItems = query.getResultList();
+            offeredItems = query.getResultList();
             if(offeredItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
                         "Offered items was not successful!",
@@ -74,9 +76,13 @@ public class AccountController implements Serializable {
                         .getCurrentInstance()
                         .addMessage("signinForm", m);
             } else {
+            	for(int i = 0; i < offeredItems.size(); i++) {
+            		System.out.println("item is: " + offeredItems.get(i).getTitle());
+            	}
+            	
                 FacesMessage m = new FacesMessage(
                         "Success",
-                        "bla");
+                        "Offered items successfully retrieved");
                 FacesContext
                         .getCurrentInstance()
                         .addMessage("accountForm", m);
@@ -92,7 +98,7 @@ public class AccountController implements Serializable {
                             "accountForm",
                             fm);
         }
-        return new ArrayList<Item>();
+        return offeredItems;
     }
     
     public List<Item> findBoughtItems(SigninController signinController) {
@@ -106,8 +112,8 @@ public class AccountController implements Serializable {
                             + "WHERE i.buyer= :buyer ",
                     Item.class);
             query.setParameter("buyer", customer);
-            List<Item> offeredItems = query.getResultList();
-            if(offeredItems.isEmpty()) {
+            boughtItems = query.getResultList();
+            if(boughtItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
                         "Bought items was not successful!",
                         "Sorry, try again!");
@@ -133,6 +139,6 @@ public class AccountController implements Serializable {
                             "accountForm",
                             fm);
         }
-        return new ArrayList<Item>();
+        return boughtItems;
     }
 }

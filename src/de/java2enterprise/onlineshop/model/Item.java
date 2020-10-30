@@ -9,17 +9,22 @@ import java.time.LocalDateTime;
  * 
  */
 @Entity
-@Table(
-		schema="MAPSHOP",
-		name="ITEM"
-		)
+@Table(schema="MAPSHOP", name="ITEM")
 @NamedQuery(name="Item.findAll", query="SELECT i FROM Item i")
 public class Item implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
-	@SequenceGenerator(name="ITEM_ID_GENERATOR", sequenceName="SEQ_ITEM", schema="MAPSHOP", allocationSize=1, initialValue=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ITEM_ID_GENERATOR")
+    @SequenceGenerator(
+            name="ITEM_ID_GENERATOR", 
+            sequenceName="SEQ_ITEM",
+            schema="MAPSHOP",
+            allocationSize=1,
+            initialValue=1)
+    @GeneratedValue(
+            strategy=GenerationType.SEQUENCE, 
+            generator="ITEM_ID_GENERATOR")
+	
 	private Long id;
 	private String title;
 	private String description;

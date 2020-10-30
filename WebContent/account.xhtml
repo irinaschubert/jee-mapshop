@@ -8,17 +8,17 @@
 	    
     	<h:form 
     		prependId="false">
-    		<h:commandButton
+    		<!--<h:commandButton
 			    value="#{msg['account']}"
 			    action="#{accountController.findOfferedItems(signinController)}" />
 			<h:commandButton
 			    value="#{msg['account']}"
-			    action="#{accountController.findBoughtItems(signinController)}" />
+			    action="#{accountController.findBoughtItems(signinController)}" />-->
             <h:dataTable
-                value="#{searchController.items}"
+                value="#{accountController.findOfferedItems(signinController)}"
                 var="item">
                 <f:facet name="header">
-	            	<h:outputText value="#{msg['myBoughtItems']}" />
+	            	<h:outputText value="#{msg['mySellItems']}" />
 	        	</f:facet>
                 <h:column>
                     <h:panelGrid columns="2">
@@ -40,10 +40,10 @@
             </h:dataTable>
             
             <h:dataTable
-                value="#{searchController.items}"
+                value="#{accountController.findBoughtItems(signinController)}"
                 var="item">
                 <f:facet name="header">
-            		<h:outputText value="#{msg['mySellItems']}" />
+            		<h:outputText value="#{msg['myBoughtItems']}" />
         		</f:facet>
                 <h:column>
                     <h:panelGrid columns="2">
