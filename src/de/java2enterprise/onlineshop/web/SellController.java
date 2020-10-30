@@ -23,6 +23,7 @@ import javax.servlet.http.Part;
 import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
+import de.java2enterprise.onlineshop.model.Status;
 
 @Named
 @RequestScoped
@@ -36,6 +37,7 @@ public class SellController implements Serializable {
     @Inject
     private Item item;
     private Part part;
+    private Status status;
     
     @EJB
     private SellBeanLocal sellBeanLocal;
@@ -44,21 +46,23 @@ public class SellController implements Serializable {
         try {
             InputStream input = part.getInputStream();
             ByteArrayOutputStream output = new ByteArrayOutputStream();
-            byte[] buffer = new byte[10240];
+            byte[] buffer = new byte[1024];
             for (int length = 0; (length = input.read(buffer)) > 0;) {
                 output.write(buffer, 0, length);
             }
             item.setFoto(scale(output.toByteArray()));
+            status = sellBeanLocal.findStatus(1L);
+            item.setStatus(status);
+            
             Customer customer = signinController.getCustomer();
-            customer = sellBeanLocal.find(customer.getId());
-            System.out.println("customer is: " + customer.getEmail());
+            customer = sellBeanLocal.findCustomer(customer.getId());
             item.setSeller(customer);
             
             String msg = sellBeanLocal.persist(item);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
             return "sell";
         } catch (Exception e) {
-        	System.out.println("error is: " + e.getMessage());
+        	System.out.println(e.getMessage());
             log.severe(e.getMessage());
             return "sellFail";
         }

@@ -33,7 +33,6 @@ public class RemoveController implements Serializable {
     public String removeItem(Long id) {
         try {
             ut.begin();
-            System.out.println("hallo remove");
             Item item = em.find(Item.class, id);
             removeBeanLocal.removeItem(item);
             ut.commit();

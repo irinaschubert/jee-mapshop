@@ -37,7 +37,7 @@ foto         BLOB,
 sold         TIMESTAMP(3),
 seller_id    NUMBER(19) NOT NULL,
 buyer_id     NUMBER(19),
-status_id       NUMBER(2),
+status_id       NUMBER(2) NOT NULL,
 CONSTRAINT fk_seller FOREIGN KEY (seller_id) REFERENCES customer (id),
 CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES customer (id),
 CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES status (id)

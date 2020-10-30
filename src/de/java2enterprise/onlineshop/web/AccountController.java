@@ -58,8 +58,8 @@ public class AccountController implements Serializable {
     
     public List<Item> findOfferedItems(SigninController signinController) {
     	Customer customer = signinController.getCustomer();
-        customer = sellBeanLocal.find(customer.getId());
-    	
+        customer = sellBeanLocal.findCustomer(customer.getId());
+    	System.out.println("customer is: " + customer.getEmail());
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "SELECT i FROM Item i "
@@ -69,8 +69,8 @@ public class AccountController implements Serializable {
             offeredItems = query.getResultList();
             if(offeredItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
-                        "Offered items was not successful!",
-                        "Sorry, try again!");
+                        "No offered items!",
+                        "No offered items found for this user!");
                 FacesContext
                         .getCurrentInstance()
                         .addMessage("signinForm", m);
@@ -101,7 +101,7 @@ public class AccountController implements Serializable {
     
     public List<Item> findBoughtItems(SigninController signinController) {
     	Customer customer = signinController.getCustomer();
-        customer = sellBeanLocal.find(customer.getId());
+        customer = sellBeanLocal.findCustomer(customer.getId());
     	
     	try {
             TypedQuery<Item> query = em.createQuery(
@@ -112,8 +112,8 @@ public class AccountController implements Serializable {
             boughtItems = query.getResultList();
             if(boughtItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
-                        "Bought items was not successful!",
-                        "Sorry, try again!");
+                        "No bought items!",
+                        "No bought items found for this user!");
                 FacesContext
                         .getCurrentInstance()
                         .addMessage("signinForm", m);
