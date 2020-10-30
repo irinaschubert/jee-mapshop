@@ -28,7 +28,7 @@
                         <h:outputText value="#{item.sold}" />
                         <h:commandButton
                             value="#{msg['delete']}"
-                            action="#{removeController.removeItem(item.id)}" />
+                            action="#{removeController.deactivateItem(item.id)}" />
                     </h:panelGrid>
                 </h:column>
                 <h:column>

@@ -23,7 +23,6 @@ public class SigninController implements Serializable {
     private EntityManager em;
 
     private String email;
-
     private String password;
 
     @Inject
