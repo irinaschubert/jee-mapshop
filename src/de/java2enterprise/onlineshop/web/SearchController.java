@@ -98,11 +98,11 @@ public class SearchController implements Serializable {
             TypedQuery<Item> query = em.createQuery(
                     "SELECT i FROM Item i "
                             + "WHERE i.status = :status "
-                    		+ "AND i.title LIKE %:term% "
-                            + "OR i.description LIKE %:term%",
+                    		+ "AND i.title LIKE :term "
+                            + "OR i.description LIKE :term",
                     Item.class);
             query.setParameter("status", status);
-            query.setParameter("term", term);
+            query.setParameter("term", "%"+term+"%");
             resultItems = query.getResultList();
             if(resultItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
@@ -113,10 +113,12 @@ public class SearchController implements Serializable {
                         .addMessage("searchForm", m);
             } else {
             	for(int i = 0; i < resultItems.size(); i++) {
+            		//TODO only display these items
+            		System.out.println(resultItems.get(i).getTitle());
             	}
             	
                 FacesMessage m = new FacesMessage(
-                        "Success",
+                        "Succes!",
                         "Items successfully retrieved");
                 FacesContext
                         .getCurrentInstance()
