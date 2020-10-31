@@ -35,7 +35,6 @@ public class AccountController implements Serializable {
     private List<Item> soldItems;
     private Status status1; //active
     private Status status3; //sold
-    private Status status4; //reserved
     
     @EJB
     private SellBeanLocal sellBeanLocal;
