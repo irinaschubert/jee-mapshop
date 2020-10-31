@@ -1,8 +1,6 @@
 package de.java2enterprise.onlineshop.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.*;
 
@@ -11,21 +9,28 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(
-		schema = "MAPSHOP",
-		name = "STATUS"
-		)
+@Table(schema = "MAPSHOP", name = "STATUS")
 @NamedQuery(name="Status.findAll", query="SELECT s FROM Status s")
 public class Status implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	private Long id;
+    @Id
+    @SequenceGenerator(
+            name="STATUS_ID_GENERATOR", 
+            sequenceName="SEQ_STATUS",
+            schema="MAPSHOP",
+            allocationSize=1,
+            initialValue=1)
+    @GeneratedValue(
+            strategy=GenerationType.SEQUENCE, 
+            generator="STATUS_ID_GENERATOR")
+    private Long id;
+    
 	private String description;
 
 	//bi-directional one-to-many association to Item
-	@OneToMany(mappedBy="status")
-	private Set<Item> items;
+	/*@OneToMany(mappedBy="status")
+	private Set<Item> items;*/
 
 	public Status() {
 	}
@@ -46,7 +51,7 @@ public class Status implements Serializable {
 		this.description = description;
 	}
 	
-	public Set<Item> getItems(){
+	/*public Set<Item> getItems(){
 		return this.items;
 	}
 	
@@ -70,7 +75,7 @@ public class Status implements Serializable {
 		item.setStatus(null);
 
 		return item;
-	}
+	}*/
 
     @Override
     public String toString() {

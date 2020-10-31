@@ -54,7 +54,7 @@ public class BuyController implements Serializable {
         Customer customer = signinController.getCustomer();
         try {
             ut.begin();
-            status = sellBeanLocal.findStatus(3L);
+            status = sellBeanLocal.findStatus(3L); //sold
             Item item = em.find(Item.class, id);
             item.setBuyer(customer);
             item.setSold(LocalDateTime.now());

@@ -7,4 +7,4 @@ oder:
 connect mapshop/io
 @D:/git/ffhs_jee_start/maps-web/db/create_tables.sql
 connect mapshop_user/io
-@D:/git/ffhs_jee_start/maps-web/db/fill_db_with_data.sql
+@D:/git/ffhs_jee_start/maps-web/db/fill_db.sql

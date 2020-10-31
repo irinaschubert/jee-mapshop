@@ -1,6 +1,7 @@
 package de.java2enterprise.onlineshop.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 /**
@@ -27,6 +28,12 @@ public class Customer implements Serializable {
     private String email;
 
     private String password;
+    
+    /*@OneToMany(mappedBy="seller")
+	private Set<Item> offers;
+    
+    @OneToMany(mappedBy="buyer")
+	private Set<Item> purchases;*/
 
     public Long getId() {
         return this.id;
@@ -51,4 +58,20 @@ public class Customer implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    /*public Set<Item> getOffers() {
+        return this.offers;
+    }
+
+    public void setOffers(Set<Item> offers) {
+        this.offers = offers;
+    }
+    
+    public Set<Item> getPurchases() {
+        return this.purchases;
+    }
+
+    public void setPurchases(Set<Item> purchases) {
+        this.purchases = purchases;
+    }*/
 }

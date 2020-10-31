@@ -51,7 +51,7 @@ public class SellController implements Serializable {
                 output.write(buffer, 0, length);
             }
             item.setFoto(scale(output.toByteArray()));
-            status = sellBeanLocal.findStatus(1L);
+            status = sellBeanLocal.findStatus(1L); //active
             item.setStatus(status);
             
             Customer customer = signinController.getCustomer();

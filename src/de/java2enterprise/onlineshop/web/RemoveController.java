@@ -31,6 +31,7 @@ public class RemoveController implements Serializable {
     
     @EJB
     private SellBeanLocal sellBeanLocal;
+    
     @EJB
     private RemoveBeanLocal removeBeanLocal;
     
@@ -52,14 +53,29 @@ public class RemoveController implements Serializable {
         try {
         	ut.begin();
         	Item item = em.find(Item.class, id);
-            Status status = em.find(Status.class, 2L);
+            Status status = em.find(Status.class, 2L); //inactive
             item.setStatus(status);
             removeBeanLocal.deactivateItem(item);
             ut.commit();
-            log.info("item deactivated.");
+            log.info("Item deactivated.");
         } catch (Exception e) {
             log.severe(e.getMessage());
         }
         return "/account.jsf";
+    }
+    
+    public String removeItemFromCart(Long id) {
+        try {
+        	ut.begin();
+        	Item item = em.find(Item.class, id);
+            Status status = em.find(Status.class, 1L); //active
+            item.setStatus(status);
+            removeBeanLocal.removeItemFromCart(item);
+            ut.commit();
+            log.info("Item removed from cart.");
+        } catch (Exception e) {
+            log.severe(e.getMessage());
+        }
+        return "/cart.jsf";
     }
 }

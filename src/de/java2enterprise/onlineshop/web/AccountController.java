@@ -35,6 +35,7 @@ public class AccountController implements Serializable {
     private List<Item> soldItems;
     private Status status1;
     private Status status3;
+    private Status status4;
     
     @EJB
     private SellBeanLocal sellBeanLocal;
@@ -63,10 +64,7 @@ public class AccountController implements Serializable {
     public List<Item> findOfferedItems(SigninController signinController) {
     	Customer customer = signinController.getCustomer();
         customer = sellBeanLocal.findCustomer(customer.getId());
-        status1 = sellBeanLocal.findStatus(1L);
-        status3 = sellBeanLocal.findStatus(3L);
-        
-    	System.out.println("customer is: " + customer.getEmail());
+        status1 = sellBeanLocal.findStatus(1L); //active
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "SELECT i FROM Item i "
@@ -111,7 +109,7 @@ public class AccountController implements Serializable {
     public List<Item> findSoldItems(SigninController signinController) {
     	Customer customer = signinController.getCustomer();
         customer = sellBeanLocal.findCustomer(customer.getId());
-        status3 = sellBeanLocal.findStatus(3L);
+        status3 = sellBeanLocal.findStatus(3L); //sold
         
     	System.out.println("customer is: " + customer.getEmail());
     	try {
@@ -158,13 +156,16 @@ public class AccountController implements Serializable {
     public List<Item> findBoughtItems(SigninController signinController) {
     	Customer customer = signinController.getCustomer();
         customer = sellBeanLocal.findCustomer(customer.getId());
+        status4 = sellBeanLocal.findStatus(4L); //reserved
     	
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "SELECT i FROM Item i "
-                            + "WHERE i.buyer= :buyer ",
+                            + "WHERE i.buyer= :buyer "
+                    		+ "AND i.status= :status",
                     Item.class);
             query.setParameter("buyer", customer);
+            query.setParameter("status", status4);
             boughtItems = query.getResultList();
             if(boughtItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(

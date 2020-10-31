@@ -19,7 +19,7 @@ ON customer(
 );
 
 CREATE TABLE status (
-id           NUMBER(2) PRIMARY KEY,
+id                  NUMBER(2) PRIMARY KEY,
 description         VARCHAR2(20) NOT NULL
 );
 GRANT SELECT, INSERT, UPDATE, DELETE 
@@ -52,6 +52,7 @@ ON item(
 );
 
 DROP SEQUENCE seq_customer;
+
 CREATE SEQUENCE seq_customer;
 GRANT ALL ON seq_customer TO mapshop_user;
 
