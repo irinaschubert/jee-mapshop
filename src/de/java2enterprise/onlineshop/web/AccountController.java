@@ -33,9 +33,9 @@ public class AccountController implements Serializable {
     private List<Item> offeredItems;
     private List<Item> boughtItems;
     private List<Item> soldItems;
-    private Status status1;
-    private Status status3;
-    private Status status4;
+    private Status status1; //active
+    private Status status3; //sold
+    private Status status4; //reserved
     
     @EJB
     private SellBeanLocal sellBeanLocal;
@@ -156,7 +156,7 @@ public class AccountController implements Serializable {
     public List<Item> findBoughtItems(SigninController signinController) {
     	Customer customer = signinController.getCustomer();
         customer = sellBeanLocal.findCustomer(customer.getId());
-        status4 = sellBeanLocal.findStatus(4L); //reserved
+        status3 = sellBeanLocal.findStatus(3L); //sold
     	
     	try {
             TypedQuery<Item> query = em.createQuery(
@@ -165,7 +165,7 @@ public class AccountController implements Serializable {
                     		+ "AND i.status= :status",
                     Item.class);
             query.setParameter("buyer", customer);
-            query.setParameter("status", status4);
+            query.setParameter("status", status3);
             boughtItems = query.getResultList();
             if(boughtItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
