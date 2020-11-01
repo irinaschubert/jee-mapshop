@@ -90,6 +90,9 @@
                     <h:graphicImage url="image?id=#{item.id}" />
                 </h:column>
             </h:dataTable>
+            <h:commandButton
+        		value="#{msg['deregister']}"
+            	action="#{registerController.removeCustomer(signinController)}"/>
         </h:form>
 	</ui:define>
 </ui:composition>

@@ -1,6 +1,6 @@
-DROP TABLE item cascade constraints;
-DROP TABLE customer cascade constraints;
-DROP TABLE status cascade constraints;
+DROP TABLE item CASCADE constraints;
+DROP TABLE customer CASCADE constraints;
+DROP TABLE status CASCADE constraints;
 
 
 CREATE TABLE customer (
@@ -32,7 +32,7 @@ description  VARCHAR2(1000),
 price        NUMBER(12,2) NOT NULL,
 foto         BLOB,
 sold         TIMESTAMP(3),
-seller_id    NUMBER(19) NOT NULL,
+seller_id    NUMBER(19),
 buyer_id     NUMBER(19),
 status_id       NUMBER(2) NOT NULL,
 CONSTRAINT fk_seller FOREIGN KEY (seller_id) REFERENCES customer(id),

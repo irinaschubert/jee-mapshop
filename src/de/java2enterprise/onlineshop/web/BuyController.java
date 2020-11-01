@@ -57,11 +57,12 @@ public class BuyController implements Serializable {
 
         Customer customer = signinController.getCustomer();
         try {
+        	status3 = sellBeanLocal.findStatus(3L); //sold
             ut.begin();
-            status3 = sellBeanLocal.findStatus(3L); //sold
             Item item = em.find(Item.class, id);
             item.setBuyer(customer);
             item.setSold(LocalDateTime.now());
+            item.setSeller(null); // in order to be able to delete seller customer seller has to be null
             item.setStatus(status3);
             ut.commit();
             log.info(item + " bought by " + customer.getEmail());
@@ -99,6 +100,7 @@ public class BuyController implements Serializable {
 	        		ut.begin();
 	        		item.setStatus(status3);
 	        		item.setSold(LocalDateTime.now());
+	        		item.setSeller(null); // in order to be able to delete seller customer seller has to be null
 	        		item = em.merge(item);
 	        		ut.commit();
 	        		log.info(item + " bought by " + customer.getEmail());
