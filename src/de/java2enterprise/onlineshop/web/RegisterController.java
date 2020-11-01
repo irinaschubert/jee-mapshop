@@ -106,12 +106,12 @@ public class RegisterController implements Serializable {
 	                    "You deleted your account and the active items belonging to it.");
 	            FacesContext
 	                    .getCurrentInstance()
-	                    .addMessage("searchForm", m);
+	                    .addMessage("welcomeForm", m);
 	        }
+	        //TODO show deregister message
+	        return registerBeanLocal.removeCustomer(customer);
 	        
-	        registerBeanLocal.removeCustomer(customer);
-	        //TODO show deregistered page
-	        }catch(Exception e) {
+    	}catch(Exception e) {
     		FacesMessage fm = new FacesMessage(
                     FacesMessage.SEVERITY_WARN,
                     e.getMessage(),
@@ -119,10 +119,11 @@ public class RegisterController implements Serializable {
             FacesContext
                     .getCurrentInstance()
                     .addMessage(
-                            "searchForm",
+                            "welcomeForm",
                             fm);
+            //TODO show deregister message
+            return "failCustomerRemove";
     	}
-        return "/index.xhtml";
     }
     
     public Customer getCustomer() {
