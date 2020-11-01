@@ -68,7 +68,7 @@ public class AccountController implements Serializable {
         status4 = sellBeanLocal.findStatus(4L); //reserved
     	try {
             TypedQuery<Item> query = em.createQuery(
-                    "SELECT i FROM " + Item.class.getSimpleName() + " i "
+                    "FROM " + Item.class.getSimpleName() + " i "
                             + "WHERE i.seller = :seller "
                     		+ "AND (i.status = :status1 "
                             + "OR i.status = :status4)",
@@ -117,7 +117,7 @@ public class AccountController implements Serializable {
     	System.out.println("customer is: " + customer.getEmail());
     	try {
             TypedQuery<Item> query = em.createQuery(
-                    "SELECT i FROM " + Item.class.getSimpleName() + " i "
+                    "FROM " + Item.class.getSimpleName() + " i "
                             + "WHERE i.seller = :seller "
                     		+ "AND i.status = :status3",
                     Item.class);
@@ -163,7 +163,7 @@ public class AccountController implements Serializable {
     	
     	try {
             TypedQuery<Item> query = em.createQuery(
-                    "SELECT i FROM " + Item.class.getSimpleName() + " i "
+                    "FROM " + Item.class.getSimpleName() + " i "
                             + "WHERE i.buyer= :buyer "
                     		+ "AND i.status= :status",
                     Item.class);

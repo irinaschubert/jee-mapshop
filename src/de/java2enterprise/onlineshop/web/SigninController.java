@@ -55,7 +55,7 @@ public class SigninController implements Serializable {
     public String find() {
         try {
             TypedQuery<Customer> query = em.createQuery(
-            		"SELECT c FROM " + Customer.class.getSimpleName() + " c "
+            		"FROM " + Customer.class.getSimpleName() + " c "
                             + "WHERE c.email= :email "
                             + "AND c.password= :password",
                     Customer.class);

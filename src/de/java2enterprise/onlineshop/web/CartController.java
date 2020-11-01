@@ -72,7 +72,7 @@ public class CartController implements Serializable {
         
     	try {
     		TypedQuery<Item> query = em.createQuery(
-    				"SELECT i FROM " + Item.class.getSimpleName() + " i "
+    				"FROM " + Item.class.getSimpleName() + " i "
                             + "WHERE i.buyer = :buyer "
                     		+ "AND i.status = :status",
                     Item.class);

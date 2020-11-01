@@ -74,7 +74,7 @@ public class RegisterController implements Serializable {
             status1 = sellBeanLocal.findStatus(1L); //active
             status4 = sellBeanLocal.findStatus(4L); //reserved
     		TypedQuery<Item> query = em.createQuery(
-	                "SELECT i FROM " + Item.class.getSimpleName() + " i "
+	                "FROM " + Item.class.getSimpleName() + " i "
 	                        + "WHERE (i.status= :status1 "
 	                		+ "OR i.status= :status4) "
 	                        + "AND i.seller= :seller",
