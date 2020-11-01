@@ -2,6 +2,7 @@ package de.java2enterprise.onlineshop.web;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
@@ -9,11 +10,13 @@ import javax.ejb.EJB;
 import javax.el.ELContext;
 import javax.el.ELResolver;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.UserTransaction;
 
 import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
@@ -35,8 +38,9 @@ public class BuyController implements Serializable {
     @Resource
     private UserTransaction ut;
     
-    @Inject
-    private Status status;
+    //@Inject
+    private Status status3;
+    private Status status4;
     
     @EJB
     private SellBeanLocal sellBeanLocal;
@@ -54,16 +58,70 @@ public class BuyController implements Serializable {
         Customer customer = signinController.getCustomer();
         try {
             ut.begin();
-            status = sellBeanLocal.findStatus(3L); //sold
+            status3 = sellBeanLocal.findStatus(3L); //sold
             Item item = em.find(Item.class, id);
             item.setBuyer(customer);
             item.setSold(LocalDateTime.now());
-            item.setStatus(status);
+            item.setStatus(status3);
             ut.commit();
             log.info(item + " bought by " + customer.getEmail());
         } catch (Exception e) {
             log.severe(e.getMessage());
         }
         return "/search.jsf";
+    }
+    
+    public String buyItems(SigninController signinController) {
+    	Customer customer = signinController.getCustomer();
+        customer = sellBeanLocal.findCustomer(customer.getId());
+        status3 = sellBeanLocal.findStatus(3L); //sold
+        status4 = sellBeanLocal.findStatus(4L); //reserved
+    	
+    	try {
+	    	TypedQuery<Item> query = em.createQuery(
+	                "SELECT i FROM Item i "
+	                        + "WHERE i.status= :status "
+	                        + "AND i.buyer= :buyer",
+	                Item.class);
+	        query.setParameter("status", status4);
+	        query.setParameter("buyer", customer);
+	        List<Item> reservedItems = query.getResultList();
+	        if(reservedItems.isEmpty()) {
+	            FacesMessage m = new FacesMessage(
+	                    "No reserved Items found!",
+	                    "No items found!");
+	            FacesContext
+	                    .getCurrentInstance()
+	                    .addMessage("cartForm", m);
+	        } else {
+	        	for(int i = 0; i < reservedItems.size(); i++) {
+	        		Item item = reservedItems.get(i);
+	        		ut.begin();
+	        		item.setStatus(status3);
+	        		item.setSold(LocalDateTime.now());
+	        		item = em.merge(item);
+	        		ut.commit();
+	        		log.info(item + " bought by " + customer.getEmail());
+	        	}
+	            FacesMessage m = new FacesMessage(
+	                    "Successfully bought items!",
+	                    "Successfully bought reserved items");
+	            FacesContext
+	                    .getCurrentInstance()
+	                    .addMessage("cartForm", m);
+	        }
+    } catch (Exception e) {
+        FacesMessage fm = new FacesMessage(
+                FacesMessage.SEVERITY_WARN,
+                e.getMessage(),
+                e.getCause().getMessage());
+        FacesContext
+                .getCurrentInstance()
+                .addMessage(
+                        "cartForm",
+                        fm);
+    }
+    return "/cart.jsf";
+    	
     }
 }

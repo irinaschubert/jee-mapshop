@@ -42,33 +42,6 @@ public class CartController implements Serializable {
     @EJB
     private SellBeanLocal sellBeanLocal;
 
-    //TODO Modify (buy multiple objects instead of one) and add this method to BuyController!
-    public String buyItem(Long id) {
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        ELContext elc = ctx.getELContext();
-        ELResolver elr = ctx.getApplication().getELResolver();
-        SigninController signinController = (SigninController) elr
-                .getValue(
-                        elc,
-                        null,
-                        "signinController");
-
-        Customer customer = signinController.getCustomer();
-        try {
-            ut.begin();
-            status = sellBeanLocal.findStatus(3L); //sold
-            Item item = em.find(Item.class, id);
-            item.setBuyer(customer);
-            item.setSold(LocalDateTime.now());
-            item.setStatus(status);
-            ut.commit();
-            log.info(item + " bought by " + customer.getEmail());
-        } catch (Exception e) {
-            log.severe(e.getMessage());
-        }
-        return "/search.jsf";
-    }
-    
     public String reserveItem(Long id) {
         FacesContext ctx = FacesContext.getCurrentInstance();
         ELContext elc = ctx.getELContext();
