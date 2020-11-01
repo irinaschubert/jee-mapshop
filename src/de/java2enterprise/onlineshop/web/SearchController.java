@@ -54,7 +54,7 @@ public class SearchController implements Serializable {
         
     	try {
             TypedQuery<Item> query = em.createQuery(
-                    "SELECT i FROM Item i "
+            		"SELECT i FROM " + Item.class.getSimpleName() + " i "
                             + "WHERE i.status = :status",
                     Item.class);
             query.setParameter("status", status);
@@ -96,7 +96,7 @@ public class SearchController implements Serializable {
         
     	try {
             TypedQuery<Item> query = em.createQuery(
-                    "SELECT i FROM Item i "
+            		"SELECT i FROM " + Item.class.getSimpleName() + " i "
                             + "WHERE i.status = :status "
                     		+ "AND i.title LIKE :term "
                             + "OR i.description LIKE :term",

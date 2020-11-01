@@ -80,7 +80,7 @@ public class BuyController implements Serializable {
     	
     	try {
 	    	TypedQuery<Item> query = em.createQuery(
-	                "SELECT i FROM Item i "
+	                "SELECT i FROM " + Item.class.getSimpleName() + " i "
 	                        + "WHERE i.status= :status "
 	                        + "AND i.buyer= :buyer",
 	                Item.class);

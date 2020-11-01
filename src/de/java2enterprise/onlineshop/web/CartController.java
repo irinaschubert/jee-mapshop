@@ -1,7 +1,6 @@
 package de.java2enterprise.onlineshop.web;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -73,7 +72,7 @@ public class CartController implements Serializable {
         
     	try {
     		TypedQuery<Item> query = em.createQuery(
-                    "SELECT i FROM Item i "
+    				"SELECT i FROM " + Item.class.getSimpleName() + " i "
                             + "WHERE i.buyer = :buyer "
                     		+ "AND i.status = :status",
                     Item.class);
