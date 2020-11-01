@@ -29,18 +29,15 @@ CREATE TABLE item (
 id           NUMBER(19) PRIMARY KEY,
 title        VARCHAR2(40) NOT NULL,
 description  VARCHAR2(1000),
-year         NUMBER,
-publisher    VARCHAR(40),
-isbn         VARCHAR(20),
 price        NUMBER(12,2) NOT NULL,
 foto         BLOB,
 sold         TIMESTAMP(3),
 seller_id    NUMBER(19) NOT NULL,
 buyer_id     NUMBER(19),
 status_id       NUMBER(2) NOT NULL,
-CONSTRAINT fk_seller FOREIGN KEY (seller_id) REFERENCES customer (id),
-CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES customer (id),
-CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES status (id)
+CONSTRAINT fk_seller FOREIGN KEY (seller_id) REFERENCES customer(id),
+CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES customer(id),
+CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES status(id)
 );
 GRANT SELECT, INSERT, UPDATE, DELETE 
 ON item TO mapshop_user; 

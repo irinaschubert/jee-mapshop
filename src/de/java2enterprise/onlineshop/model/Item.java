@@ -28,9 +28,6 @@ public class Item implements Serializable {
 	private Long id;
 	private String title;
 	private String description;
-	private int year;
-	private String publisher;
-	private String isbn;
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
 	private byte[] foto;
@@ -74,30 +71,6 @@ public class Item implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public int getYear() {
-		return this.year;
-	}
-
-	public void setYear(int year) {
-		this.year = year;
-	}
-	
-	public String getPublisher() {
-		return this.publisher;
-	}
-
-	public void setPublisher(String publisher) {
-		this.publisher = publisher;
-	}
-	
-	public String getIsbn() {
-		return this.isbn;
-	}
-
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
 	}
 	
 	public byte[] getFoto() {
