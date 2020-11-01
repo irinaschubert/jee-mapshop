@@ -122,7 +122,7 @@ public class RegisterController implements Serializable {
                             "searchForm",
                             fm);
     	}
-        return "deregister";
+        return "/index.xhtml";
     }
     
     public Customer getCustomer() {
