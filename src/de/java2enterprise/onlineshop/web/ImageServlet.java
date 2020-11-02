@@ -29,9 +29,7 @@ public class ImageServlet extends HttpServlet {
                             "select i.foto "
                                     + "from Item i "
                                     + "where i.id = :id");
-            query.setParameter(
-                    "id",
-                    Long.parseLong(id));
+            query.setParameter("id", Long.parseLong(id));
             byte[] foto = (byte[]) query.getSingleResult();
             response.reset();
             response.getOutputStream().write(foto);
