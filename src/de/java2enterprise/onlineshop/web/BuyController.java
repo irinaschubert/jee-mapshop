@@ -102,7 +102,7 @@ public class BuyController implements Serializable {
 	        		ut.begin();
 	        		item.setStatus(status3);
 	        		item.setSold(LocalDateTime.now());
-	        		item.setSeller(null); // in order to be able to delete seller customer seller has to be null
+	        		//item.setSeller(null); // in order to be able to delete seller customer seller has to be null
 	        		item = em.merge(item);
 	        		ut.commit();
 	        	}

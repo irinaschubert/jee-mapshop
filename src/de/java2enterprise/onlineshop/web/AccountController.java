@@ -3,7 +3,6 @@ package de.java2enterprise.onlineshop.web;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -23,8 +22,6 @@ import de.java2enterprise.onlineshop.model.Status;
 @RequestScoped
 public class AccountController implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    private final static Logger log = Logger.getLogger(AccountController.class.toString());
 
     @PersistenceContext
     private EntityManager em;
@@ -56,7 +53,13 @@ public class AccountController implements Serializable {
                             Item.class);
             return query.getResultList();
         } catch (Exception e) {
-            log.severe(e.getMessage());
+        	FacesMessage m = new FacesMessage(
+                FacesMessage.SEVERITY_WARN,
+                e.getMessage(),
+                e.getCause().getMessage());
+            FacesContext
+                .getCurrentInstance()
+                .addMessage("accountForm", m);
         }
         return new ArrayList<Item>();
     }
@@ -79,30 +82,30 @@ public class AccountController implements Serializable {
             offeredItems = query.getResultList();
             if(offeredItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
-                        "No offered items found.",
-                        "No offered items found for user " + customer.getEmail());
+                    "No offered items found.",
+                    "No offered items found for user " + customer.getEmail());
                 FacesContext
-                        .getCurrentInstance()
-                        .addMessage("accountForm", m);
+                    .getCurrentInstance()
+                    .addMessage("accountForm", m);
             } else {
             	for(int i = 0; i < offeredItems.size(); i++) {
             	}
             	
                 FacesMessage m = new FacesMessage(
-                        "Offered items successfully retrieved.",
-                        "Offered items successfully retrieved for user " + customer.getEmail());
+                    "Offered items successfully retrieved.",
+                    "Offered items successfully retrieved for user " + customer.getEmail());
                 FacesContext
-                        .getCurrentInstance()
-                        .addMessage("accountForm", m);
+                    .getCurrentInstance()
+                    .addMessage("accountForm", m);
             }
         } catch (Exception e) {
             FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+                FacesMessage.SEVERITY_WARN,
+                e.getMessage(),
+                e.getCause().getMessage());
             FacesContext
-                    .getCurrentInstance()
-                    .addMessage("accountForm", m);
+                .getCurrentInstance()
+                .addMessage("accountForm", m);
         }
         return offeredItems;
     }
@@ -112,7 +115,6 @@ public class AccountController implements Serializable {
         customer = sellBeanLocal.findCustomer(customer.getId());
         status3 = sellBeanLocal.findStatus(3L); //sold
         
-    	System.out.println("customer is: " + customer.getEmail());
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "FROM " + Item.class.getSimpleName() + " i "
@@ -124,30 +126,27 @@ public class AccountController implements Serializable {
             soldItems = query.getResultList();
             if(soldItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
-                		"No sold items found.",
-                        "No sold items found for user " + customer.getEmail());
+                	"No sold items found.",
+                    "No sold items found for user " + customer.getEmail());
                 FacesContext
-                        .getCurrentInstance()
-                        .addMessage("accountForm", m);
+                    .getCurrentInstance()
+                    .addMessage("accountForm", m);
             } else {
-            	for(int i = 0; i < offeredItems.size(); i++) {
-            	}
-            	
                 FacesMessage m = new FacesMessage(
-                		"Sold items successfully retrieved.",
-                        "Sold items successfully retrieved for user " + customer.getEmail());
+                	"Sold items successfully retrieved.",
+                    "Sold items successfully retrieved for user " + customer.getEmail());
                 FacesContext
-                        .getCurrentInstance()
-                        .addMessage("accountForm", m);
+                    .getCurrentInstance()
+                    .addMessage("accountForm", m);
             }
         } catch (Exception e) {
             FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+                FacesMessage.SEVERITY_WARN,
+                e.getMessage(),
+                e.getCause().getMessage());
             FacesContext
-                    .getCurrentInstance()
-                    .addMessage("accountForm", m);
+                .getCurrentInstance()
+                .addMessage("accountForm", m);
         }
         return soldItems;
     }
@@ -168,27 +167,27 @@ public class AccountController implements Serializable {
             boughtItems = query.getResultList();
             if(boughtItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
-                		"No bought items found.",
-                        "No bought items found for user " + customer.getEmail());
+                    "No bought items found.",
+                    "No bought items found for user " + customer.getEmail());
                 FacesContext
-                        .getCurrentInstance()
-                        .addMessage("accountForm", m);
+                    .getCurrentInstance()
+                    .addMessage("accountForm", m);
             } else {
                 FacesMessage m = new FacesMessage(
-                		"Bought items successfully retrieved.",
-                        "Bought items successfully retrieved for user " + customer.getEmail());
+                	"Bought items successfully retrieved.",
+                    "Bought items successfully retrieved for user " + customer.getEmail());
                 FacesContext
-                        .getCurrentInstance()
-                        .addMessage("accountForm", m);
+                    .getCurrentInstance()
+                    .addMessage("accountForm", m);
             }
         } catch (Exception e) {
             FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+                FacesMessage.SEVERITY_WARN,
+                e.getMessage(),
+                e.getCause().getMessage());
             FacesContext
-                    .getCurrentInstance()
-                    .addMessage("accountForm", m);
+                .getCurrentInstance()
+                .addMessage("accountForm", m);
         }
         return boughtItems;
     }

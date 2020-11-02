@@ -38,6 +38,7 @@ public class RegisterController implements Serializable {
     private Customer customer;
     
     private Status status1; //active
+    private Status status3; //sold
     private Status status4; //reserved
     
     @EJB
@@ -82,28 +83,32 @@ public class RegisterController implements Serializable {
     		Customer customer = signinController.getCustomer();
             customer = sellBeanLocal.findCustomer(customer.getId());
             status1 = sellBeanLocal.findStatus(1L); //active
+            status3 = sellBeanLocal.findStatus(3L); //sold
             status4 = sellBeanLocal.findStatus(4L); //reserved
-    		TypedQuery<Item> query = em.createQuery(
+            
+            //find active items to delete
+    		TypedQuery<Item> queryActive = em.createQuery(
 	                "FROM " + Item.class.getSimpleName() + " i "
 	                        + "WHERE (i.status= :status1 "
 	                		+ "OR i.status= :status4) "
 	                        + "AND i.seller= :seller",
 	                Item.class);
-	        query.setParameter("seller", customer);
-	        query.setParameter("status1", status1); //active
-	        query.setParameter("status4", status4); //reserved
-	        List<Item> activeItems = query.getResultList();
+    		queryActive.setParameter("seller", customer);
+    		queryActive.setParameter("status1", status1); //active
+    		queryActive.setParameter("status4", status4); //reserved
+	        List<Item> activeItems = queryActive.getResultList();
 	        if(activeItems.isEmpty()) {
 	            FacesMessage m = new FacesMessage(
-	                    "No items found!",
-	                    "No Items found belonging to customer " + customer.getEmail());
+	                "No sold and active items found!",
+	                "No sold and active items found belonging to customer " + customer.getEmail());
 	            FacesContext
-	                    .getCurrentInstance()
-	                    .addMessage("accountForm", m);
+	                .getCurrentInstance()
+	                .addMessage("welcomeForm", m);
 	        } else {
 	        	for(int i = 0; i < activeItems.size(); i++) {
 	        		Item item = activeItems.get(i);
 	        		ut.begin();
+	        		item.setSeller(null);
 	        		if (!em.contains(item)) {
 	            		item = em.merge(item);
 	            	}
@@ -112,23 +117,95 @@ public class RegisterController implements Serializable {
 	        	}
 	        	
 	    		FacesMessage m = new FacesMessage(
-	                    "Succesfully deleted account!",
-	                    "User account was successfully deleted including the active items belonging to it.");
+	                "Succesfully cleand up sold and active items of user!",
+	                "Cleand up sold and active items of user by setting seller to null.");
 	            FacesContext
-	                    .getCurrentInstance()
-	                    .addMessage("welcomeForm", m);
+	                .getCurrentInstance()
+	                .addMessage("welcomeForm", m);
 	        }
+	        
+	        //find bought items to clean up
+	        TypedQuery<Item> queryBought = em.createQuery(
+	                "FROM " + Item.class.getSimpleName() + " i "
+	                        + "WHERE i.status= :status3 "
+	                        + "AND i.buyer= :buyer",
+	                Item.class);
+	        queryBought.setParameter("buyer", customer);
+	        queryBought.setParameter("status3", status3); //sold
+	        List<Item> boughtItems = queryBought.getResultList();
+	        if(boughtItems.isEmpty()) {
+	            FacesMessage m = new FacesMessage(
+	                "No bought items found!",
+	                "No bought items found belonging to customer " + customer.getEmail());
+	            FacesContext
+	                .getCurrentInstance()
+	                .addMessage("welcomeForm", m);
+	        } else {
+	        	for(int i = 0; i < boughtItems.size(); i++) {
+	        		Item item = boughtItems.get(i);
+	        		ut.begin();
+	        		item.setBuyer(null);
+	        		item = em.merge(item);
+	        		/*if (!em.contains(item)) {
+	            		item = em.merge(item);
+	            	}*/
+	        		ut.commit();
+	        	}
+	    		FacesMessage m = new FacesMessage(
+	                "Succesfully cleand up bought items of user!",
+	                "Cleand up bought items of user by setting buyer to null.");
+	            FacesContext
+	                .getCurrentInstance()
+	                .addMessage("welcomeForm", m);
+	        }
+	        
+	        //find sold items to clean up
+	        TypedQuery<Item> querySold = em.createQuery(
+	                "FROM " + Item.class.getSimpleName() + " i "
+	                        + "WHERE i.status= :status3 "
+	                        + "AND i.seller= :seller",
+	                Item.class);
+	        querySold.setParameter("seller", customer);
+	        querySold.setParameter("status3", status3); //sold
+	        List<Item> soldItems = querySold.getResultList();
+	        if(soldItems.isEmpty()) {
+	            FacesMessage m = new FacesMessage(
+	                "No sold items found!",
+	                "No sold items found belonging to customer " + customer.getEmail());
+	            FacesContext
+	                .getCurrentInstance()
+	                .addMessage("welcomeForm", m);
+	        } else {
+	        	for(int i = 0; i < soldItems.size(); i++) {
+	        		Item item = soldItems.get(i);
+	        		ut.begin();
+	        		item.setSeller(null);
+	        		item = em.merge(item);
+	        		/*if (!em.contains(item)) {
+	            		item = em.merge(item);
+	            	}*/
+	        		//em.remove(item);
+	        		ut.commit();
+	        	}
+	    		FacesMessage m = new FacesMessage(
+	                "Succesfully cleand up bought items of user!",
+	                "Cleand up bought items of user by setting buyer to null.");
+	            FacesContext
+	                .getCurrentInstance()
+	                .addMessage("welcomeForm", m);
+	        }
+	        
 	        //TODO show deregister message
 	        return registerBeanLocal.removeCustomer(customer);
 	        
     	}catch(Exception e) {
     		FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+                FacesMessage.SEVERITY_WARN,
+                e.getMessage(),
+                e.getCause().getMessage());
             FacesContext
-                    .getCurrentInstance()
-                    .addMessage("welcomeForm", m);
+                .getCurrentInstance()
+                .addMessage("welcomeForm", m);
             //TODO show deregister message
             return "failCustomerRemove";
     	}
