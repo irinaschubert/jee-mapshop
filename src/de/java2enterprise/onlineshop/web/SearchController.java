@@ -139,8 +139,6 @@ public class SearchController implements Serializable {
     }
     
     public DataModel<Item> getItems() {
-        /*items = findAll();
-        return items;*/
     	List<Item> list = findAll();
     	Item[] items = list.toArray(new Item[list.size()]);
     	DataModel<Item> dataModel = new ArrayDataModel<Item>(items);

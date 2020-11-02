@@ -10,14 +10,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.Part;
+import javax.transaction.UserTransaction;
 
 import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
@@ -30,6 +35,12 @@ public class SellController implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public final static int MAX_IMAGE_LENGTH = 400;
+    
+    @PersistenceContext
+    private EntityManager em;
+
+    @Resource
+    private UserTransaction ut;
     
     @Inject
     private Item item;
@@ -85,6 +96,135 @@ public class SellController implements Serializable {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+    
+    public String editThisItem(Long id) {
+    	Item item = em.find(Item.class, id);
+    	this.setItem(item);
+    	return "/editItem.xhtml";
+    }
+    
+    public void titleChanged(ValueChangeEvent event) {
+    	String title = (String) event.getNewValue();
+    	System.out.println("Die ID des Items ist: " + item.getId());
+    	item.setTitle(title);
+    	status = sellBeanLocal.findStatus(1L); //active
+        item.setStatus(status);
+    	try {
+    		ut.begin();
+    		em.merge(item);
+    		ut.commit();
+    		FacesMessage m = new FacesMessage(
+                    "Successfully changed item!",
+                    "Item has been successfully updated.");
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("editItemForm", m);
+    	}catch(Exception e) {
+    		FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("editItemForm", m);
+    	}
+    }
+    
+    public void descriptionChanged(ValueChangeEvent event) {
+    	String description = (String) event.getNewValue();
+    	item.setDescription(description);
+    	status = sellBeanLocal.findStatus(1L); //active
+        item.setStatus(status);
+    	try {
+    		ut.begin();
+    		em.merge(item);
+    		ut.commit();
+    		FacesMessage m = new FacesMessage(
+                    "Successfully changed item!",
+                    "Item has been successfully updated.");
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("editItemForm", m);
+    	}catch(Exception e) {
+    		FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("editItemForm", m);
+    	}
+    }
+    
+    public void priceChanged(ValueChangeEvent event) {
+    	Double price = (Double) event.getNewValue();
+    	item.setPrice(price);
+    	status = sellBeanLocal.findStatus(1L); //active
+        item.setStatus(status);
+    	try {
+    		ut.begin();
+    		em.merge(item);
+    		ut.commit();
+    		FacesMessage m = new FacesMessage(
+                    "Successfully changed item!",
+                    "Item has been successfully updated.");
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("editItemForm", m);
+    	}catch(Exception e) {
+    		FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("editItemForm", m);
+    	}
+    }
+    
+    public void fotoChanged(ValueChangeEvent event) {
+    	status = sellBeanLocal.findStatus(1L); //active
+        item.setStatus(status);
+    	InputStream input;
+		try {
+			input = part.getInputStream();
+			ByteArrayOutputStream output = new ByteArrayOutputStream();
+	        byte[] buffer = new byte[1024];
+	        for (int length = 0; (length = input.read(buffer)) > 0;) {
+	            output.write(buffer, 0, length);
+	        }
+	        item.setFoto(scale(output.toByteArray()));
+		} catch (IOException e) {
+			FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("editItemForm", m);
+		}
+    	//byte[] foto = (byte[]) event.getNewValue();
+    	//item.setFoto(foto);
+    	try {
+    		ut.begin();
+    		em.merge(item);
+    		ut.commit();
+    		FacesMessage m = new FacesMessage(
+                    "Successfully changed item!",
+                    "Item has been successfully updated.");
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("editItemForm", m);
+    	}catch(Exception e) {
+    		FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("editItemForm", m);
+    	}
     }
 
     public byte[] scale(byte[] foto) throws IOException {

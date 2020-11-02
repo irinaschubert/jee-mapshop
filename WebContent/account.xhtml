@@ -37,6 +37,9 @@
                         <h:commandButton
                             value="#{msg['delete']}"
                             action="#{removeController.deactivateItem(item.id)}" />
+                        <h:commandButton
+	                        value="#{msg['editItem']}"
+					        action="#{sellController.editThisItem(item.id)}" />
                     </h:panelGrid>
                 </h:column>
                 <h:column>

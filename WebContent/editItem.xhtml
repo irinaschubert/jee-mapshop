@@ -1,0 +1,66 @@
+<ui:composition
+    template="/template.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="content">
+    	<h:messages globalOnly="true"/>
+        <h:form
+            id="editItemForm"
+            prependId="false"
+            enctype="multipart/form-data" >
+            <h:message
+                for="editItemForm"
+                showSummary="true"
+                infoClass="info"
+                warnClass="warn"
+                errorClass="error"
+                fatalClass="fatal" />
+            <h:panelGrid columns="2">
+                <f:facet name="header">
+                    <h:outputText value="#{msg['editItem']}" />
+                </f:facet>
+                <h:outputLabel value="#{msg['item.title']}:" />
+                <h:panelGroup>
+	                <h:inputText
+	                    id="title"
+	                    label="#{msg['item.title']}"
+	                    value="#{sellController.item.title}" 
+	                    valueChangeListener="#{sellController.titleChanged}" />
+	                    <h:message for="title"/>
+                </h:panelGroup>
+                <h:outputLabel value="#{msg['item.description']}:" />
+                <h:panelGroup>
+	                <h:inputTextarea
+		                id="description"
+		                label="#{msg['item.description']}"
+	                    value="#{sellController.item.description}"
+	                    valueChangeListener="#{sellController.descriptionChanged}" />
+	                    <h:message for="description"/>
+                </h:panelGroup>
+                <h:outputLabel value="#{msg['item.price']}:" />
+                <h:panelGroup>
+	                <h:inputText 
+	                	id="price"
+	                	label="#{msg['item.price']}"
+	                	value="#{sellController.item.price}"
+	                	valueChangeListener="#{sellController.priceChanged}" />
+	                	<h:message for="price"/>
+                </h:panelGroup>
+                <h:outputLabel value="#{msg['item.foto']}:" />
+                <h:panelGroup>
+	                <h:inputFile 
+	                	id="foto"
+	                	label="#{msg['item.foto']}"
+	                	value="#{sellController.part}" 
+	                	valueChangeListener="#{sellController.fotoChanged}"/>
+	                	<h:message for="foto"/>
+                </h:panelGroup>
+                <h:commandButton 
+                	value="#{msg['change']}"
+                	action="editItem" />
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
