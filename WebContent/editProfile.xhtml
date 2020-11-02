@@ -35,8 +35,8 @@
                 </h:panelGroup>
                 <h:outputLabel value="#{msg['password']}:" />
                 <h:panelGroup>
-                	<h:inputText
-                		id="email"
+                	<h:inputSecret
+                		id="password"
                 		label="#{msg['password']}"
                 		value="#{signinController.customer.password}"
                 		valueChangeListener="#{signinController.passwordChanged}"
@@ -44,11 +44,11 @@
                 		<f:validateLength 
                 			minimum="6"
                 			maximum="40" />
-                	</h:inputText>
+                	</h:inputSecret>
                 </h:panelGroup>
                 <h:commandButton 
                 	value="#{msg['change']}"
-                	action="index" />
+                	action="editProfile" />
             </h:panelGrid>
         </h:form>
     </ui:define>

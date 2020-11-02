@@ -106,10 +106,10 @@ public class SigninController implements Serializable {
     		ut.commit();
     		FacesMessage m = new FacesMessage(
                     "Successfully changed profile!",
-                    "Profile has been successfully changed.");
+                    "Profile has been successfully updated.");
             FacesContext
                     .getCurrentInstance()
-                    .addMessage(null, m);
+                    .addMessage("editProfileForm", m);
     	}catch(Exception e) {
     		FacesMessage m = new FacesMessage(
                     FacesMessage.SEVERITY_WARN,
@@ -117,7 +117,7 @@ public class SigninController implements Serializable {
                     e.getCause().getMessage());
             FacesContext
                     .getCurrentInstance()
-                    .addMessage(null, m);
+                    .addMessage("editProfileForm", m);
     	}
     }
     
@@ -130,10 +130,10 @@ public class SigninController implements Serializable {
     		ut.commit();
     		FacesMessage m = new FacesMessage(
                     "Successfully changed profile!",
-                    "Profile has been successfully changed.");
+                    "Profile has been successfully updated.");
             FacesContext
                     .getCurrentInstance()
-                    .addMessage(null, m);
+                    .addMessage("editProfileForm", m);
     	}catch(Exception e) {
     		FacesMessage m = new FacesMessage(
                     FacesMessage.SEVERITY_WARN,
@@ -141,7 +141,7 @@ public class SigninController implements Serializable {
                     e.getCause().getMessage());
             FacesContext
                     .getCurrentInstance()
-                    .addMessage(null, m);
+                    .addMessage("editProfileForm", m);
     	}
     }
 }
