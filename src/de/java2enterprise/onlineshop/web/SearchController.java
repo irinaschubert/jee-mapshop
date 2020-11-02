@@ -8,6 +8,8 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.ArrayDataModel;
+import javax.faces.model.DataModel;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -136,9 +138,14 @@ public class SearchController implements Serializable {
         return resultItems;
     }
     
-    public List<Item> getItems() {
-        items = findAll();
-        return items;
+    public DataModel<Item> getItems() {
+        /*items = findAll();
+        return items;*/
+    	List<Item> list = findAll();
+    	Item[] items = list.toArray(new Item[list.size()]);
+    	DataModel<Item> dataModel = new ArrayDataModel<Item>(items);
+    	dataModel.addDataModelListener(new ItemListener());
+    	return dataModel;
     }
 
     public void setItems(List<Item> items) {
