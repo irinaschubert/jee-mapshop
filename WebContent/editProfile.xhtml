@@ -1,0 +1,55 @@
+<ui:composition
+    template="/template.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="content">
+    	<h:messages globalOnly="true"/>
+        <h:form
+            id="editProfileForm"
+            prependId="false">
+            <h:message
+                for="editProfileForm"
+                showSummary="true"
+                infoClass="info"
+                warnClass="warn"
+                errorClass="error"
+                fatalClass="fatal" />
+            <h:panelGrid columns="2">
+                <f:facet name="header">
+                    <h:outputText value="#{msg['editProfile']}" />
+                </f:facet>
+                <h:outputLabel value="#{msg['email']}:" />
+                <h:panelGroup>
+                	<h:inputText
+                		id="email"
+                		label="#{msg['email']}"
+                		value="#{signinController.customer.email}"
+                		valueChangeListener="#{signinController.emailChanged}"
+                		required="true">
+                		<f:validateLength 
+                			minimum="6"
+                			maximum="40" />
+                	</h:inputText>
+                </h:panelGroup>
+                <h:outputLabel value="#{msg['password']}:" />
+                <h:panelGroup>
+                	<h:inputText
+                		id="email"
+                		label="#{msg['password']}"
+                		value="#{signinController.customer.password}"
+                		valueChangeListener="#{signinController.passwordChanged}"
+                		required="true">
+                		<f:validateLength 
+                			minimum="6"
+                			maximum="40" />
+                	</h:inputText>
+                </h:panelGroup>
+                <h:commandButton 
+                	value="#{msg['change']}"
+                	action="index" />
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

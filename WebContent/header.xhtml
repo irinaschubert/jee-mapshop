@@ -14,6 +14,9 @@
             outcome="index"
             value="#{msg['home']}" />
         <h:link
+            outcome="search"
+            value="#{msg['search']}" />
+        <h:link
             outcome="register"
             value="#{msg['register']}" />
         <h:link
@@ -21,16 +24,20 @@
             value="#{msg['signin']}" />
         <h:link
             outcome="sell"
-            value="#{msg['sell']}" />
-        <h:link
-            outcome="search"
-            value="#{msg['search']}" />
+            value="#{msg['sell']}" 
+            rendered="#{not empty signinController.customer.email}" />
         <h:link
             outcome="account"
-            value="#{msg['account']}" />
+            value="#{msg['account']}" 
+            rendered="#{not empty signinController.customer.email}" />
         <h:link
             outcome="cart"
-            value="#{msg['cart']}" />
+            value="#{msg['cart']}" 
+            rendered="#{not empty signinController.customer.email}" />
+        <h:link
+	        outcome="editProfile.xhtml"
+            value="#{msg['editProfile']}"
+            rendered="#{not empty signinController.customer.email}" />
         <br />
     </nav>
     <h:form>

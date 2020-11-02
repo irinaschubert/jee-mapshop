@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf16026673362491" configfile="/maps-web/WebContent/WEB-INF/faces-config.xml">
   <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="946" id="pf16038813058420" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf16038813058421 pf16038813058424 pf160388138251812 pf160388138487614 pf160388139869216 pf160388312406523 pf16038914612630 pf16042527179590 pf16042527222191 pf16042529707013" path="*"/>
-  <nodes xsi:type="pageflow:PFPage" name="index.xhtml" x="338" y="178" id="pf16038813058426" referenceLink="//@navigationRule.0/@navigationCase.9/@toViewId|" inlinks="pf16038813058421 pf160388312406523 pf16042527179590 pf16042527222191" path="/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="index.xhtml" x="338" y="178" id="pf16038813058426" referenceLink="//@navigationRule.0/@navigationCase.8/@toViewId|" inlinks="pf16038813058421 pf160388312406523 pf16042527179590 pf16042527222191" path="/index.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="search.xhtml" x="338" y="1714" id="pf16038813058429" referenceLink="//@navigationRule.0/@navigationCase.5/@toViewId|" inlinks="pf16038813058424" path="/search.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="signin.xhtml" id="pf160388138251813" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf160388138251812" path="/signin.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="sell.xhtml" id="pf160388138487615" referenceLink="//@navigationRule.0/@navigationCase.3/@toViewId|" inlinks="pf160388138487614" path="/sell.xhtml"/>

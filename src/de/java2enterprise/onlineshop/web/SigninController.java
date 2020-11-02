@@ -3,14 +3,17 @@ package de.java2enterprise.onlineshop.web;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.UserTransaction;
 
 import de.java2enterprise.onlineshop.model.Customer;
 
@@ -21,6 +24,10 @@ public class SigninController implements Serializable {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Resource
+    private UserTransaction ut;
+    
 
     private String email;
     private String password;
@@ -88,5 +95,53 @@ public class SigninController implements Serializable {
                     .addMessage("signinForm", m);
         }
         return "/signin.jsf";
+    }
+    
+    public void emailChanged(ValueChangeEvent event) {
+    	String email = (String) event.getNewValue();
+    	customer.setEmail(email);
+    	try {
+    		ut.begin();
+    		em.merge(customer);
+    		ut.commit();
+    		FacesMessage m = new FacesMessage(
+                    "Successfully changed profile!",
+                    "Profile has been successfully changed.");
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage(null, m);
+    	}catch(Exception e) {
+    		FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage(null, m);
+    	}
+    }
+    
+    public void passwordChanged(ValueChangeEvent event) {
+    	String password = (String) event.getNewValue();
+    	customer.setPassword(password);
+    	try {
+    		ut.begin();
+    		em.merge(customer);
+    		ut.commit();
+    		FacesMessage m = new FacesMessage(
+                    "Successfully changed profile!",
+                    "Profile has been successfully changed.");
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage(null, m);
+    	}catch(Exception e) {
+    		FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage(null, m);
+    	}
     }
 }

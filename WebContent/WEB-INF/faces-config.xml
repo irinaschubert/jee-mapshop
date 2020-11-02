@@ -57,6 +57,13 @@
 		<redirect/>
 	</navigation-case>
 	<navigation-case>
+		<from-outcome>editProfile</from-outcome>
+		<to-view-id>
+			/editProfile.xhtml
+		</to-view-id>
+		<redirect/>
+	</navigation-case>
+	<navigation-case>
 		<from-outcome>customerPersisted</from-outcome>
 		<to-view-id>
 			/index.xhtml
