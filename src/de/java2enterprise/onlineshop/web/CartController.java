@@ -2,7 +2,6 @@ package de.java2enterprise.onlineshop.web;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -26,8 +25,6 @@ import de.java2enterprise.onlineshop.model.Status;
 @RequestScoped
 public class CartController implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    private final static Logger log = Logger.getLogger(CartController.class.toString());
 
     @PersistenceContext
     private EntityManager em;
@@ -58,9 +55,20 @@ public class CartController implements Serializable {
             item.setBuyer(customer);
             item.setStatus(status);
             ut.commit();
-            log.info(item.getTitle() + " reserved by " + customer.getEmail());
+            FacesMessage m = new FacesMessage(
+                    "Item reserved!",
+                    item.getTitle() + " reserved by " + customer.getEmail());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("cartForm", m);
         } catch (Exception e) {
-            log.severe(e.getMessage());
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("cartForm", m);
         }
         return "/search.jsf";
     }
@@ -98,15 +106,13 @@ public class CartController implements Serializable {
                         .addMessage("cartForm", m);
             }
         } catch (Exception e) {
-            FacesMessage fm = new FacesMessage(
+        	FacesMessage m = new FacesMessage(
                     FacesMessage.SEVERITY_WARN,
                     e.getMessage(),
                     e.getCause().getMessage());
             FacesContext
                     .getCurrentInstance()
-                    .addMessage(
-                            "cartForm",
-                            fm);
+                    .addMessage("cartForm", m);
         }
         return reservedItems;
     }

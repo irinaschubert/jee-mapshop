@@ -1,11 +1,12 @@
 package de.java2enterprise.onlineshop.web;
 
 import java.io.Serializable;
-import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,8 +21,6 @@ import de.java2enterprise.onlineshop.model.Status;
 @RequestScoped
 public class RemoveController implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    private final static Logger log = Logger.getLogger(RemoveController.class.toString());
     
     @PersistenceContext
     private EntityManager em;
@@ -35,7 +34,7 @@ public class RemoveController implements Serializable {
     @EJB
     private RemoveBeanLocal removeBeanLocal;
     
-    public String removeItem(Long id) {
+    /*public String removeItem(Long id) {
         try {
             ut.begin();
             Item item = em.find(Item.class, id);
@@ -43,10 +42,18 @@ public class RemoveController implements Serializable {
             ut.commit();
             log.info(item.getTitle() + " removed.");
         } catch (Exception e) {
-            log.severe(e.getMessage());
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage(
+                            "accountForm",
+                            m);
         }
         return "/account.jsf";
-    }
+    }*/
 
 
     public String deactivateItem(Long id) {
@@ -57,9 +64,20 @@ public class RemoveController implements Serializable {
             item.setStatus(status);
             removeBeanLocal.deactivateItem(item);
             ut.commit();
-            log.info("Item deactivated.");
+            FacesMessage m = new FacesMessage(
+                "Succesfully deactivated item!",
+                item.getTitle() + " deactivated.");
+            FacesContext
+                .getCurrentInstance()
+                .addMessage("accountForm", m);
         } catch (Exception e) {
-            log.severe(e.getMessage());
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("accountForm", m);
         }
         return "/account.jsf";
     }
@@ -72,9 +90,20 @@ public class RemoveController implements Serializable {
             item.setStatus(status);
             removeBeanLocal.removeItemFromCart(item);
             ut.commit();
-            log.info("Item removed from cart.");
+            FacesMessage m = new FacesMessage(
+                    "Succesfully removed item from cart!",
+                    item.getTitle() + " removed.");
+                FacesContext
+                    .getCurrentInstance()
+                    .addMessage("accountForm", m);
         } catch (Exception e) {
-            log.severe(e.getMessage());
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("accountForm", m);
         }
         return "/cart.jsf";
     }

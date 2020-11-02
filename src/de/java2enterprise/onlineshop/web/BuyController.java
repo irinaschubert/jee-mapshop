@@ -3,7 +3,6 @@ package de.java2enterprise.onlineshop.web;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -12,7 +11,6 @@ import javax.el.ELResolver;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,9 +26,6 @@ import de.java2enterprise.onlineshop.model.Status;
 @RequestScoped
 public class BuyController implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    private final static Logger log = Logger
-            .getLogger(BuyController.class.toString());
 
     @PersistenceContext
     private EntityManager em;
@@ -49,13 +44,9 @@ public class BuyController implements Serializable {
         FacesContext ctx = FacesContext.getCurrentInstance();
         ELContext elc = ctx.getELContext();
         ELResolver elr = ctx.getApplication().getELResolver();
-        SigninController signinController = (SigninController) elr
-                .getValue(
-                        elc,
-                        null,
-                        "signinController");
-
+        SigninController signinController = (SigninController) elr.getValue(elc, null, "signinController");
         Customer customer = signinController.getCustomer();
+        
         try {
         	status3 = sellBeanLocal.findStatus(3L); //sold
             ut.begin();
@@ -65,9 +56,20 @@ public class BuyController implements Serializable {
             item.setSeller(null); // in order to be able to delete seller customer seller has to be null
             item.setStatus(status3);
             ut.commit();
-            log.info(item + " bought by " + customer.getEmail());
+            FacesMessage m = new FacesMessage(
+                    "Item successfully bought!",
+                    item + " bought by " + customer.getEmail());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("cartForm", m);
         } catch (Exception e) {
-            log.severe(e.getMessage());
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("cartForm", m);
         }
         return "/search.jsf";
     }
@@ -103,7 +105,6 @@ public class BuyController implements Serializable {
 	        		item.setSeller(null); // in order to be able to delete seller customer seller has to be null
 	        		item = em.merge(item);
 	        		ut.commit();
-	        		log.info(item + " bought by " + customer.getEmail());
 	        	}
 	            FacesMessage m = new FacesMessage(
 	                    "Successfully bought items!",
@@ -113,15 +114,13 @@ public class BuyController implements Serializable {
 	                    .addMessage("cartForm", m);
 	        }
     } catch (Exception e) {
-        FacesMessage fm = new FacesMessage(
+        FacesMessage m = new FacesMessage(
                 FacesMessage.SEVERITY_WARN,
                 e.getMessage(),
                 e.getCause().getMessage());
         FacesContext
                 .getCurrentInstance()
-                .addMessage(
-                        "cartForm",
-                        fm);
+                .addMessage("cartForm", m);
     }
     return "/cart.jsf";
     	

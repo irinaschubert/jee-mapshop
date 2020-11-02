@@ -1,7 +1,6 @@
 package de.java2enterprise.onlineshop.web;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -15,6 +14,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.UserTransaction;
+
+import org.eclipse.persistence.exceptions.DatabaseException;
 
 import de.java2enterprise.onlineshop.ejb.RegisterBeanLocal;
 import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
@@ -48,23 +49,32 @@ public class RegisterController implements Serializable {
     	try {
     		registerBeanLocal.persist(customer);
     		FacesMessage m = new FacesMessage(
-                    "Succesfully signed in!",
-                    "You signed in under id " + customer.getId());
+                "Succesfully registered new user!",
+                "User " + customer.getEmail() + " has registered with ID " + customer.getId() + ".");
             FacesContext
+                .getCurrentInstance()
+                .addMessage("registerForm", m);
+    	}
+    	catch(Exception e) {
+    		//TODO catch SQLIntegrityConstraintViolationException, doesn't work yet
+    		if (e instanceof DatabaseException) {
+        		FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR,
+                    "A user with this e-mail already exists!",
+                    "A user with e-mail " + customer.getEmail() + " already exists. Please choose another one.");
+                FacesContext
                     .getCurrentInstance()
                     .addMessage("registerForm", m);
-    	}catch(Exception e) {
-    		FacesMessage fm = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+        	}
+    		FacesMessage m = new FacesMessage(
+    			FacesMessage.SEVERITY_WARN,
+                e.getMessage(),
+                e.getCause().getMessage());
             FacesContext
-                    .getCurrentInstance()
-                    .addMessage(
-                            "registerForm",
-                            fm);
+                .getCurrentInstance()
+                .addMessage("registerForm", m);
     	}
-        return "register";
+        return "/register.jsf";
     }
 
     public String removeCustomer(SigninController signinController) {
@@ -85,8 +95,8 @@ public class RegisterController implements Serializable {
 	        List<Item> activeItems = query.getResultList();
 	        if(activeItems.isEmpty()) {
 	            FacesMessage m = new FacesMessage(
-	                    "No Items found belonging to this customer!",
-	                    "No items found!");
+	                    "No items found!",
+	                    "No Items found belonging to customer " + customer.getEmail());
 	            FacesContext
 	                    .getCurrentInstance()
 	                    .addMessage("accountForm", m);
@@ -103,7 +113,7 @@ public class RegisterController implements Serializable {
 	        	
 	    		FacesMessage m = new FacesMessage(
 	                    "Succesfully deleted account!",
-	                    "You deleted your account and the active items belonging to it.");
+	                    "User account was successfully deleted including the active items belonging to it.");
 	            FacesContext
 	                    .getCurrentInstance()
 	                    .addMessage("welcomeForm", m);
@@ -112,15 +122,13 @@ public class RegisterController implements Serializable {
 	        return registerBeanLocal.removeCustomer(customer);
 	        
     	}catch(Exception e) {
-    		FacesMessage fm = new FacesMessage(
+    		FacesMessage m = new FacesMessage(
                     FacesMessage.SEVERITY_WARN,
                     e.getMessage(),
                     e.getCause().getMessage());
             FacesContext
                     .getCurrentInstance()
-                    .addMessage(
-                            "welcomeForm",
-                            fm);
+                    .addMessage("welcomeForm", m);
             //TODO show deregister message
             return "failCustomerRemove";
     	}

@@ -79,15 +79,13 @@ public class SigninController implements Serializable {
                         .addMessage("signinForm", m);
             }
         } catch (Exception e) {
-            FacesMessage fm = new FacesMessage(
+        	FacesMessage m = new FacesMessage(
                     FacesMessage.SEVERITY_WARN,
                     e.getMessage(),
                     e.getCause().getMessage());
             FacesContext
                     .getCurrentInstance()
-                    .addMessage(
-                            "signinForm",
-                            fm);
+                    .addMessage("signinForm", m);
         }
         return "/signin.jsf";
     }

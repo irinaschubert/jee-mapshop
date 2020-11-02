@@ -9,7 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -31,8 +30,6 @@ public class SellController implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public final static int MAX_IMAGE_LENGTH = 400;
-
-    private final static Logger log = Logger.getLogger(SellController.class.toString());
     
     @Inject
     private Item item;
@@ -62,8 +59,13 @@ public class SellController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
             return "sell";
         } catch (Exception e) {
-        	System.out.println(e.getMessage());
-            log.severe(e.getMessage());
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("searchForm", m);
             return "sellFail";
         }
     }

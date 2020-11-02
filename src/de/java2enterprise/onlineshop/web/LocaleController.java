@@ -23,9 +23,8 @@ public class LocaleController implements Serializable {
     public void setLang(String lang) {
         this.lang = lang;
     }
-
-    public String change(String lang) {
+    
+    public void change(String lang) {
         this.lang = lang;
-        return "/index.xhtml";
     }
 }

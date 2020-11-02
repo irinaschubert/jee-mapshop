@@ -3,7 +3,6 @@ package de.java2enterprise.onlineshop.web;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -22,8 +21,6 @@ import de.java2enterprise.onlineshop.model.Status;
 @RequestScoped
 public class SearchController implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    private final static Logger log = Logger.getLogger(SearchController.class.toString());
 
     @PersistenceContext
     private EntityManager em;
@@ -44,7 +41,13 @@ public class SearchController implements Serializable {
                             Item.class);
             return query.getResultList();
         } catch (Exception e) {
-            log.severe(e.getMessage());
+        	FacesMessage m = new FacesMessage(
+                FacesMessage.SEVERITY_WARN,
+                e.getMessage(),
+                e.getCause().getMessage());
+            FacesContext
+                .getCurrentInstance()
+                .addMessage("searchForm", m);
         }
         return new ArrayList<Item>();
     }
@@ -69,7 +72,6 @@ public class SearchController implements Serializable {
             } else {
             	for(int i = 0; i < activeItems.size(); i++) {
             	}
-            	
                 FacesMessage m = new FacesMessage(
                         "Success",
                         "Items successfully retrieved");
@@ -78,20 +80,18 @@ public class SearchController implements Serializable {
                         .addMessage("searchForm", m);
             }
         } catch (Exception e) {
-            FacesMessage fm = new FacesMessage(
+        	FacesMessage m = new FacesMessage(
                     FacesMessage.SEVERITY_WARN,
                     e.getMessage(),
                     e.getCause().getMessage());
             FacesContext
                     .getCurrentInstance()
-                    .addMessage(
-                            "searchForm",
-                            fm);
+                    .addMessage("searchForm", m);
         }
         return activeItems;
     }
     
-    public List<Item> find() {
+    public List<Item> findItems() {
         status = sellBeanLocal.findStatus(1L); //active
         
     	try {
@@ -125,15 +125,13 @@ public class SearchController implements Serializable {
                         .addMessage("searchForm", m);
             }
         } catch (Exception e) {
-            FacesMessage fm = new FacesMessage(
+        	FacesMessage m = new FacesMessage(
                     FacesMessage.SEVERITY_WARN,
                     e.getMessage(),
                     e.getCause().getMessage());
             FacesContext
                     .getCurrentInstance()
-                    .addMessage(
-                            "searchForm",
-                            fm);
+                    .addMessage("searchForm", m);
         }
         return resultItems;
     }

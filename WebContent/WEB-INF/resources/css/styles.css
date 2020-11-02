@@ -24,3 +24,19 @@ input[type='image']{
   width: 37px;
   height: 31px;
 }
+
+.info{
+	color: green;
+}
+
+.warn{
+	color: orange;
+}
+
+.error{
+	color: red;
+}
+
+.fatal{
+	color: purple;
+}
