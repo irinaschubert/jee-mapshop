@@ -17,7 +17,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.UserTransaction;
 
-import de.java2enterprise.onlineshop.ejb.CustomerBeanLocal;
 import de.java2enterprise.onlineshop.ejb.StatusBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
@@ -36,9 +35,6 @@ public class BuyController implements Serializable {
     
     @EJB
     private StatusBeanLocal statusBeanLocal;
-    
-    @EJB
-    private CustomerBeanLocal customerBeanLocal;
 
     public String buyItem(Long id) {
     	Status statusSold;
@@ -79,7 +75,6 @@ public class BuyController implements Serializable {
     	Status statusSold;
     	Status statusReserved;
     	Customer customer = signinController.getCustomer();
-        customer = customerBeanLocal.findCustomer(customer.getId());
         statusSold = statusBeanLocal.findStatus(3L);
         statusReserved = statusBeanLocal.findStatus(4L);
     	

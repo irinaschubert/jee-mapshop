@@ -80,7 +80,6 @@ public class RegisterController implements Serializable {
     public String deregisterCustomer(SigninController signinController) {
     	try {
     		Customer customer = signinController.getCustomer();
-            customer = customerBeanLocal.findCustomer(customer.getId());
     		Status statusActive = statusBeanLocal.findStatus(1L);
             Status statusSold = statusBeanLocal.findStatus(3L);
             Status statusReserved = statusBeanLocal.findStatus(4L);

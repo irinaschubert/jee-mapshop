@@ -24,7 +24,6 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.Part;
 import javax.transaction.UserTransaction;
 
-import de.java2enterprise.onlineshop.ejb.CustomerBeanLocal;
 import de.java2enterprise.onlineshop.ejb.ItemBeanLocal;
 import de.java2enterprise.onlineshop.ejb.StatusBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
@@ -54,9 +53,6 @@ public class SellController implements Serializable {
     @EJB
     private ItemBeanLocal itemBeanLocal;
     
-    @EJB
-    private CustomerBeanLocal customerBeanLocal;
-    
     public String persist(SigninController signinController) {
         try {
         	Status statusActive;
@@ -71,7 +67,6 @@ public class SellController implements Serializable {
             item.setStatus(statusActive);
             
             Customer customer = signinController.getCustomer();
-            customer = customerBeanLocal.findCustomer(customer.getId());
             item.setSeller(customer);
             
             String msg = itemBeanLocal.persistItem(item);

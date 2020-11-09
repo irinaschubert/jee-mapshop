@@ -13,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import de.java2enterprise.onlineshop.ejb.CustomerBeanLocal;
 import de.java2enterprise.onlineshop.ejb.StatusBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
@@ -28,15 +27,9 @@ public class AccountController implements Serializable {
     private EntityManager em;
 
     private List<Item> items;
-    private List<Item> offeredItems;
-    private List<Item> boughtItems;
-    private List<Item> soldItems;
     
     @EJB
     private StatusBeanLocal statusBeanLocal;
-    
-    @EJB
-    private CustomerBeanLocal customerBeanLocal;
 
     public List<Item> getItems() {
         items = findAll();
@@ -66,12 +59,10 @@ public class AccountController implements Serializable {
     }
     
     public List<Item> findOfferedItems(SigninController signinController) {
-    	Status statusActive;
-        Status statusReserved;
+    	List<Item> offeredItems = new ArrayList<Item>();
     	Customer customer = signinController.getCustomer();
-        customer = customerBeanLocal.findCustomer(customer.getId());
-        statusActive = statusBeanLocal.findStatus(1L);
-        statusReserved = statusBeanLocal.findStatus(4L);
+        Status statusActive = statusBeanLocal.findStatus(1L);
+        Status statusReserved = statusBeanLocal.findStatus(4L);
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "FROM " + Item.class.getSimpleName() + " i "
@@ -114,10 +105,9 @@ public class AccountController implements Serializable {
     }
     
     public List<Item> findSoldItems(SigninController signinController) {
-        Status statusSold;
+    	List<Item> soldItems = new ArrayList<Item>();
     	Customer customer = signinController.getCustomer();
-        customer = customerBeanLocal.findCustomer(customer.getId());
-        statusSold = statusBeanLocal.findStatus(3L);
+        Status statusSold = statusBeanLocal.findStatus(3L);
         
     	try {
             TypedQuery<Item> query = em.createQuery(
@@ -156,10 +146,9 @@ public class AccountController implements Serializable {
     }
     
     public List<Item> findBoughtItems(SigninController signinController) {
-        Status statusSold;
-    	Customer customer = signinController.getCustomer();
-        customer = customerBeanLocal.findCustomer(customer.getId());
-        statusSold = statusBeanLocal.findStatus(3L);
+    	List<Item> boughtItems = new ArrayList<Item>();
+        Status statusSold = statusBeanLocal.findStatus(3L);
+        Customer customer = signinController.getCustomer();
     	
     	try {
             TypedQuery<Item> query = em.createQuery(

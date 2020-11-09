@@ -16,7 +16,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.UserTransaction;
 
-import de.java2enterprise.onlineshop.ejb.CustomerBeanLocal;
 import de.java2enterprise.onlineshop.ejb.StatusBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
@@ -37,9 +36,6 @@ public class CartController implements Serializable {
     @EJB
     private StatusBeanLocal statusBeanLocal;
     
-    @EJB
-    private CustomerBeanLocal customerBeanLocal;
-
     public String reserveItem(Long id) {
     	Status statusReserved;
         FacesContext ctx = FacesContext.getCurrentInstance();
@@ -79,7 +75,6 @@ public class CartController implements Serializable {
     public List<Item> findReservedItems(SigninController signinController) {
     	Status statusReserved;
     	Customer customer = signinController.getCustomer();
-        customer = customerBeanLocal.findCustomer(customer.getId());
         statusReserved = statusBeanLocal.findStatus(4L);
         
     	try {
