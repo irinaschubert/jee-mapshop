@@ -23,20 +23,20 @@
                 <h:outputLabel value="#{msg['email']}:" />
                 <h:inputText
                     id="email"
-                    value="#{registerController.customer.email}"
+                    value="#{registerDeregisterController.customer.email}"
                     required="true"
                     requiredMessage="Please provide your email."/>
                 <h:message for="email" />
                 <h:outputLabel value="#{msg['password']}:" />
                 <h:inputSecret
                     id="password"
-                    value="#{registerController.customer.password}" 
+                    value="#{registerDeregisterController.customer.password}" 
                     required="true"
                     requiredMessage="Please provide a password."/>
                 <h:message for="password" />
                 <h:commandButton
                     id="registerButton"
-                    action="#{registerController.registerCustomer()}"
+                    action="#{registerDeregisterController.registerCustomer()}"
                     value="#{msg['register']}" />
                 <h:message for="registerButton" />
             </h:panelGrid>
