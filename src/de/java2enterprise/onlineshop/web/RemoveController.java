@@ -2,64 +2,35 @@ package de.java2enterprise.onlineshop.web;
 
 import java.io.Serializable;
 
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.UserTransaction;
 
 import de.java2enterprise.onlineshop.ejb.ItemBeanLocal;
+import de.java2enterprise.onlineshop.ejb.StatusBeanLocal;
 import de.java2enterprise.onlineshop.model.Item;
 import de.java2enterprise.onlineshop.model.Status;
 
 @Named
 @RequestScoped
 public class RemoveController implements Serializable {
+	
     private static final long serialVersionUID = 1L;
-    
-    @PersistenceContext
-    private EntityManager em;
-
-    @Resource
-    private UserTransaction ut;
     
     @EJB
     private ItemBeanLocal itemBeanLocal;
     
-    /*public String removeItem(Long id) {
-        try {
-            ut.begin();
-            Item item = em.find(Item.class, id);
-            removeBeanLocal.removeItem(item);
-            ut.commit();
-            log.info(item.getTitle() + " removed.");
-        } catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage(
-                            "accountForm",
-                            m);
-        }
-        return "/account.jsf";
-    }*/
-
+    @EJB
+    private StatusBeanLocal statusBeanLocal;
 
     public String deactivateItem(Long id) {
+    	Status statusInactive = statusBeanLocal.findStatus(2L);
         try {
-        	ut.begin();
-        	Item item = em.find(Item.class, id);
-            Status statusInactive = em.find(Status.class, 2L);
+        	Item item = itemBeanLocal.findItem(id);
             item.setStatus(statusInactive);
             itemBeanLocal.editItem(item);
-            ut.commit();
             FacesMessage m = new FacesMessage(
                 "Succesfully deactivated item!",
                 item.getTitle() + " deactivated.");
@@ -79,13 +50,13 @@ public class RemoveController implements Serializable {
     }
     
     public String removeItemFromCart(Long id) {
+    	Status statusActive = statusBeanLocal.findStatus(1L);
         try {
-        	ut.begin();
-        	Item item = em.find(Item.class, id);
-            Status statusActive = em.find(Status.class, 1L);
+        	Item item = itemBeanLocal.findItem(id);
             item.setStatus(statusActive);
+            item.setBuyer(null);
             itemBeanLocal.editItem(item);
-            ut.commit();
+        	
             FacesMessage m = new FacesMessage(
                     "Succesfully removed item from cart!",
                     item.getTitle() + " removed.");

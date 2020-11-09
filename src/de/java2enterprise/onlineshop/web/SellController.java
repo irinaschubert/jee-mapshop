@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -19,10 +18,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.Part;
-import javax.transaction.UserTransaction;
 
 import de.java2enterprise.onlineshop.ejb.ItemBeanLocal;
 import de.java2enterprise.onlineshop.ejb.StatusBeanLocal;
@@ -33,15 +29,10 @@ import de.java2enterprise.onlineshop.model.Status;
 @Named
 @RequestScoped
 public class SellController implements Serializable {
+	
     private static final long serialVersionUID = 1L;
 
     public final static int MAX_IMAGE_LENGTH = 400;
-    
-    @PersistenceContext
-    private EntityManager em;
-
-    @Resource
-    private UserTransaction ut;
     
     @Inject
     private Item item;
@@ -54,8 +45,10 @@ public class SellController implements Serializable {
     private ItemBeanLocal itemBeanLocal;
     
     public String persist(SigninController signinController) {
+    	Status statusActive = statusBeanLocal.findStatus(1L);
+    	Customer customer = signinController.getCustomer();
+    	
         try {
-        	Status statusActive;
             InputStream input = part.getInputStream();
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
@@ -63,12 +56,8 @@ public class SellController implements Serializable {
                 output.write(buffer, 0, length);
             }
             item.setFoto(scale(output.toByteArray()));
-            statusActive = statusBeanLocal.findStatus(1L);
             item.setStatus(statusActive);
-            
-            Customer customer = signinController.getCustomer();
             item.setSeller(customer);
-            
             String msg = itemBeanLocal.persistItem(item);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
             return "sell";
@@ -91,7 +80,6 @@ public class SellController implements Serializable {
     public void setPart(Part part) {
         this.part = part;
     }
-
     
     public Item getItem() {
         return item;
@@ -102,17 +90,16 @@ public class SellController implements Serializable {
     }
     
     public String editThisItem(Long id) {
-    	item = em.find(Item.class, id);
+    	item = itemBeanLocal.findItem(id);
     	return "/editItem.xhtml";
     }
     
     public void titleChanged(ValueChangeEvent event) {
     	String title = (String) event.getNewValue();
-    	item.setTitle(title);
+    	
     	try {
-    		ut.begin();
-    		em.merge(item);
-    		ut.commit();
+    		item.setTitle(title);
+    		itemBeanLocal.editItem(item);
     		FacesMessage m = new FacesMessage(
                     "Successfully changed item!",
                     "Item has been successfully updated.");
@@ -131,15 +118,13 @@ public class SellController implements Serializable {
     }
     
     public void descriptionChanged(ValueChangeEvent event) {
-    	Status statusActive;
+    	Status statusActive = statusBeanLocal.findStatus(1L);
     	String description = (String) event.getNewValue();
-    	item.setDescription(description);
-    	statusActive = statusBeanLocal.findStatus(1L);
-        item.setStatus(statusActive);
+    	
     	try {
-    		ut.begin();
-    		em.merge(item);
-    		ut.commit();
+    		item.setDescription(description);
+            item.setStatus(statusActive);
+    		itemBeanLocal.editItem(item);
     		FacesMessage m = new FacesMessage(
                     "Successfully changed item!",
                     "Item has been successfully updated.");
@@ -158,15 +143,13 @@ public class SellController implements Serializable {
     }
     
     public void priceChanged(ValueChangeEvent event) {
-    	Status statusActive;
+    	Status statusActive = statusBeanLocal.findStatus(1L);
     	Double price = (Double) event.getNewValue();
-    	item.setPrice(price);
-    	statusActive = statusBeanLocal.findStatus(1L);
-        item.setStatus(statusActive);
+    	
     	try {
-    		ut.begin();
-    		em.merge(item);
-    		ut.commit();
+    		item.setPrice(price);
+            item.setStatus(statusActive);
+    		itemBeanLocal.editItem(item);
     		FacesMessage m = new FacesMessage(
                     "Successfully changed item!",
                     "Item has been successfully updated.");
@@ -185,12 +168,10 @@ public class SellController implements Serializable {
     }
     
     public void fotoChanged(ValueChangeEvent event) {
-    	Status statusActive;
-    	statusActive = statusBeanLocal.findStatus(1L);
+    	Status statusActive = statusBeanLocal.findStatus(1L);
         item.setStatus(statusActive);
-    	InputStream input;
 		try {
-			input = part.getInputStream();
+			InputStream input = part.getInputStream();
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
 	        byte[] buffer = new byte[1024];
 	        for (int length = 0; (length = input.read(buffer)) > 0;) {
@@ -207,9 +188,7 @@ public class SellController implements Serializable {
                     .addMessage("editItemForm", m);
 		}
     	try {
-    		ut.begin();
-    		em.merge(item);
-    		ut.commit();
+    		itemBeanLocal.editItem(item);
     		FacesMessage m = new FacesMessage(
                     "Successfully changed item!",
                     "Item has been successfully updated.");
