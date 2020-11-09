@@ -16,7 +16,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.UserTransaction;
 
-import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
+import de.java2enterprise.onlineshop.ejb.CustomerBeanLocal;
+import de.java2enterprise.onlineshop.ejb.StatusBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
 import de.java2enterprise.onlineshop.model.Status;
@@ -31,14 +32,16 @@ public class CartController implements Serializable {
     
     @Resource
     private UserTransaction ut;
-    
-    private Status status;
     private List<Item> reservedItems;
     
     @EJB
-    private SellBeanLocal sellBeanLocal;
+    private StatusBeanLocal statusBeanLocal;
+    
+    @EJB
+    private CustomerBeanLocal customerBeanLocal;
 
     public String reserveItem(Long id) {
+    	Status statusReserved;
         FacesContext ctx = FacesContext.getCurrentInstance();
         ELContext elc = ctx.getELContext();
         ELResolver elr = ctx.getApplication().getELResolver();
@@ -50,10 +53,10 @@ public class CartController implements Serializable {
         Customer customer = signinController.getCustomer();
         try {
             ut.begin();
-            status = sellBeanLocal.findStatus(4L); //reserved
+            statusReserved = statusBeanLocal.findStatus(4L);
             Item item = em.find(Item.class, id);
             item.setBuyer(customer);
-            item.setStatus(status);
+            item.setStatus(statusReserved);
             ut.commit();
             FacesMessage m = new FacesMessage(
                     "Item reserved!",
@@ -74,9 +77,10 @@ public class CartController implements Serializable {
     }
     
     public List<Item> findReservedItems(SigninController signinController) {
+    	Status statusReserved;
     	Customer customer = signinController.getCustomer();
-        customer = sellBeanLocal.findCustomer(customer.getId());
-        status = sellBeanLocal.findStatus(4L); //reserved
+        customer = customerBeanLocal.findCustomer(customer.getId());
+        statusReserved = statusBeanLocal.findStatus(4L);
         
     	try {
     		TypedQuery<Item> query = em.createQuery(
@@ -85,7 +89,7 @@ public class CartController implements Serializable {
                     		+ "AND i.status = :status",
                     Item.class);
     		query.setParameter("buyer", customer);
-            query.setParameter("status", status);
+            query.setParameter("status", statusReserved);
             reservedItems = query.getResultList();
             if(reservedItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(

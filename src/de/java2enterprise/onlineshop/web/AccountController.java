@@ -13,7 +13,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
+import de.java2enterprise.onlineshop.ejb.CustomerBeanLocal;
+import de.java2enterprise.onlineshop.ejb.StatusBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
 import de.java2enterprise.onlineshop.model.Status;
@@ -30,12 +31,12 @@ public class AccountController implements Serializable {
     private List<Item> offeredItems;
     private List<Item> boughtItems;
     private List<Item> soldItems;
-    private Status status1; //active
-    private Status status3; //sold
-    private Status status4; //reserved
     
     @EJB
-    private SellBeanLocal sellBeanLocal;
+    private StatusBeanLocal statusBeanLocal;
+    
+    @EJB
+    private CustomerBeanLocal customerBeanLocal;
 
     public List<Item> getItems() {
         items = findAll();
@@ -65,10 +66,12 @@ public class AccountController implements Serializable {
     }
     
     public List<Item> findOfferedItems(SigninController signinController) {
+    	Status statusActive;
+        Status statusReserved;
     	Customer customer = signinController.getCustomer();
-        customer = sellBeanLocal.findCustomer(customer.getId());
-        status1 = sellBeanLocal.findStatus(1L); //active
-        status4 = sellBeanLocal.findStatus(4L); //reserved
+        customer = customerBeanLocal.findCustomer(customer.getId());
+        statusActive = statusBeanLocal.findStatus(1L);
+        statusReserved = statusBeanLocal.findStatus(4L);
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "FROM " + Item.class.getSimpleName() + " i "
@@ -77,8 +80,8 @@ public class AccountController implements Serializable {
                             + "OR i.status = :status4)",
                     Item.class);
             query.setParameter("seller", customer);
-            query.setParameter("status1", status1); //active
-            query.setParameter("status4", status4); //reserved
+            query.setParameter("status1", statusActive);
+            query.setParameter("status4", statusReserved);
             offeredItems = query.getResultList();
             if(offeredItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
@@ -111,9 +114,10 @@ public class AccountController implements Serializable {
     }
     
     public List<Item> findSoldItems(SigninController signinController) {
+        Status statusSold;
     	Customer customer = signinController.getCustomer();
-        customer = sellBeanLocal.findCustomer(customer.getId());
-        status3 = sellBeanLocal.findStatus(3L); //sold
+        customer = customerBeanLocal.findCustomer(customer.getId());
+        statusSold = statusBeanLocal.findStatus(3L);
         
     	try {
             TypedQuery<Item> query = em.createQuery(
@@ -122,7 +126,7 @@ public class AccountController implements Serializable {
                     		+ "AND i.status = :status3",
                     Item.class);
             query.setParameter("seller", customer);
-            query.setParameter("status3", status3); //sold
+            query.setParameter("status3", statusSold);
             soldItems = query.getResultList();
             if(soldItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
@@ -152,18 +156,19 @@ public class AccountController implements Serializable {
     }
     
     public List<Item> findBoughtItems(SigninController signinController) {
+        Status statusSold;
     	Customer customer = signinController.getCustomer();
-        customer = sellBeanLocal.findCustomer(customer.getId());
-        status3 = sellBeanLocal.findStatus(3L); //sold
+        customer = customerBeanLocal.findCustomer(customer.getId());
+        statusSold = statusBeanLocal.findStatus(3L);
     	
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "FROM " + Item.class.getSimpleName() + " i "
                             + "WHERE i.buyer= :buyer "
-                    		+ "AND i.status= :status",
+                    		+ "AND i.status= :statusSold",
                     Item.class);
             query.setParameter("buyer", customer);
-            query.setParameter("status", status3);
+            query.setParameter("statusSold", statusSold);
             boughtItems = query.getResultList();
             if(boughtItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(

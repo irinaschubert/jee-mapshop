@@ -12,8 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 
-import de.java2enterprise.onlineshop.ejb.RemoveBeanLocal;
-import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
+import de.java2enterprise.onlineshop.ejb.ItemBeanLocal;
 import de.java2enterprise.onlineshop.model.Item;
 import de.java2enterprise.onlineshop.model.Status;
 
@@ -29,10 +28,7 @@ public class RemoveController implements Serializable {
     private UserTransaction ut;
     
     @EJB
-    private SellBeanLocal sellBeanLocal;
-    
-    @EJB
-    private RemoveBeanLocal removeBeanLocal;
+    private ItemBeanLocal itemBeanLocal;
     
     /*public String removeItem(Long id) {
         try {
@@ -60,9 +56,9 @@ public class RemoveController implements Serializable {
         try {
         	ut.begin();
         	Item item = em.find(Item.class, id);
-            Status status = em.find(Status.class, 2L); //inactive
-            item.setStatus(status);
-            removeBeanLocal.deactivateItem(item);
+            Status statusInactive = em.find(Status.class, 2L);
+            item.setStatus(statusInactive);
+            itemBeanLocal.editItem(item);
             ut.commit();
             FacesMessage m = new FacesMessage(
                 "Succesfully deactivated item!",
@@ -86,9 +82,9 @@ public class RemoveController implements Serializable {
         try {
         	ut.begin();
         	Item item = em.find(Item.class, id);
-            Status status = em.find(Status.class, 1L); //active
-            item.setStatus(status);
-            removeBeanLocal.removeItemFromCart(item);
+            Status statusActive = em.find(Status.class, 1L);
+            item.setStatus(statusActive);
+            itemBeanLocal.editItem(item);
             ut.commit();
             FacesMessage m = new FacesMessage(
                     "Succesfully removed item from cart!",

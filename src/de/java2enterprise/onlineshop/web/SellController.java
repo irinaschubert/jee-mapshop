@@ -24,7 +24,9 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.Part;
 import javax.transaction.UserTransaction;
 
-import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
+import de.java2enterprise.onlineshop.ejb.CustomerBeanLocal;
+import de.java2enterprise.onlineshop.ejb.ItemBeanLocal;
+import de.java2enterprise.onlineshop.ejb.StatusBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
 import de.java2enterprise.onlineshop.model.Status;
@@ -45,14 +47,19 @@ public class SellController implements Serializable {
     @Inject
     private Item item;
     private Part part;
-    @Inject
-    private Status status;
     
     @EJB
-    private SellBeanLocal sellBeanLocal;
+    private StatusBeanLocal statusBeanLocal;
+    
+    @EJB
+    private ItemBeanLocal itemBeanLocal;
+    
+    @EJB
+    private CustomerBeanLocal customerBeanLocal;
     
     public String persist(SigninController signinController) {
         try {
+        	Status statusActive;
             InputStream input = part.getInputStream();
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
@@ -60,14 +67,14 @@ public class SellController implements Serializable {
                 output.write(buffer, 0, length);
             }
             item.setFoto(scale(output.toByteArray()));
-            status = sellBeanLocal.findStatus(1L); //active
-            item.setStatus(status);
+            statusActive = statusBeanLocal.findStatus(1L);
+            item.setStatus(statusActive);
             
             Customer customer = signinController.getCustomer();
-            customer = sellBeanLocal.findCustomer(customer.getId());
+            customer = customerBeanLocal.findCustomer(customer.getId());
             item.setSeller(customer);
             
-            String msg = sellBeanLocal.persist(item);
+            String msg = itemBeanLocal.persistItem(item);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
             return "sell";
         } catch (Exception e) {
@@ -105,7 +112,6 @@ public class SellController implements Serializable {
     }
     
     public void titleChanged(ValueChangeEvent event) {
-    	System.out.println("item to edit is: " + item.getTitle());
     	String title = (String) event.getNewValue();
     	item.setTitle(title);
     	try {
@@ -130,10 +136,11 @@ public class SellController implements Serializable {
     }
     
     public void descriptionChanged(ValueChangeEvent event) {
+    	Status statusActive;
     	String description = (String) event.getNewValue();
     	item.setDescription(description);
-    	status = sellBeanLocal.findStatus(1L); //active
-        item.setStatus(status);
+    	statusActive = statusBeanLocal.findStatus(1L);
+        item.setStatus(statusActive);
     	try {
     		ut.begin();
     		em.merge(item);
@@ -156,10 +163,11 @@ public class SellController implements Serializable {
     }
     
     public void priceChanged(ValueChangeEvent event) {
+    	Status statusActive;
     	Double price = (Double) event.getNewValue();
     	item.setPrice(price);
-    	status = sellBeanLocal.findStatus(1L); //active
-        item.setStatus(status);
+    	statusActive = statusBeanLocal.findStatus(1L);
+        item.setStatus(statusActive);
     	try {
     		ut.begin();
     		em.merge(item);
@@ -182,8 +190,9 @@ public class SellController implements Serializable {
     }
     
     public void fotoChanged(ValueChangeEvent event) {
-    	status = sellBeanLocal.findStatus(1L); //active
-        item.setStatus(status);
+    	Status statusActive;
+    	statusActive = statusBeanLocal.findStatus(1L);
+        item.setStatus(statusActive);
     	InputStream input;
 		try {
 			input = part.getInputStream();
@@ -202,8 +211,6 @@ public class SellController implements Serializable {
                     .getCurrentInstance()
                     .addMessage("editItemForm", m);
 		}
-    	//byte[] foto = (byte[]) event.getNewValue();
-    	//item.setFoto(foto);
     	try {
     		ut.begin();
     		em.merge(item);

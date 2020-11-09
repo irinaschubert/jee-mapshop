@@ -15,7 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
+import de.java2enterprise.onlineshop.ejb.StatusBeanLocal;
 import de.java2enterprise.onlineshop.model.Item;
 import de.java2enterprise.onlineshop.model.Status;
 
@@ -28,10 +28,9 @@ public class SearchController implements Serializable {
     private EntityManager em;
     
     @EJB
-    private SellBeanLocal sellBeanLocal;
+    private StatusBeanLocal sellBeanLocal;
 
     private List<Item> items;
-    private Status status;
     private List<Item> activeItems;
     private List<Item> resultItems;
     private String term;
@@ -55,14 +54,15 @@ public class SearchController implements Serializable {
     }
     
     public List<Item> findActiveItems() {
-        status = sellBeanLocal.findStatus(1L); //active
+    	Status statusActive;
+        statusActive = sellBeanLocal.findStatus(1L);
         
     	try {
             TypedQuery<Item> query = em.createQuery(
             		"FROM " + Item.class.getSimpleName() + " i "
-                            + "WHERE i.status = :status",
+                            + "WHERE i.status = :statusActive",
                     Item.class);
-            query.setParameter("status", status);
+            query.setParameter("statusActive", statusActive);
             activeItems = query.getResultList();
             if(activeItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
@@ -94,16 +94,17 @@ public class SearchController implements Serializable {
     }
     
     public List<Item> findItems() {
-        status = sellBeanLocal.findStatus(1L); //active
+    	Status statusActive;
+    	statusActive = sellBeanLocal.findStatus(1L);
         
     	try {
             TypedQuery<Item> query = em.createQuery(
             		"FROM " + Item.class.getSimpleName() + " i "
-                            + "WHERE i.status = :status "
+                            + "WHERE i.status = :statusActive "
                     		+ "AND i.title LIKE :term "
                             + "OR i.description LIKE :term",
                     Item.class);
-            query.setParameter("status", status);
+            query.setParameter("statusActive", statusActive);
             query.setParameter("term", "%"+term+"%");
             resultItems = query.getResultList();
             if(resultItems.isEmpty()) {

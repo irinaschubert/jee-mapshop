@@ -93,7 +93,7 @@ public class SigninController implements Serializable {
                     .getCurrentInstance()
                     .addMessage("signinForm", m);
         }
-        return "search";
+        return "signin.jsf";
     }
     
     public void emailChanged(ValueChangeEvent event) {

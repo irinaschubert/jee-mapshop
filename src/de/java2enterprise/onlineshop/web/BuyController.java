@@ -17,7 +17,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.UserTransaction;
 
-import de.java2enterprise.onlineshop.ejb.SellBeanLocal;
+import de.java2enterprise.onlineshop.ejb.CustomerBeanLocal;
+import de.java2enterprise.onlineshop.ejb.StatusBeanLocal;
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
 import de.java2enterprise.onlineshop.model.Status;
@@ -33,14 +34,14 @@ public class BuyController implements Serializable {
     @Resource
     private UserTransaction ut;
     
-    //@Inject
-    private Status status3;
-    private Status status4;
+    @EJB
+    private StatusBeanLocal statusBeanLocal;
     
     @EJB
-    private SellBeanLocal sellBeanLocal;
+    private CustomerBeanLocal customerBeanLocal;
 
     public String buyItem(Long id) {
+    	Status statusSold;
         FacesContext ctx = FacesContext.getCurrentInstance();
         ELContext elc = ctx.getELContext();
         ELResolver elr = ctx.getApplication().getELResolver();
@@ -48,13 +49,13 @@ public class BuyController implements Serializable {
         Customer customer = signinController.getCustomer();
         
         try {
-        	status3 = sellBeanLocal.findStatus(3L); //sold
+        	statusSold = statusBeanLocal.findStatus(3L);
             ut.begin();
             Item item = em.find(Item.class, id);
             item.setBuyer(customer);
             item.setSold(LocalDateTime.now());
             item.setSeller(null); // in order to be able to delete seller customer seller has to be null
-            item.setStatus(status3);
+            item.setStatus(statusSold);
             ut.commit();
             FacesMessage m = new FacesMessage(
                     "Item successfully bought!",
@@ -75,10 +76,12 @@ public class BuyController implements Serializable {
     }
     
     public String buyItems(SigninController signinController) {
+    	Status statusSold;
+    	Status statusReserved;
     	Customer customer = signinController.getCustomer();
-        customer = sellBeanLocal.findCustomer(customer.getId());
-        status3 = sellBeanLocal.findStatus(3L); //sold
-        status4 = sellBeanLocal.findStatus(4L); //reserved
+        customer = customerBeanLocal.findCustomer(customer.getId());
+        statusSold = statusBeanLocal.findStatus(3L);
+        statusReserved = statusBeanLocal.findStatus(4L);
     	
     	try {
 	    	TypedQuery<Item> query = em.createQuery(
@@ -86,7 +89,7 @@ public class BuyController implements Serializable {
 	                        + "WHERE i.status= :status "
 	                        + "AND i.buyer= :buyer",
 	                Item.class);
-	        query.setParameter("status", status4);
+	        query.setParameter("status", statusReserved);
 	        query.setParameter("buyer", customer);
 	        List<Item> reservedItems = query.getResultList();
 	        if(reservedItems.isEmpty()) {
@@ -100,7 +103,7 @@ public class BuyController implements Serializable {
 	        	for(int i = 0; i < reservedItems.size(); i++) {
 	        		Item item = reservedItems.get(i);
 	        		ut.begin();
-	        		item.setStatus(status3);
+	        		item.setStatus(statusSold);
 	        		item.setSold(LocalDateTime.now());
 	        		//item.setSeller(null); // in order to be able to delete seller customer seller has to be null
 	        		item = em.merge(item);
