@@ -28,7 +28,7 @@ public class BuyController implements Serializable {
     @EJB
     private ItemBeanLocal itemBeanLocal;
     
-    public String buyItems(SigninController signinController) {
+    public String buyItems(SigninSignoutController signinController) {
     	Status statusSold = statusBeanLocal.findStatus(3L);
     	Status statusReserved = statusBeanLocal.findStatus(4L);
     	Customer buyer = signinController.getCustomer();

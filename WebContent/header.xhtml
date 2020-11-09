@@ -25,19 +25,19 @@
         <h:link
             outcome="sell"
             value="#{msg['sell']}" 
-            rendered="#{not empty signinController.customer.email}" />
+            rendered="#{not empty signinSignoutController.customer.email}" />
         <h:link
             outcome="account"
             value="#{msg['account']}" 
-            rendered="#{not empty signinController.customer.email}" />
+            rendered="#{not empty signinSignoutController.customer.email}" />
         <h:link
             outcome="cart"
             value="#{msg['cart']}" 
-            rendered="#{not empty signinController.customer.email}" />
+            rendered="#{not empty signinSignoutController.customer.email}" />
         <h:link
 	        outcome="editProfile"
             value="#{msg['editProfile']}"
-            rendered="#{not empty signinController.customer.email}" />
+            rendered="#{not empty signinSignoutController.customer.email}" />
         <br />
     </nav>
     <h:form>
@@ -48,8 +48,9 @@
             action="#{localeController.change('de')}"
             image="#{resource['img:de.gif']}" />
         <h:commandButton
-            action="#{localeController.change('de')}"
-            image="#{resource['img:logout.svg']}" />
+            action="#{signinSignoutController.signout()}"
+            image="#{resource['img:logout.svg']}"
+            rendered="#{not empty signinSignoutController.customer.email}" />
     </h:form>
 </header>
 </html>

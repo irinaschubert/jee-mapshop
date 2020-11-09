@@ -72,7 +72,7 @@ public class RegisterDeregisterController implements Serializable {
     	}
     }
 
-    public String deregisterCustomer(SigninController signinController) {
+    public String deregisterCustomer(SigninSignoutController signinController) {
     	Customer customer = signinController.getCustomer();
 		Status statusActive = statusBeanLocal.findStatus(1L);
         Status statusSold = statusBeanLocal.findStatus(3L);

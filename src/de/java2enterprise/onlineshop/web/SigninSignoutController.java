@@ -17,7 +17,7 @@ import de.java2enterprise.onlineshop.model.Customer;
 
 @Named
 @SessionScoped
-public class SigninController implements Serializable {
+public class SigninSignoutController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
     
@@ -69,7 +69,7 @@ public class SigninController implements Serializable {
                 customer = customers.get(0);
                 FacesMessage m = new FacesMessage(
                         "Successfully signed in!",
-                        "You id is " + customer.getId());
+                        "Your id is " + customer.getId());
                 FacesContext
                         .getCurrentInstance()
                         .addMessage("signinForm", m);
@@ -84,6 +84,11 @@ public class SigninController implements Serializable {
                     .addMessage("signinForm", m);
         }
         return "signin.jsf";
+    }
+    
+    public String signout() {
+    	this.setCustomer(null);
+    	return "signin.jsf";
     }
     
     public void emailChanged(ValueChangeEvent event) {

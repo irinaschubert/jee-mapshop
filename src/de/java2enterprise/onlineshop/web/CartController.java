@@ -35,7 +35,7 @@ public class CartController implements Serializable {
         FacesContext ctx = FacesContext.getCurrentInstance();
         ELContext elc = ctx.getELContext();
         ELResolver elr = ctx.getApplication().getELResolver();
-        SigninController signinController = (SigninController) elr
+        SigninSignoutController signinController = (SigninSignoutController) elr
                 .getValue(
                         elc,
                         null,
@@ -64,7 +64,7 @@ public class CartController implements Serializable {
         return "/search.jsf";
     }
     
-    public List<Item> findReservedItems(SigninController signinController) {
+    public List<Item> findReservedItems(SigninSignoutController signinController) {
     	Status statusReserved = statusBeanLocal.findStatus(4L);
     	Customer buyer = signinController.getCustomer();
     	List<Item> reservedItems = new ArrayList<Item>();

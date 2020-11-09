@@ -51,7 +51,8 @@
                         <h:outputText value="#{item.status.description}" />
                         <h:commandButton
                             value="#{msg['reserve']}"
-                            action="#{cartController.reserveItem(item.id)}" />
+                            action="#{cartController.reserveItem(item.id)}"
+            				rendered="#{not empty signinSignoutController.customer.email}" />
                     </h:panelGrid>
                 </h:column>
                 <h:column>

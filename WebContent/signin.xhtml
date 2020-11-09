@@ -22,18 +22,18 @@
                 <h:outputLabel value="#{msg['email']}:" />
                 <h:inputText
                     id="email"
-                    value="#{signinController.email}">
+                    value="#{signinSignoutController.email}">
                 </h:inputText>
                 <h:message for="email" />
                 <h:outputLabel value="#{msg['password']}:" />
                 <h:inputSecret
                     id="password"
-                    value="#{signinController.password}">
+                    value="#{signinSignoutController.password}">
                 </h:inputSecret>
                 <h:message for="password" />
                 <h:commandButton
                     id="signinButton"
-                    action="#{signinController.signin()}"
+                    action="#{signinSignoutController.signin()}"
                     value="#{msg['signin']}" />
                 <h:message for="signinButton" />
             </h:panelGrid>

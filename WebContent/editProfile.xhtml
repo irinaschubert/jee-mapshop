@@ -26,7 +26,7 @@
                 		id="email"
                 		label="#{msg['email']}"
                 		value="#{signinController.customer.email}"
-                		valueChangeListener="#{signinController.emailChanged}"
+                		valueChangeListener="#{signinSignoutController.emailChanged}"
                 		required="true">
                 		<f:validateLength 
                 			minimum="6"
@@ -39,7 +39,7 @@
                 		id="password"
                 		label="#{msg['password']}"
                 		value="#{signinController.customer.password}"
-                		valueChangeListener="#{signinController.passwordChanged}"
+                		valueChangeListener="#{signinSignoutController.passwordChanged}"
                 		required="true">
                 		<f:validateLength 
                 			minimum="6"

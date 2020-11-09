@@ -39,7 +39,7 @@ public class AccountController implements Serializable {
         this.items = items;
     }
     
-    public List<Item> findOfferedItems(SigninController signinController) {
+    public List<Item> findOfferedItems(SigninSignoutController signinController) {
     	List<Item> offeredItems = new ArrayList<Item>();
     	Customer seller = signinController.getCustomer();
     	Status statusActive = statusBeanLocal.findStatus(1L);
@@ -74,7 +74,7 @@ public class AccountController implements Serializable {
         return offeredItems;
     }
     
-    public List<Item> findSoldItems(SigninController signinController) {
+    public List<Item> findSoldItems(SigninSignoutController signinController) {
     	List<Item> soldItems = new ArrayList<Item>();
     	Customer seller = signinController.getCustomer();
         Status statusSold = statusBeanLocal.findStatus(3L);
@@ -108,7 +108,7 @@ public class AccountController implements Serializable {
         return soldItems;
     }
     
-    public List<Item> findBoughtItems(SigninController signinController) {
+    public List<Item> findBoughtItems(SigninSignoutController signinController) {
     	List<Item> boughtItems = new ArrayList<Item>();
         Status statusSold = statusBeanLocal.findStatus(3L);
         Customer buyer = signinController.getCustomer();

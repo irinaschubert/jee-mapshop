@@ -17,7 +17,7 @@
                 errorClass="error"
                 fatalClass="fatal" />
             <h:dataTable
-                value="#{cartController.findReservedItems(signinController)}"
+                value="#{cartController.findReservedItems(signinSignoutController)}"
                 var="item">
                 <f:facet name="header">
 	            	<h:outputText value="#{msg['myReservedItems']}" />
@@ -45,7 +45,7 @@
             </h:dataTable>
             <h:commandButton
                 value="#{msg['checkout']}"
-                action="#{buyController.buyItems(signinController)}" />
+                action="#{buyController.buyItems(signinSignoutController)}" />
         </h:form>
 	</ui:define>
 </ui:composition>
