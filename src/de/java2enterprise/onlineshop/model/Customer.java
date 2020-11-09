@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(schema="MAPSHOP", name="CUSTOMER")
 public class Customer implements Serializable {
+	
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -28,6 +29,9 @@ public class Customer implements Serializable {
     private String email;
 
     private String password;
+    
+    public Customer() {
+    }
     
     /*@OneToMany(mappedBy="seller")
 	private Set<Item> offers;

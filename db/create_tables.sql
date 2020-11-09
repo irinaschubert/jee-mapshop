@@ -42,12 +42,6 @@ CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES status(id)
 GRANT SELECT, INSERT, UPDATE, DELETE 
 ON item TO mapshop_user; 
 
-CREATE UNIQUE INDEX item_index 
-ON item(
-    title,
-    description
-);
-
 DROP SEQUENCE seq_customer;
 
 CREATE SEQUENCE seq_customer;

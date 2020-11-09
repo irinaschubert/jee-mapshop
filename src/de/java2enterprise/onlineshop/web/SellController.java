@@ -45,6 +45,7 @@ public class SellController implements Serializable {
     @Inject
     private Item item;
     private Part part;
+    @Inject
     private Status status;
     
     @EJB
@@ -99,17 +100,14 @@ public class SellController implements Serializable {
     }
     
     public String editThisItem(Long id) {
-    	Item item = em.find(Item.class, id);
-    	this.setItem(item);
+    	item = em.find(Item.class, id);
     	return "/editItem.xhtml";
     }
     
     public void titleChanged(ValueChangeEvent event) {
+    	System.out.println("item to edit is: " + item.getTitle());
     	String title = (String) event.getNewValue();
-    	System.out.println("Die ID des Items ist: " + item.getId());
     	item.setTitle(title);
-    	status = sellBeanLocal.findStatus(1L); //active
-        item.setStatus(status);
     	try {
     		ut.begin();
     		em.merge(item);

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Table(schema="MAPSHOP", name="ITEM")
 @NamedQuery(name="Item.findAll", query="SELECT i FROM Item i")
 public class Item implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -171,7 +172,7 @@ public class Item implements Serializable {
     @Override
     public String toString() {
         return "Item [id=" + id + ", title=" + title
-                + ", price=" + price + ", status="
+                + ", description=" + description + ", price=" + price + ", status="
                 + status + "]";
     }
 

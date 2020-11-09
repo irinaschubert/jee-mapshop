@@ -64,6 +64,13 @@
 		<redirect/>
 	</navigation-case>
 	<navigation-case>
+		<from-outcome>editItem</from-outcome>
+		<to-view-id>
+			/editItem.xhtml
+		</to-view-id>
+		<redirect/>
+	</navigation-case>
+	<navigation-case>
 		<from-outcome>customerPersisted</from-outcome>
 		<to-view-id>
 			/index.xhtml

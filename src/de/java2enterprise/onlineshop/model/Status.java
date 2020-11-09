@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Table(schema = "MAPSHOP", name = "STATUS")
 @NamedQuery(name="Status.findAll", query="SELECT s FROM Status s")
 public class Status implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
     @Id

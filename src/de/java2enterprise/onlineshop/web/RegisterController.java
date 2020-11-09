@@ -25,7 +25,8 @@ import de.java2enterprise.onlineshop.model.Status;
 
 @Named
 @RequestScoped
-public class RegisterController implements Serializable {    
+public class RegisterController implements Serializable {
+	
     private static final long serialVersionUID = 1L;
     
     @PersistenceContext
@@ -37,24 +38,23 @@ public class RegisterController implements Serializable {
     @Inject
     private Customer customer;
     
-    private Status status1; //active
-    private Status status3; //sold
-    private Status status4; //reserved
-    
     @EJB
     private RegisterBeanLocal registerBeanLocal;
+    
     @EJB
     private SellBeanLocal sellBeanLocal;
 
-    public String persist() {
+    public String registerCustomer() {
     	try {
-    		registerBeanLocal.persist(customer);
+    		registerBeanLocal.persistCustomer(customer);
+    		
     		FacesMessage m = new FacesMessage(
                 "Succesfully registered new user!",
                 "User " + customer.getEmail() + " has registered with ID " + customer.getId() + ".");
             FacesContext
                 .getCurrentInstance()
                 .addMessage("registerForm", m);
+            return "signin";
     	}
     	catch(Exception e) {
     		//TODO catch SQLIntegrityConstraintViolationException, doesn't work yet
@@ -74,28 +74,29 @@ public class RegisterController implements Serializable {
             FacesContext
                 .getCurrentInstance()
                 .addMessage("registerForm", m);
+            
+            return "register";
     	}
-        return "/register.jsf";
     }
 
-    public String removeCustomer(SigninController signinController) {
+    public String deregisterCustomer(SigninController signinController) {
     	try {
     		Customer customer = signinController.getCustomer();
             customer = sellBeanLocal.findCustomer(customer.getId());
-            status1 = sellBeanLocal.findStatus(1L); //active
-            status3 = sellBeanLocal.findStatus(3L); //sold
-            status4 = sellBeanLocal.findStatus(4L); //reserved
+            Status statusActive = sellBeanLocal.findStatus(1L);
+            Status statusSold = sellBeanLocal.findStatus(3L);
+            Status statusReserved = sellBeanLocal.findStatus(4L); //reserved
             
             //find active items to delete
     		TypedQuery<Item> queryActive = em.createQuery(
 	                "FROM " + Item.class.getSimpleName() + " i "
-	                        + "WHERE (i.status= :status1 "
-	                		+ "OR i.status= :status4) "
+	                        + "WHERE (i.status= :statusActive "
+	                		+ "OR i.status= :statusReserved) "
 	                        + "AND i.seller= :seller",
 	                Item.class);
     		queryActive.setParameter("seller", customer);
-    		queryActive.setParameter("status1", status1); //active
-    		queryActive.setParameter("status4", status4); //reserved
+    		queryActive.setParameter("statusActive", statusActive); //active
+    		queryActive.setParameter("statusReserved", statusReserved); //reserved
 	        List<Item> activeItems = queryActive.getResultList();
 	        if(activeItems.isEmpty()) {
 	            FacesMessage m = new FacesMessage(
@@ -127,11 +128,11 @@ public class RegisterController implements Serializable {
 	        //find bought items to clean up
 	        TypedQuery<Item> queryBought = em.createQuery(
 	                "FROM " + Item.class.getSimpleName() + " i "
-	                        + "WHERE i.status= :status3 "
+	                        + "WHERE i.status= :statusSold "
 	                        + "AND i.buyer= :buyer",
 	                Item.class);
 	        queryBought.setParameter("buyer", customer);
-	        queryBought.setParameter("status3", status3); //sold
+	        queryBought.setParameter("statusSold", statusSold); //sold
 	        List<Item> boughtItems = queryBought.getResultList();
 	        if(boughtItems.isEmpty()) {
 	            FacesMessage m = new FacesMessage(
@@ -162,11 +163,11 @@ public class RegisterController implements Serializable {
 	        //find sold items to clean up
 	        TypedQuery<Item> querySold = em.createQuery(
 	                "FROM " + Item.class.getSimpleName() + " i "
-	                        + "WHERE i.status= :status3 "
+	                        + "WHERE i.status= :statusSold "
 	                        + "AND i.seller= :seller",
 	                Item.class);
 	        querySold.setParameter("seller", customer);
-	        querySold.setParameter("status3", status3); //sold
+	        querySold.setParameter("statusSold", statusSold); //sold
 	        List<Item> soldItems = querySold.getResultList();
 	        if(soldItems.isEmpty()) {
 	            FacesMessage m = new FacesMessage(

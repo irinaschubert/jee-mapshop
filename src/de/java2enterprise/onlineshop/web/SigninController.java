@@ -20,6 +20,7 @@ import de.java2enterprise.onlineshop.model.Customer;
 @Named
 @SessionScoped
 public class SigninController implements Serializable {
+	
     private static final long serialVersionUID = 1L;
 
     @PersistenceContext
@@ -28,13 +29,11 @@ public class SigninController implements Serializable {
     @Resource
     private UserTransaction ut;
     
-
-    private String email;
-    private String password;
-
     @Inject
     private Customer customer;
-
+    private String email;
+    private String password;
+    
     public Customer getCustomer() {
         return customer;
     }
@@ -59,7 +58,7 @@ public class SigninController implements Serializable {
         this.password = password;
     }
 
-    public String find() {
+    public String signin() {
         try {
             TypedQuery<Customer> query = em.createQuery(
             		"FROM " + Customer.class.getSimpleName() + " c "
@@ -79,8 +78,8 @@ public class SigninController implements Serializable {
             } else {
                 customer = customers.get(0);
                 FacesMessage m = new FacesMessage(
-                        "Succesfully signed in!",
-                        "You signed in under id " + customer.getId());
+                        "Successfully signed in!",
+                        "You id is " + customer.getId());
                 FacesContext
                         .getCurrentInstance()
                         .addMessage("signinForm", m);
@@ -94,7 +93,7 @@ public class SigninController implements Serializable {
                     .getCurrentInstance()
                     .addMessage("signinForm", m);
         }
-        return "/signin.jsf";
+        return "search";
     }
     
     public void emailChanged(ValueChangeEvent event) {

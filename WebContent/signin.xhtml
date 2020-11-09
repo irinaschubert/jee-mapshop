@@ -9,8 +9,7 @@
         <h:form
             id="signinForm"
             prependId="false">
-            <h:message
-                for="signinForm"
+            <h:message for="signinForm"
                 showSummary="true"
                 infoClass="info"
                 warnClass="warn"
@@ -34,7 +33,7 @@
                 <h:message for="password" />
                 <h:commandButton
                     id="signinButton"
-                    action="#{signinController.find()}"
+                    action="#{signinController.signin()}"
                     value="#{msg['signin']}" />
                 <h:message for="signinButton" />
             </h:panelGrid>
