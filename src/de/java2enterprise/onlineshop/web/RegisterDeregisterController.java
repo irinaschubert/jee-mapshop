@@ -22,7 +22,7 @@ import de.java2enterprise.onlineshop.model.Status;
 
 @Named
 @RequestScoped
-public class RegisterController implements Serializable {
+public class RegisterDeregisterController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
     
@@ -152,7 +152,7 @@ public class RegisterController implements Serializable {
 	        }
 	        
 	        //find sold items to clean up
-	        reservedItems = itemBeanLocal.findItemsByStatusAndSeller(statusSold, customer);
+	        soldItems = itemBeanLocal.findItemsByStatusAndSeller(statusSold, customer);
 	        if(soldItems.isEmpty()) {
 	            FacesMessage m = new FacesMessage(
 	                "No sold items found!",
