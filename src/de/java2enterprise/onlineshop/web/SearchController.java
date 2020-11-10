@@ -24,53 +24,26 @@ public class SearchController implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @EJB
-    private StatusBeanLocal sellBeanLocal;
+    private StatusBeanLocal statusBeanLocal;
     
     @EJB
     private ItemBeanLocal itemBeanLocal;
 
-    @SuppressWarnings("unused")
-	private List<Item> items;
+    //@SuppressWarnings("unused")
+	//private List<Item> items;
     private String term;
-    
-    public List<Item> findActiveItems() {
-    	Status statusActive = sellBeanLocal.findStatus(1L);
-    	List<Item> activeItems = new ArrayList<Item>();
-        
-    	try {
-            activeItems = itemBeanLocal.findItemsByStatus(statusActive);
-            if(activeItems.isEmpty()) {
-                FacesMessage m = new FacesMessage(
-                        "No items!",
-                        "No items found!");
-                FacesContext
-                        .getCurrentInstance()
-                        .addMessage("searchForm", m);
-            } else {
-                FacesMessage m = new FacesMessage(
-                        "Success",
-                        "Items successfully retrieved");
-                FacesContext
-                        .getCurrentInstance()
-                        .addMessage("searchForm", m);
-            }
-        } catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("searchForm", m);
-        }
-        return activeItems;
-    }
+    //private List<Item> resultItems = new ArrayList<Item>();
     
     public List<Item> findItems() {
-    	Status statusActive = sellBeanLocal.findStatus(1L);
-        List<Item> resultItems = new ArrayList<Item>();
+    	List<Item> resultItems = new ArrayList<Item>();
+    	Status statusActive = statusBeanLocal.findStatus(1L);
+    	String termBefore = term;
         try {
+        	if(term == null) {
+        		term = "";
+        	}
         	resultItems = itemBeanLocal.findItemsByQuery(statusActive, term);
+        	term = termBefore;
         	if(resultItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
                         "No items matching your search!",
@@ -81,7 +54,7 @@ public class SearchController implements Serializable {
             } else {
             	for(int i = 0; i < resultItems.size(); i++) {
             		//TODO only display these items
-            		System.out.println(resultItems.get(i).getTitle());
+            		System.out.println("Item found: " + resultItems.get(i).getTitle());
             	}
             	
                 FacesMessage m = new FacesMessage(
@@ -103,7 +76,7 @@ public class SearchController implements Serializable {
         return resultItems;
     }
     
-    public DataModel<Item> getItems() {
+    /*public DataModel<Item> getItems() {
     	List<Item> list = itemBeanLocal.findAll();
     	Item[] items = list.toArray(new Item[list.size()]);
     	DataModel<Item> dataModel = new ArrayDataModel<Item>(items);
@@ -114,6 +87,18 @@ public class SearchController implements Serializable {
     public void setItems(List<Item> items) {
         this.items = items;
     }
+    
+    public DataModel<Item> getResultItems() {
+    	List<Item> list = resultItems;
+    	Item[] items = list.toArray(new Item[list.size()]);
+    	DataModel<Item> dataModel = new ArrayDataModel<Item>(items);
+    	dataModel.addDataModelListener(new ItemListener());
+    	return dataModel;
+    }
+
+    public void setResultItems(List<Item> items) {
+        this.resultItems = items;
+    }*/
     
     public String getTerm() {
         return this.term;

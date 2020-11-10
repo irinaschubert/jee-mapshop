@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.el.ELContext;
-import javax.el.ELResolver;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -30,17 +28,10 @@ public class CartController implements Serializable {
     @EJB
     private ItemBeanLocal itemBeanLocal;
     
-    public String reserveItem(Long id) {
+    public String reserveItem(Long id, SigninSignoutController signinSignoutController) {
+    	System.out.println("yes, id is: " + id);
     	Status statusReserved = statusBeanLocal.findStatus(4L);
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        ELContext elc = ctx.getELContext();
-        ELResolver elr = ctx.getApplication().getELResolver();
-        SigninSignoutController signinController = (SigninSignoutController) elr
-                .getValue(
-                        elc,
-                        null,
-                        "signinController");
-        Customer customer = signinController.getCustomer();
+        Customer customer = signinSignoutController.getCustomer();
         try {
             Item item = itemBeanLocal.findItem(id);
             item.setBuyer(customer);
