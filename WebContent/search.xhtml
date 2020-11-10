@@ -49,10 +49,13 @@
                         <h:outputText value="#{item.price}" />
                         <h:outputText value="#{msg['item.status']}:" />
                         <h:outputText value="#{item.status.description}" />
+                        <h:outputText 
+                        	value="#{msg['warnOwnItem']}" 
+                        	rendered="#{signinSignoutController.customer.id == item.seller.id}"/>
                         <h:commandButton
                             value="#{msg['reserve']}"
                             action="#{cartController.reserveItem(item.id, signinSignoutController)}"
-            				rendered="#{not empty signinSignoutController.customer.email}" />
+            				rendered="#{not empty signinSignoutController.customer.email and signinSignoutController.customer.id != item.seller.id}" />
                     </h:panelGrid>
                 </h:column>
                 <h:column>
