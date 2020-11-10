@@ -141,6 +141,7 @@ public class RegisterDeregisterController implements Serializable {
 	        	for(int i = 0; i < reservedItems.size(); i++) {
 	        		Item item = reservedItems.get(i);
 	        		item.setBuyer(null);
+	        		item.setStatus(statusActive);
 	        		itemBeanLocal.editItem(item);
 	        	}
 	    		FacesMessage m = new FacesMessage(
