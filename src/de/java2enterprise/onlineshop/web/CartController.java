@@ -29,7 +29,6 @@ public class CartController implements Serializable {
     private ItemBeanLocal itemBeanLocal;
     
     public String reserveItem(Long id, SigninSignoutController signinSignoutController) {
-    	System.out.println("yes, id is: " + id);
     	Status statusReserved = statusBeanLocal.findStatus(4L);
         Customer customer = signinSignoutController.getCustomer();
         try {

@@ -48,11 +48,6 @@ public class SearchController implements Serializable {
                         .getCurrentInstance()
                         .addMessage("searchForm", m);
             } else {
-            	for(int i = 0; i < resultItems.size(); i++) {
-            		//TODO only display these items
-            		System.out.println("Item found: " + resultItems.get(i).getTitle());
-            	}
-            	
                 FacesMessage m = new FacesMessage(
                         "Succes!",
                         "Items successfully retrieved");
