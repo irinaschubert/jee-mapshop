@@ -88,6 +88,7 @@ public class SigninSignoutController implements Serializable {
     
     public String signout() {
     	this.setCustomer(null);
+    	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     	return "signin.jsf";
     }
     

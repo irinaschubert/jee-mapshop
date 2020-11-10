@@ -42,11 +42,11 @@ public class RegisterDeregisterController implements Serializable {
     	try {
     		customerBeanLocal.persistCustomer(customer);
     		FacesMessage m = new FacesMessage(
-                "Succesfully registered new user!",
+                "Succesfully registered!",
                 "User " + customer.getEmail() + " has registered with ID " + customer.getId() + ".");
             FacesContext
                 .getCurrentInstance()
-                .addMessage("registerForm", m);
+                .addMessage("signinForm", m);
             return "/signin.jsf";
     	}
     	catch(Exception e) {
@@ -90,7 +90,7 @@ public class RegisterDeregisterController implements Serializable {
 	                "No sold and active items found belonging to customer " + customer.getEmail());
 	            FacesContext
 	                .getCurrentInstance()
-	                .addMessage("welcomeForm", m);
+	                .addMessage("signinForm", m);
 	        } else {
 	        	for(int i = 0; i < activeItems.size(); i++) {
 	        		Item item = activeItems.get(i);
@@ -102,7 +102,7 @@ public class RegisterDeregisterController implements Serializable {
 	                "Cleand up sold and active items of user by setting seller to null.");
 	            FacesContext
 	                .getCurrentInstance()
-	                .addMessage("welcomeForm", m);
+	                .addMessage("signinForm", m);
 	        }
 	        
 	        //find bought items to clean up
@@ -113,7 +113,7 @@ public class RegisterDeregisterController implements Serializable {
 	                "No bought items found belonging to customer " + customer.getEmail());
 	            FacesContext
 	                .getCurrentInstance()
-	                .addMessage("welcomeForm", m);
+	                .addMessage("signinForm", m);
 	        } else {
 	        	for(int i = 0; i < boughtItems.size(); i++) {
 	        		Item item = boughtItems.get(i);
@@ -125,7 +125,7 @@ public class RegisterDeregisterController implements Serializable {
 	                "Cleand up bought items of user by setting buyer to null.");
 	            FacesContext
 	                .getCurrentInstance()
-	                .addMessage("welcomeForm", m);
+	                .addMessage("signinForm", m);
 	        }
 	        
 	        //find reserved items to clean up
@@ -136,7 +136,7 @@ public class RegisterDeregisterController implements Serializable {
 	                "No bought items found belonging to customer " + customer.getEmail());
 	            FacesContext
 	                .getCurrentInstance()
-	                .addMessage("welcomeForm", m);
+	                .addMessage("signinForm", m);
 	        } else {
 	        	for(int i = 0; i < reservedItems.size(); i++) {
 	        		Item item = reservedItems.get(i);
@@ -148,7 +148,7 @@ public class RegisterDeregisterController implements Serializable {
 	                "Cleand up reserved items of user by setting buyer to null.");
 	            FacesContext
 	                .getCurrentInstance()
-	                .addMessage("welcomeForm", m);
+	                .addMessage("signinForm", m);
 	        }
 	        
 	        //find sold items to clean up
@@ -159,7 +159,7 @@ public class RegisterDeregisterController implements Serializable {
 	                "No sold items found belonging to customer " + customer.getEmail());
 	            FacesContext
 	                .getCurrentInstance()
-	                .addMessage("welcomeForm", m);
+	                .addMessage("signinForm", m);
 	        } else {
 	        	for(int i = 0; i < soldItems.size(); i++) {
 	        		Item item = soldItems.get(i);
@@ -171,11 +171,17 @@ public class RegisterDeregisterController implements Serializable {
 	                "Cleand up bought items of user by setting buyer to null.");
 	            FacesContext
 	                .getCurrentInstance()
-	                .addMessage("welcomeForm", m);
+	                .addMessage("signinForm", m);
 	        }
 	        
 	        //TODO show deregister message
-	        return customerBeanLocal.removeCustomer(customer);
+	        String result = customerBeanLocal.removeCustomer(customer);
+	        if(result == "customerRemoved") {
+	        	this.setCustomer(null);
+		    	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+	        }
+	        
+	        return "signin";
 	        
     	}catch(Exception e) {
     		FacesMessage m = new FacesMessage(
