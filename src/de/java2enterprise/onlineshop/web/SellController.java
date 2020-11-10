@@ -44,7 +44,7 @@ public class SellController implements Serializable {
     @EJB
     private ItemBeanLocal itemBeanLocal;
     
-    public String persist(SigninSignoutController signinController) {
+    public String sellItem(SigninSignoutController signinController) {
     	Status statusActive = statusBeanLocal.findStatus(1L);
     	Customer customer = signinController.getCustomer();
     	

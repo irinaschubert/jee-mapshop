@@ -29,13 +29,26 @@ public class CartController implements Serializable {
     private ItemBeanLocal itemBeanLocal;
     
     public String reserveItem(Long id, SigninSignoutController signinSignoutController) {
+    	Status statusInactive = statusBeanLocal.findStatus(2L);
     	Status statusReserved = statusBeanLocal.findStatus(4L);
         Customer customer = signinSignoutController.getCustomer();
         try {
             Item item = itemBeanLocal.findItem(id);
-            item.setBuyer(customer);
-            item.setStatus(statusReserved);
-            itemBeanLocal.editItem(item);
+            Item newItem = new Item();
+    		newItem.setTitle(item.getTitle());
+    		newItem.setDescription(item.getDescription());
+    		newItem.setFoto(item.getFoto());
+    		newItem.setPrice(item.getPrice());
+    		newItem.setSeller(item.getSeller());
+    		newItem.setBuyer(customer);
+    		newItem.setStockNumber(1L);
+    		newItem.setStatus(statusReserved);
+    		item.setStockNumber(item.getStockNumber()-1);
+    		if(item.getStockNumber() == 0) {
+    			item.setStatus(statusInactive);
+    		}
+    		itemBeanLocal.editItem(item);
+    		itemBeanLocal.persistItem(newItem);
             FacesMessage m = new FacesMessage(
                     "Item reserved!",
                     item.getTitle() + " reserved by " + customer.getEmail());

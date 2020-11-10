@@ -30,11 +30,13 @@
                     value="#{sellController.item.description}" />
                 <h:outputLabel value="#{msg['item.price']}:" />
                 <h:inputText value="#{sellController.item.price}" />
+                <h:outputLabel value="#{msg['item.stockNumber']}:" />
+                <h:inputText value="#{sellController.item.stockNumber}" />
                 <h:outputLabel value="#{msg['item.foto']}:" />
                 <h:inputFile value="#{sellController.part}" />
                 <h:commandButton
                     value="#{msg['sell']}"
-                    action="#{sellController.persist(signinSignoutController)}" />
+                    action="#{sellController.sellItem(signinSignoutController)}" />
             </h:panelGrid>
         </h:form>
         </ui:define>

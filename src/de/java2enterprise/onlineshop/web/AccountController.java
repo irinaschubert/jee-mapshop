@@ -43,10 +43,11 @@ public class AccountController implements Serializable {
     	List<Item> offeredItems = new ArrayList<Item>();
     	Customer seller = signinController.getCustomer();
     	Status statusActive = statusBeanLocal.findStatus(1L);
+    	Status statusInactive = statusBeanLocal.findStatus(2L);
         Status statusReserved = statusBeanLocal.findStatus(4L);
         
     	try {
-    		offeredItems = itemBeanLocal.findItemsByStatusesAndSeller(statusActive, statusReserved, seller);
+    		offeredItems = itemBeanLocal.findItemsByStatusesAndSeller(statusActive, statusInactive, statusReserved, seller);
             if(offeredItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
                     "No offered items found.",

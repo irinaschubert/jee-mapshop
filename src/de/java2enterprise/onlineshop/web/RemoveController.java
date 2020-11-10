@@ -30,6 +30,7 @@ public class RemoveController implements Serializable {
         try {
         	Item item = itemBeanLocal.findItem(id);
             item.setStatus(statusInactive);
+            item.setStockNumber(0L);
             itemBeanLocal.editItem(item);
             FacesMessage m = new FacesMessage(
                 "Succesfully deactivated item!",

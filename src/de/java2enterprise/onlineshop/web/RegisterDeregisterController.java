@@ -83,7 +83,7 @@ public class RegisterDeregisterController implements Serializable {
         List<Item> soldItems = new ArrayList<Item>();
     	try {
             //find active items to delete
-            activeItems = itemBeanLocal.findItemsByStatusesAndSeller(statusActive, statusReserved, customer);
+            activeItems = itemBeanLocal.findItemsByTwoStatusesAndSeller(statusActive, statusReserved, customer);
 	        if(activeItems.isEmpty()) {
 	            FacesMessage m = new FacesMessage(
 	                "No sold and active items found!",

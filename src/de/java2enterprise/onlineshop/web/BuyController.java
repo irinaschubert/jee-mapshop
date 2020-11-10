@@ -43,7 +43,7 @@ public class BuyController implements Serializable {
 	                    .getCurrentInstance()
 	                    .addMessage("cartForm", m);
 	        } else {
-	        	//update items with status (sold) and sold date
+	        	//update item: set status to sold and set sold date to now
 	        	for(int i = 0; i < reservedItems.size(); i++) {
 	        		Item item = reservedItems.get(i);
 	        		item.setStatus(statusSold);

@@ -24,16 +24,12 @@
 	        	</f:facet>
                 <h:column>
                     <h:panelGrid columns="2">
-                        <h:outputText value="#{msg['id']}:" />
-                        <h:outputText value="#{item.id}" />
                         <h:outputText value="#{msg['item.title']}:" />
                         <h:outputText value="#{item.title}" />
                         <h:outputText value="#{msg['item.description']}:" />
                         <h:outputText value="#{item.description}" />
                         <h:outputText value="#{msg['item.price']}:" />
                         <h:outputText value="#{item.price}" />
-                        <h:outputText value="#{msg['item.status']}:" />
-                        <h:outputText value="#{item.status.description}" />
                         <h:commandButton
                             value="#{msg['delete']}"
                             action="#{removeController.removeItemFromCart(item.id)}" />

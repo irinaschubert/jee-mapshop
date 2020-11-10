@@ -29,6 +29,7 @@ public class Item implements Serializable {
 	private Long id;
 	private String title;
 	private String description;
+	private Long stockNumber;
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
 	private byte[] foto;
@@ -72,6 +73,14 @@ public class Item implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Long getStockNumber() {
+		return this.stockNumber;
+	}
+
+	public void setStockNumber(Long stockNumber) {
+		this.stockNumber = stockNumber;
 	}
 	
 	public byte[] getFoto() {
