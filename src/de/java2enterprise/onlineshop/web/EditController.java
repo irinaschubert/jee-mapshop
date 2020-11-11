@@ -157,7 +157,7 @@ public class EditController implements Serializable {
     }
     
     public void fotoChanged(ValueChangeEvent event) {
-    	
+    	Part part = (Part) event.getNewValue();
 		try {
 			InputStream input = part.getInputStream();
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
