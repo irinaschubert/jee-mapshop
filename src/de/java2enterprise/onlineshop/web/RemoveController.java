@@ -46,15 +46,15 @@ public class RemoveController implements Serializable {
             
             FacesMessage m = new FacesMessage(
                 "Succesfully deactivated item!",
-                item.getTitle() + " deactivated.");
+                item.getTitle() + " is no longer available for other users.");
             FacesContext
                 .getCurrentInstance()
                 .addMessage("accountForm", m);
         } catch (Exception e) {
         	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+                    FacesMessage.SEVERITY_ERROR,
+                    "Deactivation of item didn't work!",
+                    "Please try again");
             FacesContext
                     .getCurrentInstance()
                     .addMessage("accountForm", m);

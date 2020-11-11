@@ -3,6 +3,8 @@ package de.java2enterprise.onlineshop.web;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -42,24 +44,28 @@ public class SearchController implements Serializable {
         	term = termBefore;
         	if(resultItems.isEmpty()) {
                 FacesMessage m = new FacesMessage(
+                		FacesMessage.SEVERITY_WARN,
                         "No items matching your search!",
-                        "No items found!");
+                        "Try again with a new search term or browse all items.");
                 FacesContext
                         .getCurrentInstance()
                         .addMessage("searchForm", m);
             } else {
                 FacesMessage m = new FacesMessage(
-                        "Succes!",
-                        "Items successfully retrieved");
+                        "Successfully retrieved items!",
+                        "All items matching your search are listed below.");
                 FacesContext
                         .getCurrentInstance()
                         .addMessage("searchForm", m);
             }
         } catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+        	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+        	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("searchForm", m);

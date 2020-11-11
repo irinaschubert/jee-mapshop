@@ -65,17 +65,24 @@ public class SellController implements Serializable {
             Long id = itemBeanLocal.persistItem(item);
             item.setProductId(id);
             itemBeanLocal.editItem(item);
-            return "sell";
-        } catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+            
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    "Successfully created Item!",
+                    "You can find it now in your account.");
             FacesContext
                     .getCurrentInstance()
-                    .addMessage("searchForm", m);
-            return "sellFail";
+                    .addMessage("sellForm", m);
+        } catch (Exception e) {
+        	FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    "Creating a new Item was not successful!",
+                    "Sorry, try again.");
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("sellForm", m);
         }
+        return "/sell.jsf";
     }
 	
 	
