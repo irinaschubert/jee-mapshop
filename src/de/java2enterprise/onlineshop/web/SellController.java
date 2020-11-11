@@ -14,7 +14,6 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,7 +31,7 @@ public class SellController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
 
-    public final static int MAX_IMAGE_LENGTH = 400;
+    public final static int MAX_IMAGE_LENGTH = 300;
     
     @Inject
     private Item item;
@@ -73,140 +72,8 @@ public class SellController implements Serializable {
             return "sellFail";
         }
     }
-
-    public Part getPart() {
-        return part;
-    }
-
-    public void setPart(Part part) {
-        this.part = part;
-    }
-    
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-    
-    public String editThisItem(Long id) {
-    	item = itemBeanLocal.findItem(id);
-    	return "/editItem.xhtml";
-    }
-    
-    public void titleChanged(ValueChangeEvent event) {
-    	String title = (String) event.getNewValue();
-    	
-    	try {
-    		item.setTitle(title);
-    		itemBeanLocal.editItem(item);
-    		FacesMessage m = new FacesMessage(
-                    "Successfully changed item!",
-                    "Item has been successfully updated.");
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("editItemForm", m);
-    	}catch(Exception e) {
-    		FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("editItemForm", m);
-    	}
-    }
-    
-    public void descriptionChanged(ValueChangeEvent event) {
-    	Status statusActive = statusBeanLocal.findStatus(1L);
-    	String description = (String) event.getNewValue();
-    	
-    	try {
-    		item.setDescription(description);
-            item.setStatus(statusActive);
-    		itemBeanLocal.editItem(item);
-    		FacesMessage m = new FacesMessage(
-                    "Successfully changed item!",
-                    "Item has been successfully updated.");
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("editItemForm", m);
-    	}catch(Exception e) {
-    		FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("editItemForm", m);
-    	}
-    }
-    
-    public void priceChanged(ValueChangeEvent event) {
-    	Status statusActive = statusBeanLocal.findStatus(1L);
-    	Double price = (Double) event.getNewValue();
-    	
-    	try {
-    		item.setPrice(price);
-            item.setStatus(statusActive);
-    		itemBeanLocal.editItem(item);
-    		FacesMessage m = new FacesMessage(
-                    "Successfully changed item!",
-                    "Item has been successfully updated.");
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("editItemForm", m);
-    	}catch(Exception e) {
-    		FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("editItemForm", m);
-    	}
-    }
-    
-    public void fotoChanged(ValueChangeEvent event) {
-    	Status statusActive = statusBeanLocal.findStatus(1L);
-        item.setStatus(statusActive);
-		try {
-			InputStream input = part.getInputStream();
-			ByteArrayOutputStream output = new ByteArrayOutputStream();
-	        byte[] buffer = new byte[1024];
-	        for (int length = 0; (length = input.read(buffer)) > 0;) {
-	            output.write(buffer, 0, length);
-	        }
-	        item.setFoto(scale(output.toByteArray()));
-		} catch (IOException e) {
-			FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("editItemForm", m);
-		}
-    	try {
-    		itemBeanLocal.editItem(item);
-    		FacesMessage m = new FacesMessage(
-                    "Successfully changed item!",
-                    "Item has been successfully updated.");
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("editItemForm", m);
-    	}catch(Exception e) {
-    		FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("editItemForm", m);
-    	}
-    }
-
+	
+	
     public byte[] scale(byte[] foto) throws IOException {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
                 foto);
@@ -246,5 +113,21 @@ public class SellController implements Serializable {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(resizedBufferedImage, "PNG", baos);
         return baos.toByteArray();
+    }
+    
+    public Part getPart() {
+        return part;
+    }
+
+    public void setPart(Part part) {
+        this.part = part;
+    }
+    
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 }

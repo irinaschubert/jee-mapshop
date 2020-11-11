@@ -41,13 +41,10 @@
                             action="#{removeController.deactivateItem(item.id)}" />
                         <h:commandButton
 	                        value="#{msg['editItem']}"
-					        action="#{sellController.editThisItem(item.id)}" />
+					        action="#{editController.editThisItem(item.id)}" />
 					    <h:commandButton
                             value="#{msg['deleteItem']}"
                             action="#{removeController.deleteItem(item.id)}" />
-					    <h:link
-					        outcome="editItem"
-				            value="#{msg['editItem']}" />
                     </h:panelGrid>
                 </h:column>
                 <h:column>
@@ -108,9 +105,6 @@
                     <h:graphicImage url="image?id=#{item.id}" />
                 </h:column>
             </h:dataTable>
-            <h:commandButton
-        		value="#{msg['deregister']}"
-            	action="#{registerDeregisterController.deregisterCustomer(signinSignoutController)}"/>
         </h:form>
 	</ui:define>
 </ui:composition>

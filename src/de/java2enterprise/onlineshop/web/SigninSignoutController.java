@@ -24,10 +24,6 @@ public class SigninSignoutController implements Serializable {
     @Inject
     private Customer customer;
     
-    private Long id;
-    private String email;
-    private String password;
-    
     @EJB
     private CustomerBeanLocal customerBeanLocal;
     
@@ -39,33 +35,9 @@ public class SigninSignoutController implements Serializable {
         this.customer = customer;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String signin() {
     	List<Customer> customers = new ArrayList<Customer>();
-    	customers = customerBeanLocal.findCustomerByCredentials(email, password);
+    	customers = customerBeanLocal.findCustomerByCredentials(customer.getEmail(), customer.getPassword());
         try {
             if(customers.isEmpty()) {
                 FacesMessage m = new FacesMessage(

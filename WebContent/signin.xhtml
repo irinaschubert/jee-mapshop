@@ -22,13 +22,13 @@
                 <h:outputLabel value="#{msg['email']}:" />
                 <h:inputText
                     id="email"
-                    value="#{signinSignoutController.email}">
+                    value="#{signinSignoutController.customer.email}">
                 </h:inputText>
                 <h:message for="email" />
                 <h:outputLabel value="#{msg['password']}:" />
                 <h:inputSecret
                     id="password"
-                    value="#{signinSignoutController.password}">
+                    value="#{signinSignoutController.customer.password}">
                 </h:inputSecret>
                 <h:message for="password" />
                 <h:commandButton

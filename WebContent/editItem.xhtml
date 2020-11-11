@@ -26,36 +26,40 @@
 	                <h:inputText
 	                    id="title"
 	                    label="#{msg['item.title']}"
-	                    value="#{sellController.item.title}" 
-	                    valueChangeListener="#{sellController.titleChanged}" />
-	                    <h:message for="title"/>
+	                    value="#{editController.item.title}" 
+	                    valueChangeListener="#{editController.titleChanged}" />
                 </h:panelGroup>
                 <h:outputLabel value="#{msg['item.description']}:" />
                 <h:panelGroup>
 	                <h:inputTextarea
 		                id="description"
 		                label="#{msg['item.description']}"
-	                    value="#{sellController.item.description}"
-	                    valueChangeListener="#{sellController.descriptionChanged}" />
-	                    <h:message for="description"/>
+	                    value="#{editController.item.description}"
+	                    valueChangeListener="#{editController.descriptionChanged}" />
                 </h:panelGroup>
                 <h:outputLabel value="#{msg['item.price']}:" />
                 <h:panelGroup>
 	                <h:inputText 
 	                	id="price"
 	                	label="#{msg['item.price']}"
-	                	value="#{sellController.item.price}"
-	                	valueChangeListener="#{sellController.priceChanged}" />
-	                	<h:message for="price"/>
+	                	value="#{editController.item.price}"
+	                	valueChangeListener="#{editController.priceChanged}" />
                 </h:panelGroup>
-                <h:outputLabel value="#{msg['item.foto']}:" />
+                <h:outputLabel value="#{msg['item.stockNumber']}:" />
+                <h:panelGroup>
+	                <h:inputText 
+	                	id="stockNumber"
+	                	label="#{msg['item.stockNumber']}"
+	                	value="#{editController.item.stockNumber}"
+	                	valueChangeListener="#{editController.stockNumberChanged}" />
+                </h:panelGroup>
+				<h:outputLabel value="#{msg['item.foto']}:" />
                 <h:panelGroup>
 	                <h:inputFile 
 	                	id="foto"
 	                	label="#{msg['item.foto']}"
-	                	value="#{sellController.part}" 
-	                	valueChangeListener="#{sellController.fotoChanged}"/>
-	                	<h:message for="foto"/>
+	                	value="#{editController.part}" 
+	                	valueChangeListener="#{editController.fotoChanged}"/>
                 </h:panelGroup>
                 <h:commandButton 
                 	value="#{msg['change']}"

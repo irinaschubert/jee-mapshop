@@ -25,7 +25,7 @@
                 	<h:inputText
                 		id="email"
                 		label="#{msg['email']}"
-                		value="#{signinController.customer.email}"
+                		value="#{signinSignoutController.customer.email}"
                 		valueChangeListener="#{signinSignoutController.emailChanged}"
                 		required="true">
                 		<f:validateLength 
@@ -38,7 +38,7 @@
                 	<h:inputSecret
                 		id="password"
                 		label="#{msg['password']}"
-                		value="#{signinController.customer.password}"
+                		value="#{signinSignoutController.customer.password}"
                 		valueChangeListener="#{signinSignoutController.passwordChanged}"
                 		required="true">
                 		<f:validateLength 
@@ -50,6 +50,9 @@
                 	value="#{msg['change']}"
                 	action="editProfile" />
             </h:panelGrid>
+            <h:commandButton
+        		value="#{msg['deregister']}"
+            	action="#{registerDeregisterController.deregisterCustomer(signinSignoutController)}"/>
         </h:form>
     </ui:define>
 </ui:composition>
