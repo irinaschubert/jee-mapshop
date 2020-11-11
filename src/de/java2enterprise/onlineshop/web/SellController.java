@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -32,6 +33,8 @@ import de.java2enterprise.onlineshop.model.Status;
 public class SellController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(SellController.class.toString());
 
     public final static int MAX_IMAGE_LENGTH = 300;
     
@@ -83,6 +86,7 @@ public class SellController implements Serializable {
                     .getCurrentInstance()
                     .addMessage("sellForm", m);
         } catch (Exception e) {
+        	log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,

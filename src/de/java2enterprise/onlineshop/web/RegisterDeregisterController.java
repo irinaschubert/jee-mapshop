@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -27,6 +28,8 @@ import de.java2enterprise.onlineshop.model.Status;
 public class RegisterDeregisterController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(RegisterDeregisterController.class.toString());
     
     @Inject
     private Customer customer;
@@ -58,6 +61,7 @@ public class RegisterDeregisterController implements Serializable {
             return "signin.jsf";
     	}
     	catch(Exception e) {
+    		log.severe(e.getMessage());
     		//TODO catch SQLIntegrityConstraintViolationException, doesn't work yet
     		if (e instanceof DatabaseException) {
     			String errorDetail = ResourceBundle.getBundle("messages",locale).getString("errorRegisterDetail");
@@ -150,6 +154,7 @@ public class RegisterDeregisterController implements Serializable {
 	            	.addMessage("signinForm", m);
 	        }
     	}catch(Exception e) {
+    		log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,

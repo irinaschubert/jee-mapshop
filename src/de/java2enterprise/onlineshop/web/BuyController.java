@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -23,6 +24,8 @@ import de.java2enterprise.onlineshop.model.Status;
 public class BuyController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(BuyController.class.toString());
     
     @EJB
     private StatusBeanLocal statusBeanLocal;
@@ -45,6 +48,7 @@ public class BuyController implements Serializable {
     		List<Item> reservedItems = itemBeanLocal.findItemsByStatusAndBuyer(statusReserved, buyer);
 	        if(reservedItems.isEmpty()) {
 	        	String warnDetail = ResourceBundle.getBundle("messages",locale).getString("warnShowReservedItemsDetail");
+	        	log.warning("No reserved items found.");
 	        	FacesMessage m = new FacesMessage(
 	            		FacesMessage.SEVERITY_WARN,
 	                    warning,
@@ -69,6 +73,7 @@ public class BuyController implements Serializable {
 	                    .addMessage("cartForm", m);
 	        }
     } catch (Exception e) {
+    	log.severe(e.getMessage());
         FacesMessage m = new FacesMessage(
         		FacesMessage.SEVERITY_ERROR,
                 error,

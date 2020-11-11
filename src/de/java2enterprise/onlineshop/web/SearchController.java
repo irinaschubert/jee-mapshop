@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -22,6 +23,8 @@ import de.java2enterprise.onlineshop.model.Status;
 public class SearchController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(SearchController.class.toString());
     
     @EJB
     private StatusBeanLocal statusBeanLocal;
@@ -48,6 +51,7 @@ public class SearchController implements Serializable {
         	resultItems = itemBeanLocal.findItemsByQuery(statusActive, term);
         	term = termBefore;
         	if(resultItems.isEmpty()) {
+        		log.warning("No items found.");
         		String warnDetail = ResourceBundle.getBundle("messages",locale).getString("warnSearchDetail");
                 FacesMessage m = new FacesMessage(
                 		FacesMessage.SEVERITY_WARN,
@@ -58,6 +62,7 @@ public class SearchController implements Serializable {
                         .addMessage("searchForm", m);
             }
         } catch (Exception e) {
+        	log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,

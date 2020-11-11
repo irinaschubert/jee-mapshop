@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -21,6 +22,8 @@ import de.java2enterprise.onlineshop.model.Status;
 public class RemoveController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(RemoveController.class.toString());
     
     @EJB
     private ItemBeanLocal itemBeanLocal;
@@ -59,6 +62,7 @@ public class RemoveController implements Serializable {
                 .getCurrentInstance()
                 .addMessage("accountForm", m);
         } catch (Exception e) {
+        	log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -100,6 +104,7 @@ public class RemoveController implements Serializable {
                 .getCurrentInstance()
                 .addMessage("accountForm", m);
         } catch (Exception e) {
+        	log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -139,6 +144,7 @@ public class RemoveController implements Serializable {
                     .getCurrentInstance()
                     .addMessage("cartForm", m);
         } catch (Exception e) {
+        	log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,

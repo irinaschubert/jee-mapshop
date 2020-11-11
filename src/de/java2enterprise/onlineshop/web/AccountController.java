@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -23,6 +24,8 @@ import de.java2enterprise.onlineshop.model.Status;
 public class AccountController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(AccountController.class.toString());
 
     private List<Item> items;
     
@@ -54,11 +57,10 @@ public class AccountController implements Serializable {
     	try {
     		offeredItems = itemBeanLocal.findItemsByTwoStatusesAndSeller(statusActive, statusInactive, seller);
     		if(offeredItems.isEmpty()) {
-            	
-            } else {
-            	
+    			log.warning("No offereditems found.");
             }
         } catch (Exception e) {
+        	log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -82,11 +84,10 @@ public class AccountController implements Serializable {
     	try {
     		soldItems = itemBeanLocal.findItemsByStatusAndSeller(statusSold, seller);
             if(soldItems.isEmpty()) {
-            	
-            } else {
-            	
+            	log.warning("No sold items found.");
             }
         } catch (Exception e) {
+        	log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -110,11 +111,10 @@ public class AccountController implements Serializable {
     	try {
     		boughtItems = itemBeanLocal.findItemsByStatusAndBuyer(statusSold, buyer);
             if(boughtItems.isEmpty()) {
-            	
-            } else {
-            	
+            	log.warning("No bought items found.");
             }
         } catch (Exception e) {
+        	log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,

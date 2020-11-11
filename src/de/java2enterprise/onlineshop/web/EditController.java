@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.Conversation;
@@ -32,6 +33,8 @@ import de.java2enterprise.onlineshop.model.Item;
 public class EditController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(EditController.class.toString());
 
     public final static int MAX_IMAGE_LENGTH = 300;
     
@@ -78,6 +81,7 @@ public class EditController implements Serializable {
             	conversation.end();
             }
     	}catch(Exception e) {
+    		log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -111,6 +115,7 @@ public class EditController implements Serializable {
             	conversation.end();
             }
     	}catch(Exception e) {
+    		log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -144,6 +149,7 @@ public class EditController implements Serializable {
             	conversation.end();
             }
     	}catch(Exception e) {
+    		log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -177,6 +183,7 @@ public class EditController implements Serializable {
             	conversation.end();
             }
     	}catch(Exception e) {
+    		log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -215,6 +222,7 @@ public class EditController implements Serializable {
             	conversation.end();
             }
 		} catch (IOException e) {
+			log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -224,6 +232,7 @@ public class EditController implements Serializable {
                     .addMessage("editItemForm", m);
 		}
     	catch(Exception e) {
+    		log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,

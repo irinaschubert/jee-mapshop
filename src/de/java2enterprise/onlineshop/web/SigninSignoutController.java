@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -22,6 +23,8 @@ import de.java2enterprise.onlineshop.model.Customer;
 public class SigninSignoutController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(SigninSignoutController.class.toString());
     
     @Inject
     private Customer customer;
@@ -47,8 +50,11 @@ public class SigninSignoutController implements Serializable {
     	customers = customerBeanLocal.findCustomerByCredentials(customer.getEmail(), customer.getPassword());
         try {
             if(customers.isEmpty()) {
+            	log.severe("Signin failed for user " + customer.getEmail());
+            	
             	this.setCustomer(null);
             	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            	
             	String errorLogin = ResourceBundle.getBundle("messages",locale).getString("errorLogin");
                 FacesMessage m = new FacesMessage(
                 		FacesMessage.SEVERITY_WARN,
@@ -70,6 +76,7 @@ public class SigninSignoutController implements Serializable {
                 return "search.jsf";
             }
         } catch (Exception e) {
+        	log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -115,6 +122,7 @@ public class SigninSignoutController implements Serializable {
                     .getCurrentInstance()
                     .addMessage("editProfileForm", m);
     	}catch(Exception e) {
+    		log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -144,6 +152,7 @@ public class SigninSignoutController implements Serializable {
                     .getCurrentInstance()
                     .addMessage("editProfileForm", m);
     	}catch(Exception e) {
+    		log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,

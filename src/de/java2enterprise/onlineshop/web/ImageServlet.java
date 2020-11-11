@@ -1,6 +1,7 @@
 package de.java2enterprise.onlineshop.web;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,7 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/image")
 public class ImageServlet extends HttpServlet {
+	
     private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(ImageServlet.class.toString());
 
     @PersistenceContext
     private EntityManager em;
@@ -35,8 +39,9 @@ public class ImageServlet extends HttpServlet {
             	response.reset();
                 response.getOutputStream().write(foto);
             }
-        } catch (Exception ex) {
-            throw new ServletException(ex.getMessage());
+        } catch (Exception e) {
+        	log.severe(e.getMessage());
+            throw new ServletException(e.getMessage());
         }
     }
 }

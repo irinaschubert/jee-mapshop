@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -23,6 +24,8 @@ import de.java2enterprise.onlineshop.model.Status;
 public class CartController implements Serializable {
 	
     private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(CartController.class.toString());
     
     @EJB
     private StatusBeanLocal statusBeanLocal;
@@ -66,6 +69,7 @@ public class CartController implements Serializable {
                     .getCurrentInstance()
                     .addMessage("searchForm", m);
         } catch (Exception e) {
+        	log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -89,6 +93,7 @@ public class CartController implements Serializable {
     	try {
     		reservedItems = itemBeanLocal.findItemsByStatusAndBuyer(statusReserved, buyer);
         } catch (Exception e) {
+        	log.severe(e.getMessage());
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
