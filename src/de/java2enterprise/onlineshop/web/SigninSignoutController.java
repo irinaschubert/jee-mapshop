@@ -40,31 +40,35 @@ public class SigninSignoutController implements Serializable {
     	customers = customerBeanLocal.findCustomerByCredentials(customer.getEmail(), customer.getPassword());
         try {
             if(customers.isEmpty()) {
+            	this.setCustomer(null);
                 FacesMessage m = new FacesMessage(
+                		FacesMessage.SEVERITY_ERROR,
                         "Signing in was not successful!",
                         "Sorry, try again!");
                 FacesContext
                         .getCurrentInstance()
                         .addMessage("signinForm", m);
+                return "signin.jsf";
             } else {
                 customer = customers.get(0);
                 FacesMessage m = new FacesMessage(
                         "Successfully signed in!",
-                        "Your id is " + customer.getId());
+                        "Welcome " + customer.getEmail() + ".");
                 FacesContext
                         .getCurrentInstance()
-                        .addMessage("signinForm", m);
+                        .addMessage("searchForm", m);
+                return "search.jsf";
             }
         } catch (Exception e) {
         	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+            		FacesMessage.SEVERITY_ERROR,
+                    "Signing in was not successful!",
+                    "Sorry, try again!");
             FacesContext
                     .getCurrentInstance()
                     .addMessage("signinForm", m);
+            return "signin.jsf";
         }
-        return "signin.jsf";
     }
     
     public String signout() {
