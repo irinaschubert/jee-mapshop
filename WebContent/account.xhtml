@@ -37,11 +37,14 @@
                         <h:outputText value="#{msg['item.status']}:" />
                         <h:outputText value="#{item.status.description}" />
                         <h:commandButton
-                            value="#{msg['delete']}"
+                            value="#{msg['deactivateItem']}"
                             action="#{removeController.deactivateItem(item.id)}" />
                         <h:commandButton
 	                        value="#{msg['editItem']}"
 					        action="#{sellController.editThisItem(item.id)}" />
+					    <h:commandButton
+                            value="#{msg['deleteItem']}"
+                            action="#{removeController.deleteItem(item.id)}" />
 					    <h:link
 					        outcome="editItem"
 				            value="#{msg['editItem']}" />

@@ -27,6 +27,7 @@ ON status TO mapshop_user;
 
 CREATE TABLE item (
 id           NUMBER(19) PRIMARY KEY,
+product_id   NUMBER(10),
 title        VARCHAR2(40) NOT NULL,
 description  VARCHAR2(1000),
 price        NUMBER(12,2) NOT NULL,
@@ -35,7 +36,7 @@ foto         BLOB,
 sold         TIMESTAMP(3),
 seller_id    NUMBER(19),
 buyer_id     NUMBER(19),
-status_id       NUMBER(2) NOT NULL,
+status_id    NUMBER(2) NOT NULL,
 CONSTRAINT fk_seller FOREIGN KEY (seller_id) REFERENCES customer(id),
 CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES customer(id),
 CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES status(id)

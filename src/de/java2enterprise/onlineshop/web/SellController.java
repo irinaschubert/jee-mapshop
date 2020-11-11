@@ -58,8 +58,9 @@ public class SellController implements Serializable {
             item.setFoto(scale(output.toByteArray()));
             item.setStatus(statusActive);
             item.setSeller(customer);
-            String msg = itemBeanLocal.persistItem(item);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+            Long id = itemBeanLocal.persistItem(item);
+            item.setProductId(id);
+            itemBeanLocal.editItem(item);
             return "sell";
         } catch (Exception e) {
         	FacesMessage m = new FacesMessage(

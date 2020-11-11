@@ -35,6 +35,7 @@ public class CartController implements Serializable {
         try {
             Item item = itemBeanLocal.findItem(id);
             Item newItem = new Item();
+            newItem.setProductId(item.getProductId());
     		newItem.setTitle(item.getTitle());
     		newItem.setDescription(item.getDescription());
     		newItem.setFoto(item.getFoto());

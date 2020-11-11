@@ -1,6 +1,7 @@
 package de.java2enterprise.onlineshop.web;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -27,14 +28,60 @@ public class RemoveController implements Serializable {
 
     public String deactivateItem(Long id) {
     	Status statusInactive = statusBeanLocal.findStatus(2L);
+    	Status statusReserved = statusBeanLocal.findStatus(4L);
         try {
         	Item item = itemBeanLocal.findItem(id);
+        	Long productId = item.getProductId();
             item.setStatus(statusInactive);
             item.setStockNumber(0L);
             itemBeanLocal.editItem(item);
+            
+            //remove only from buyer's cart not from history
+            List<Item> childItems = itemBeanLocal.findChildItems(productId);
+            for(int i = 0; i < childItems.size(); i++) {
+            	if(childItems.get(i).getStatus().equals(statusReserved)) {
+            		itemBeanLocal.removeItem(childItems.get(i));
+            	}
+            }
+            
             FacesMessage m = new FacesMessage(
                 "Succesfully deactivated item!",
                 item.getTitle() + " deactivated.");
+            FacesContext
+                .getCurrentInstance()
+                .addMessage("accountForm", m);
+        } catch (Exception e) {
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("accountForm", m);
+        }
+        return "/account.jsf";
+    }
+    
+    public String deleteItem(Long id) {
+    	Status statusReserved = statusBeanLocal.findStatus(4L);
+        try {
+        	Item item = itemBeanLocal.findItem(id);
+        	Long productId = item.getProductId();
+            item.setSeller(null);
+            item.setBuyer(null);
+            itemBeanLocal.removeItem(item);
+            
+            //remove only from buyer's cart not from history
+            List<Item> childItems = itemBeanLocal.findChildItems(productId);
+            for(int i = 0; i < childItems.size(); i++) {
+            	if(childItems.get(i).getStatus().equals(statusReserved)) {
+            		itemBeanLocal.removeItem(childItems.get(i));
+            	}
+            }
+            
+            FacesMessage m = new FacesMessage(
+                "Succesfully deleted item!",
+                item.getTitle() + " deleted.");
             FacesContext
                 .getCurrentInstance()
                 .addMessage("accountForm", m);
@@ -54,9 +101,16 @@ public class RemoveController implements Serializable {
     	Status statusActive = statusBeanLocal.findStatus(1L);
         try {
         	Item item = itemBeanLocal.findItem(id);
-            item.setStatus(statusActive);
+        	Item parentItem = itemBeanLocal.findItem(item.getProductId());
+        	if(parentItem.getStockNumber() == 0) {
+        		parentItem.setStatus(statusActive);
+    		}
+        	parentItem.setStockNumber(parentItem.getStockNumber()+1);
+        	itemBeanLocal.editItem(parentItem);
+        	
             item.setBuyer(null);
-            itemBeanLocal.editItem(item);
+            item.setSeller(null);
+            itemBeanLocal.removeItem(item);
         	
             FacesMessage m = new FacesMessage(
                     "Succesfully removed item from cart!",

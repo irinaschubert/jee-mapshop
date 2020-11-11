@@ -31,7 +31,7 @@
                         <h:outputText value="#{msg['item.price']}:" />
                         <h:outputText value="#{item.price}" />
                         <h:commandButton
-                            value="#{msg['delete']}"
+                            value="#{msg['removeFromCart']}"
                             action="#{removeController.removeItemFromCart(item.id)}" />
                     </h:panelGrid>
                 </h:column>

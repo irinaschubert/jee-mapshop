@@ -27,6 +27,7 @@ public class Item implements Serializable {
             generator="ITEM_ID_GENERATOR")
 	
 	private Long id;
+	private Long product_id;
 	private String title;
 	private String description;
 	private Long stockNumber;
@@ -57,6 +58,14 @@ public class Item implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Long getProductId() {
+		return this.product_id;
+	}
+
+	public void setProductId(Long productId) {
+		this.product_id = productId;
 	}
 
 	public String getTitle() {
