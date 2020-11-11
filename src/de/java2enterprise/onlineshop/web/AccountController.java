@@ -3,6 +3,8 @@ package de.java2enterprise.onlineshop.web;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -40,6 +42,10 @@ public class AccountController implements Serializable {
     }
     
     public List<Item> findOfferedItems(SigninSignoutController signinController) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	List<Item> offeredItems = new ArrayList<Item>();
     	Customer seller = signinController.getCustomer();
     	Status statusActive = statusBeanLocal.findStatus(1L);
@@ -47,26 +53,16 @@ public class AccountController implements Serializable {
         
     	try {
     		offeredItems = itemBeanLocal.findItemsByTwoStatusesAndSeller(statusActive, statusInactive, seller);
-            if(offeredItems.isEmpty()) {
-                FacesMessage m = new FacesMessage(
-                    "No offered items found.",
-                    "No offered items found for user " + seller.getEmail());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage("accountForm", m);
+    		if(offeredItems.isEmpty()) {
+            	
             } else {
-                FacesMessage m = new FacesMessage(
-                    "Offered items successfully retrieved.",
-                    "Offered items successfully retrieved for user " + seller.getEmail());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage("accountForm", m);
+            	
             }
         } catch (Exception e) {
             FacesMessage m = new FacesMessage(
-                FacesMessage.SEVERITY_WARN,
-                e.getMessage(),
-                e.getCause().getMessage());
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                 .getCurrentInstance()
                 .addMessage("accountForm", m);
@@ -75,6 +71,10 @@ public class AccountController implements Serializable {
     }
     
     public List<Item> findSoldItems(SigninSignoutController signinController) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	List<Item> soldItems = new ArrayList<Item>();
     	Customer seller = signinController.getCustomer();
         Status statusSold = statusBeanLocal.findStatus(3L);
@@ -82,25 +82,15 @@ public class AccountController implements Serializable {
     	try {
     		soldItems = itemBeanLocal.findItemsByStatusAndSeller(statusSold, seller);
             if(soldItems.isEmpty()) {
-                FacesMessage m = new FacesMessage(
-                	"No sold items found.",
-                    "No sold items found for user " + seller.getEmail());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage("accountForm", m);
+            	
             } else {
-                FacesMessage m = new FacesMessage(
-                	"Sold items successfully retrieved.",
-                    "Sold items successfully retrieved for user " + seller.getEmail());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage("accountForm", m);
+            	
             }
         } catch (Exception e) {
             FacesMessage m = new FacesMessage(
-                FacesMessage.SEVERITY_WARN,
-                e.getMessage(),
-                e.getCause().getMessage());
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                 .getCurrentInstance()
                 .addMessage("accountForm", m);
@@ -109,6 +99,10 @@ public class AccountController implements Serializable {
     }
     
     public List<Item> findBoughtItems(SigninSignoutController signinController) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	List<Item> boughtItems = new ArrayList<Item>();
         Status statusSold = statusBeanLocal.findStatus(3L);
         Customer buyer = signinController.getCustomer();
@@ -116,25 +110,15 @@ public class AccountController implements Serializable {
     	try {
     		boughtItems = itemBeanLocal.findItemsByStatusAndBuyer(statusSold, buyer);
             if(boughtItems.isEmpty()) {
-                FacesMessage m = new FacesMessage(
-                    "No bought items found.",
-                    "No bought items found for user " + buyer.getEmail());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage("accountForm", m);
+            	
             } else {
-                FacesMessage m = new FacesMessage(
-                	"Bought items successfully retrieved.",
-                    "Bought items successfully retrieved for user " + buyer.getEmail());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage("accountForm", m);
+            	
             }
         } catch (Exception e) {
             FacesMessage m = new FacesMessage(
-                FacesMessage.SEVERITY_WARN,
-                e.getMessage(),
-                e.getCause().getMessage());
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                 .getCurrentInstance()
                 .addMessage("accountForm", m);

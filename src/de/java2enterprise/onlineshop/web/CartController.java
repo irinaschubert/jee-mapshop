@@ -3,6 +3,8 @@ package de.java2enterprise.onlineshop.web;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -29,6 +31,11 @@ public class CartController implements Serializable {
     private ItemBeanLocal itemBeanLocal;
     
     public String reserveItem(Long id, SigninSignoutController signinSignoutController) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    	String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	Status statusInactive = statusBeanLocal.findStatus(2L);
     	Status statusReserved = statusBeanLocal.findStatus(4L);
         Customer customer = signinSignoutController.getCustomer();
@@ -50,51 +57,42 @@ public class CartController implements Serializable {
     		}
     		itemBeanLocal.editItem(item);
     		itemBeanLocal.persistItem(newItem);
+    		
+    		String successDetail = ResourceBundle.getBundle("messages",locale).getString("successReserveItemDetail");
             FacesMessage m = new FacesMessage(
-                    "Item reserved!",
-                    item.getTitle() + " reserved by " + customer.getEmail());
+                    success,
+                    successDetail);
             FacesContext
                     .getCurrentInstance()
-                    .addMessage("cartForm", m);
+                    .addMessage("searchForm", m);
         } catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
-                    .addMessage("cartForm", m);
+                    .addMessage("searchForm", m);
         }
-        return "/search.jsf";
+        return "search.jsf";
     }
     
     public List<Item> findReservedItems(SigninSignoutController signinController) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	Status statusReserved = statusBeanLocal.findStatus(4L);
     	Customer buyer = signinController.getCustomer();
     	List<Item> reservedItems = new ArrayList<Item>();
-        
+    	
     	try {
     		reservedItems = itemBeanLocal.findItemsByStatusAndBuyer(statusReserved, buyer);
-            if(reservedItems.isEmpty()) {
-                FacesMessage m = new FacesMessage(
-                        "No items in cart!",
-                        "No items found!");
-                FacesContext
-                        .getCurrentInstance()
-                        .addMessage("searchForm", m);
-            } else {            	
-                FacesMessage m = new FacesMessage(
-                        "Success",
-                        "Items successfully retrieved");
-                FacesContext
-                        .getCurrentInstance()
-                        .addMessage("cartForm", m);
-            }
         } catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("cartForm", m);

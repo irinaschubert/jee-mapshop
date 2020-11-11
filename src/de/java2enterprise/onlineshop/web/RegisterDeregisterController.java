@@ -3,6 +3,8 @@ package de.java2enterprise.onlineshop.web;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -39,40 +41,51 @@ public class RegisterDeregisterController implements Serializable {
     private ItemBeanLocal itemBeanLocal;
 
     public String registerCustomer() {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	try {
     		customerBeanLocal.persistCustomer(customer);
-    		FacesMessage m = new FacesMessage(
-                "Succesfully registered!",
-                "User " + customer.getEmail() + " has registered with ID " + customer.getId() + ".");
+    		String successDetail = ResourceBundle.getBundle("messages",locale).getString("successRegisterDetail");
+            FacesMessage m = new FacesMessage(
+                    success,
+                    successDetail);
             FacesContext
                 .getCurrentInstance()
                 .addMessage("signinForm", m);
-            return "/signin.jsf";
+            return "signin.jsf";
     	}
     	catch(Exception e) {
     		//TODO catch SQLIntegrityConstraintViolationException, doesn't work yet
     		if (e instanceof DatabaseException) {
+    			String errorDetail = ResourceBundle.getBundle("messages",locale).getString("errorRegisterDetail");
         		FacesMessage m = new FacesMessage(
                     FacesMessage.SEVERITY_ERROR,
-                    "A user with this e-mail already exists!",
-                    "A user with e-mail " + customer.getEmail() + " already exists. Please choose another one.");
+                    error,
+                    errorDetail);
                 FacesContext
                     .getCurrentInstance()
                     .addMessage("registerForm", m);
         	}
-    		FacesMessage m = new FacesMessage(
-    			FacesMessage.SEVERITY_WARN,
-                e.getMessage(),
-                e.getCause().getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                 .getCurrentInstance()
                 .addMessage("registerForm", m);
-            
-            return "/register.jsf";
+            return "register.jsf";
     	}
     }
 
     public String deregisterCustomer(SigninSignoutController signinController) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	Customer customer = signinController.getCustomer();
 		Status statusActive = statusBeanLocal.findStatus(1L);
         Status statusSold = statusBeanLocal.findStatus(3L);
@@ -84,117 +97,68 @@ public class RegisterDeregisterController implements Serializable {
     	try {
             //find active items to delete
             activeItems = itemBeanLocal.findItemsByTwoStatusesAndSeller(statusActive, statusReserved, customer);
-	        if(activeItems.isEmpty()) {
-	            FacesMessage m = new FacesMessage(
-	                "No sold and active items found!",
-	                "No sold and active items found belonging to customer " + customer.getEmail());
-	            FacesContext
-	                .getCurrentInstance()
-	                .addMessage("signinForm", m);
-	        } else {
+	        if(!activeItems.isEmpty()) {
 	        	for(int i = 0; i < activeItems.size(); i++) {
 	        		Item item = activeItems.get(i);
 	        		item.setSeller(null);
 	        		itemBeanLocal.removeItem(item);
 	        	}
-	    		FacesMessage m = new FacesMessage(
-	                "Succesfully cleand up sold and active items of user!",
-	                "Cleand up sold and active items of user by setting seller to null.");
-	            FacesContext
-	                .getCurrentInstance()
-	                .addMessage("signinForm", m);
 	        }
 	        
 	        //find bought items to clean up
 	        boughtItems = itemBeanLocal.findItemsByStatusAndBuyer(statusSold, customer);
-	        if(boughtItems.isEmpty()) {
-	            FacesMessage m = new FacesMessage(
-	                "No bought items found!",
-	                "No bought items found belonging to customer " + customer.getEmail());
-	            FacesContext
-	                .getCurrentInstance()
-	                .addMessage("signinForm", m);
-	        } else {
+	        if(!boughtItems.isEmpty()) {
 	        	for(int i = 0; i < boughtItems.size(); i++) {
 	        		Item item = boughtItems.get(i);
 	        		item.setBuyer(null);
 	        		itemBeanLocal.editItem(item);
 	        	}
-	    		FacesMessage m = new FacesMessage(
-	                "Succesfully cleand up bought items of user!",
-	                "Cleand up bought items of user by setting buyer to null.");
-	            FacesContext
-	                .getCurrentInstance()
-	                .addMessage("signinForm", m);
 	        }
 	        
 	        //find reserved items to clean up
 	        reservedItems = itemBeanLocal.findItemsByStatusAndBuyer(statusReserved, customer);
-	        if(reservedItems.isEmpty()) {
-	            FacesMessage m = new FacesMessage(
-	                "No bought items found!",
-	                "No bought items found belonging to customer " + customer.getEmail());
-	            FacesContext
-	                .getCurrentInstance()
-	                .addMessage("signinForm", m);
-	        } else {
+	        if(!reservedItems.isEmpty()) {
 	        	for(int i = 0; i < reservedItems.size(); i++) {
 	        		Item item = reservedItems.get(i);
 	        		item.setBuyer(null);
 	        		item.setStatus(statusActive);
 	        		itemBeanLocal.editItem(item);
 	        	}
-	    		FacesMessage m = new FacesMessage(
-	                "Succesfully cleand up reserved items of user!",
-	                "Cleand up reserved items of user by setting buyer to null.");
-	            FacesContext
-	                .getCurrentInstance()
-	                .addMessage("signinForm", m);
 	        }
 	        
 	        //find sold items to clean up
 	        soldItems = itemBeanLocal.findItemsByStatusAndSeller(statusSold, customer);
-	        if(soldItems.isEmpty()) {
-	            FacesMessage m = new FacesMessage(
-	                "No sold items found!",
-	                "No sold items found belonging to customer " + customer.getEmail());
-	            FacesContext
-	                .getCurrentInstance()
-	                .addMessage("signinForm", m);
-	        } else {
+	        if(!soldItems.isEmpty()) {
 	        	for(int i = 0; i < soldItems.size(); i++) {
 	        		Item item = soldItems.get(i);
 	        		item.setSeller(null);
 	        		itemBeanLocal.editItem(item);
 	        	}
-	    		FacesMessage m = new FacesMessage(
-	                "Succesfully cleand up bought items of user!",
-	                "Cleand up bought items of user by setting buyer to null.");
-	            FacesContext
-	                .getCurrentInstance()
-	                .addMessage("signinForm", m);
 	        }
 	        
-	        //TODO show deregister message
+	        //log out after deregistering
 	        String result = customerBeanLocal.removeCustomer(customer);
-	        if(result == "customerRemoved") {
+	        if(result.equals("customerRemoved")) {
 	        	this.setCustomer(null);
 		    	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		    	String successDetail = ResourceBundle.getBundle("messages",locale).getString("successDeregisterDeatil");
+	            FacesMessage m = new FacesMessage(
+	                    success,
+	                    successDetail);
+	            FacesContext
+	            	.getCurrentInstance()
+	            	.addMessage("signinForm", m);
 	        }
-	        
-	        return "signin";
-	        
     	}catch(Exception e) {
-    		FacesMessage m = new FacesMessage(
-                FacesMessage.SEVERITY_WARN,
-                e.getMessage(),
-                e.getCause().getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                 .getCurrentInstance()
-                .addMessage("welcomeForm", m);
-            //TODO show deregister message
-            return "failCustomerRemove";
+                .addMessage("signinForm", m);
     	}
+    	return "signin.jsf";
     }
     
     public Customer getCustomer() {

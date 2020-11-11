@@ -9,6 +9,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.Conversation;
@@ -54,14 +56,21 @@ public class EditController implements Serializable {
     	return "/editItem.xhtml";
     }
     
-    public void titleChanged(ValueChangeEvent event) {
+    public String titleChanged(ValueChangeEvent event) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+        String successDetail = ResourceBundle.getBundle("messages",locale).getString("successUpdateItemDetail");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	String title = (String) event.getNewValue();
     	try {
     		item.setTitle(title);
     		itemBeanLocal.editItem(item);
-    		FacesMessage m = new FacesMessage(
-                    "Successfully changed item!",
-                    "Item has been successfully updated.");
+    		
+            FacesMessage m = new FacesMessage(
+                    success,
+                    successDetail);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editItemForm", m);
@@ -69,24 +78,32 @@ public class EditController implements Serializable {
             	conversation.end();
             }
     	}catch(Exception e) {
-    		FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editItemForm", m);
     	}
+    	return "editItem.jsf";
     }
     
-    public void descriptionChanged(ValueChangeEvent event) {
+    public String descriptionChanged(ValueChangeEvent event) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+        String successDetail = ResourceBundle.getBundle("messages",locale).getString("successUpdateItemDetail");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	String description = (String) event.getNewValue();
     	try {
     		item.setDescription(description);
     		itemBeanLocal.editItem(item);
-    		FacesMessage m = new FacesMessage(
-                    "Successfully changed item!",
-                    "Item has been successfully updated.");
+    		
+            FacesMessage m = new FacesMessage(
+                    success,
+                    successDetail);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editItemForm", m);
@@ -94,24 +111,32 @@ public class EditController implements Serializable {
             	conversation.end();
             }
     	}catch(Exception e) {
-    		FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editItemForm", m);
     	}
+    	return "editItem.jsf";
     }
     
-    public void priceChanged(ValueChangeEvent event) {
+    public String priceChanged(ValueChangeEvent event) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+        String successDetail = ResourceBundle.getBundle("messages",locale).getString("successUpdateItemDetail");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	Double price = (Double) event.getNewValue();
     	try {
     		item.setPrice(price);
     		itemBeanLocal.editItem(item);
-    		FacesMessage m = new FacesMessage(
-                    "Successfully changed item!",
-                    "Item has been successfully updated.");
+    		
+            FacesMessage m = new FacesMessage(
+                    success,
+                    successDetail);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editItemForm", m);
@@ -119,24 +144,32 @@ public class EditController implements Serializable {
             	conversation.end();
             }
     	}catch(Exception e) {
-    		FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editItemForm", m);
     	}
+    	return "editItem.jsf";
     }
     
-    public void stockNumberChanged(ValueChangeEvent event) {
+    public String stockNumberChanged(ValueChangeEvent event) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+        String successDetail = ResourceBundle.getBundle("messages",locale).getString("successUpdateItemDetail");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	Long stockNumber = (Long) event.getNewValue();
     	try {
     		item.setStockNumber(stockNumber);
     		itemBeanLocal.editItem(item);
-    		FacesMessage m = new FacesMessage(
-                    "Successfully changed item!",
-                    "Item has been successfully updated.");
+    		
+            FacesMessage m = new FacesMessage(
+                    success,
+                    successDetail);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editItemForm", m);
@@ -144,17 +177,24 @@ public class EditController implements Serializable {
             	conversation.end();
             }
     	}catch(Exception e) {
-    		FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editItemForm", m);
     	}
+    	return "editItem.jsf";
     }
     
-    public void fotoChanged(ValueChangeEvent event) {
+    public String fotoChanged(ValueChangeEvent event) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    	String success = ResourceBundle.getBundle("messages",locale).getString("success");
+        String successDetail = ResourceBundle.getBundle("messages",locale).getString("successUpdateItemDetail");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	Part part = (Part) event.getNewValue();
 		try {
 			InputStream input = part.getInputStream();
@@ -164,32 +204,35 @@ public class EditController implements Serializable {
 	            output.write(buffer, 0, length);
 	        }
 	        item.setFoto(scale(output.toByteArray()));
+	        itemBeanLocal.editItem(item);
+	        FacesMessage m = new FacesMessage(
+                    success,
+                    successDetail);
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("editItemForm", m);
+            if(!conversation.isTransient()) {
+            	conversation.end();
+            }
 		} catch (IOException e) {
-			FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editItemForm", m);
 		}
-    	try {
-    		itemBeanLocal.editItem(item);
-    		FacesMessage m = new FacesMessage(
-                    "Successfully changed item!",
-                    "Item has been successfully updated.");
-            FacesContext
-                    .getCurrentInstance()
-                    .addMessage("editItemForm", m);
-    	}catch(Exception e) {
-    		FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+    	catch(Exception e) {
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editItemForm", m);
     	}
+		return "editItem.jsf";
     }
 
     public byte[] scale(byte[] foto) throws IOException {

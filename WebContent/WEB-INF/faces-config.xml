@@ -70,27 +70,6 @@
 		</to-view-id>
 		<redirect/>
 	</navigation-case>
-	<navigation-case>
-		<from-outcome>customerPersisted</from-outcome>
-		<to-view-id>
-			/index.xhtml
-		</to-view-id>
-		<redirect/>
-	</navigation-case>
-	<navigation-case>
-		<from-outcome>customerRemoved</from-outcome>
-		<to-view-id>
-			/index.xhtml
-		</to-view-id>
-		<redirect/>
-	</navigation-case>
-	<navigation-case>
-		<from-outcome>failCustomerRemove</from-outcome>
-		<to-view-id>
-			/account.xhtml
-		</to-view-id>
-		<redirect/>
-	</navigation-case>
 </navigation-rule>
 </faces-config>
 

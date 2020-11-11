@@ -33,6 +33,11 @@ public class SearchController implements Serializable {
     private String termBefore;
     
     public List<Item> findItems() {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String warning = ResourceBundle.getBundle("messages",locale).getString("warning");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	List<Item> resultItems = new ArrayList<Item>();
     	Status statusActive = statusBeanLocal.findStatus(1L);
     	termBefore = term;
@@ -43,25 +48,16 @@ public class SearchController implements Serializable {
         	resultItems = itemBeanLocal.findItemsByQuery(statusActive, term);
         	term = termBefore;
         	if(resultItems.isEmpty()) {
+        		String warnDetail = ResourceBundle.getBundle("messages",locale).getString("warnSearchDetail");
                 FacesMessage m = new FacesMessage(
                 		FacesMessage.SEVERITY_WARN,
-                        "No items matching your search!",
-                        "Try again with a new search term or browse all items.");
-                FacesContext
-                        .getCurrentInstance()
-                        .addMessage("searchForm", m);
-            } else {
-                FacesMessage m = new FacesMessage(
-                        "Successfully retrieved items!",
-                        "All items matching your search are listed below.");
+                        warning,
+                        warnDetail);
                 FacesContext
                         .getCurrentInstance()
                         .addMessage("searchForm", m);
             }
         } catch (Exception e) {
-        	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-        	String error = ResourceBundle.getBundle("messages",locale).getString("error");
-        	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,

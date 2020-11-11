@@ -38,15 +38,18 @@ public class SigninSignoutController implements Serializable {
     }
 
     public String signin() {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	List<Customer> customers = new ArrayList<Customer>();
     	customers = customerBeanLocal.findCustomerByCredentials(customer.getEmail(), customer.getPassword());
         try {
             if(customers.isEmpty()) {
             	this.setCustomer(null);
             	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-            	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
             	String errorLogin = ResourceBundle.getBundle("messages",locale).getString("errorLogin");
-            	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
                 FacesMessage m = new FacesMessage(
                 		FacesMessage.SEVERITY_WARN,
                 		errorLogin,
@@ -57,18 +60,16 @@ public class SigninSignoutController implements Serializable {
                 return "signin.jsf";
             } else {
                 customer = customers.get(0);
+            	String successDetail = ResourceBundle.getBundle("messages",locale).getString("successLoginDetail");
                 FacesMessage m = new FacesMessage(
-                        "Successfully signed in!",
-                        "Welcome " + customer.getEmail() + ".");
+                        success,
+                        successDetail);
                 FacesContext
                         .getCurrentInstance()
                         .addMessage("searchForm", m);
                 return "search.jsf";
             }
         } catch (Exception e) {
-        	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-        	String error = ResourceBundle.getBundle("messages",locale).getString("error");
-        	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -81,32 +82,39 @@ public class SigninSignoutController implements Serializable {
     }
     
     public String signout() {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	
     	this.setCustomer(null);
     	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-    	FacesMessage m = new FacesMessage(
-                "Successfully signed out!",
-                "Goodbye " + customer.getEmail() + ".");
+    	String successDetail = ResourceBundle.getBundle("messages",locale).getString("successSignoutDetail");
+        FacesMessage m = new FacesMessage(
+                success,
+                successDetail);
         FacesContext
                 .getCurrentInstance()
                 .addMessage("signinForm", m);
     	return "signin.jsf";
     }
     
-    public void emailChanged(ValueChangeEvent event) {
+    public String emailChanged(ValueChangeEvent event) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	String email = (String) event.getNewValue();
     	try {
     		customer.setEmail(email);
     		customerBeanLocal.editCustomer(customer);
-    		FacesMessage m = new FacesMessage(
-                    "Successfully updated profile!",
-                    "Your old email is no longer valid.");
+        	String successDetail = ResourceBundle.getBundle("messages",locale).getString("successEmailChangedDeatil");
+            FacesMessage m = new FacesMessage(
+                    success,
+                    successDetail);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editProfileForm", m);
     	}catch(Exception e) {
-    		Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-        	String error = ResourceBundle.getBundle("messages",locale).getString("error");
-        	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -115,23 +123,27 @@ public class SigninSignoutController implements Serializable {
                     .getCurrentInstance()
                     .addMessage("editProfileForm", m);
     	}
+    	return "editProfile.jsf";
     }
     
-    public void passwordChanged(ValueChangeEvent event) {
+    public String passwordChanged(ValueChangeEvent event) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	String password = (String) event.getNewValue();
     	try {
     		customer.setPassword(password);
     		customerBeanLocal.editCustomer(customer);
-    		FacesMessage m = new FacesMessage(
-                    "Successfully updated profile!",
-                    "Your old password is no longer valid.");
+        	String successDetail = ResourceBundle.getBundle("messages",locale).getString("successPasswordChangedDeatil");
+            FacesMessage m = new FacesMessage(
+                    success,
+                    successDetail);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editProfileForm", m);
     	}catch(Exception e) {
-    		Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-        	String error = ResourceBundle.getBundle("messages",locale).getString("error");
-        	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
             FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
                     error,
@@ -140,5 +152,6 @@ public class SigninSignoutController implements Serializable {
                     .getCurrentInstance()
                     .addMessage("editProfileForm", m);
     	}
+    	return "editProfile.jsf";
     }
 }

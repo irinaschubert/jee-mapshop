@@ -3,6 +3,8 @@ package de.java2enterprise.onlineshop.web;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -29,6 +31,12 @@ public class BuyController implements Serializable {
     private ItemBeanLocal itemBeanLocal;
     
     public String buyItems(SigninSignoutController signinController) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    	String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String warning = ResourceBundle.getBundle("messages",locale).getString("warning");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	Status statusSold = statusBeanLocal.findStatus(3L);
     	Status statusReserved = statusBeanLocal.findStatus(4L);
     	Customer buyer = signinController.getCustomer();
@@ -36,9 +44,11 @@ public class BuyController implements Serializable {
     	try {
     		List<Item> reservedItems = itemBeanLocal.findItemsByStatusAndBuyer(statusReserved, buyer);
 	        if(reservedItems.isEmpty()) {
-	            FacesMessage m = new FacesMessage(
-	                    "No reserved Items found!",
-	                    "No items found!");
+	        	String warnDetail = ResourceBundle.getBundle("messages",locale).getString("warnShowReservedItemsDetail");
+	        	FacesMessage m = new FacesMessage(
+	            		FacesMessage.SEVERITY_WARN,
+	                    warning,
+	                    warnDetail);
 	            FacesContext
 	                    .getCurrentInstance()
 	                    .addMessage("cartForm", m);
@@ -50,23 +60,24 @@ public class BuyController implements Serializable {
 	        		item.setSold(LocalDateTime.now());
 	        		itemBeanLocal.editItem(item);
 	        	}
+	        	String successDetail = ResourceBundle.getBundle("messages",locale).getString("successBuyItemsDetail");
 	            FacesMessage m = new FacesMessage(
-	                    "Successfully bought items!",
-	                    "Successfully bought reserved items");
+	                    success,
+	                    successDetail);
 	            FacesContext
 	                    .getCurrentInstance()
 	                    .addMessage("cartForm", m);
 	        }
     } catch (Exception e) {
         FacesMessage m = new FacesMessage(
-                FacesMessage.SEVERITY_WARN,
-                e.getMessage(),
-                e.getCause().getMessage());
+        		FacesMessage.SEVERITY_ERROR,
+                error,
+                tryAgain);
         FacesContext
                 .getCurrentInstance()
                 .addMessage("cartForm", m);
     }
-    return "/cart.jsf";
+    return "cart.jsf";
     	
     }
 }

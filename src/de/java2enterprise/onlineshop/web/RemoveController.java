@@ -2,6 +2,8 @@ package de.java2enterprise.onlineshop.web;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -27,6 +29,11 @@ public class RemoveController implements Serializable {
     private StatusBeanLocal statusBeanLocal;
 
     public String deactivateItem(Long id) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	Status statusInactive = statusBeanLocal.findStatus(2L);
     	Status statusReserved = statusBeanLocal.findStatus(4L);
         try {
@@ -44,25 +51,31 @@ public class RemoveController implements Serializable {
             	}
             }
             
+            String successDetail = ResourceBundle.getBundle("messages",locale).getString("successDeactivateItemDetail");
             FacesMessage m = new FacesMessage(
-                "Succesfully deactivated item!",
-                item.getTitle() + " is no longer available for other users.");
+                    success,
+                    successDetail);
             FacesContext
                 .getCurrentInstance()
                 .addMessage("accountForm", m);
         } catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_ERROR,
-                    "Deactivation of item didn't work!",
-                    "Please try again");
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("accountForm", m);
         }
-        return "/account.jsf";
+        return "account.jsf";
     }
     
     public String deleteItem(Long id) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	Status statusReserved = statusBeanLocal.findStatus(4L);
         try {
         	Item item = itemBeanLocal.findItem(id);
@@ -79,25 +92,31 @@ public class RemoveController implements Serializable {
             	}
             }
             
+            String successDetail = ResourceBundle.getBundle("messages",locale).getString("successDeleteItemDetail");
             FacesMessage m = new FacesMessage(
-                "Succesfully deleted item!",
-                item.getTitle() + " deleted.");
+                    success,
+                    successDetail);
             FacesContext
                 .getCurrentInstance()
                 .addMessage("accountForm", m);
         } catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("accountForm", m);
         }
-        return "/account.jsf";
+        return "account.jsf";
     }
     
     public String removeItemFromCart(Long id) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	Status statusActive = statusBeanLocal.findStatus(1L);
         try {
         	Item item = itemBeanLocal.findItem(id);
@@ -112,21 +131,22 @@ public class RemoveController implements Serializable {
             item.setSeller(null);
             itemBeanLocal.removeItem(item);
         	
+            String successDetail = ResourceBundle.getBundle("messages",locale).getString("successRemoveItemFromCartDetail");
             FacesMessage m = new FacesMessage(
-                    "Succesfully removed item from cart!",
-                    item.getTitle() + " removed.");
+                    success,
+                    successDetail);
                 FacesContext
                     .getCurrentInstance()
-                    .addMessage("accountForm", m);
+                    .addMessage("cartForm", m);
         } catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
-                    .addMessage("accountForm", m);
+                    .addMessage("cartForm", m);
         }
-        return "/cart.jsf";
+        return "cart.jsf";
     }
 }

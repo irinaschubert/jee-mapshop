@@ -9,6 +9,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -44,6 +46,11 @@ public class SellController implements Serializable {
     private ItemBeanLocal itemBeanLocal;
     
     public String sellItem(SigninSignoutController signinController) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
     	Status statusActive = statusBeanLocal.findStatus(1L);
     	Customer customer = signinController.getCustomer();
     	
@@ -62,27 +69,29 @@ public class SellController implements Serializable {
         	}
             item.setStatus(statusActive);
             item.setSeller(customer);
-            Long id = itemBeanLocal.persistItem(item);
-            item.setProductId(id);
+            Long productId = itemBeanLocal.persistItem(item);
+            item.setProductId(productId);
             itemBeanLocal.editItem(item);
             
+            item = null;
+            
+        	String successDetail = ResourceBundle.getBundle("messages",locale).getString("successItemCreationDeatil");
             FacesMessage m = new FacesMessage(
-            		FacesMessage.SEVERITY_ERROR,
-                    "Successfully created Item!",
-                    "You can find it now in your account.");
+                    success,
+                    successDetail);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("sellForm", m);
         } catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
+            FacesMessage m = new FacesMessage(
             		FacesMessage.SEVERITY_ERROR,
-                    "Creating a new Item was not successful!",
-                    "Sorry, try again.");
+                    error,
+                    tryAgain);
             FacesContext
                     .getCurrentInstance()
                     .addMessage("sellForm", m);
         }
-        return "/sell.jsf";
+        return "sell.jsf";
     }
 	
 	
