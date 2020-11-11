@@ -6,7 +6,7 @@ DROP TABLE status CASCADE constraints;
 CREATE TABLE customer (
 id         NUMBER(19) PRIMARY KEY,
 email      VARCHAR2(40) NOT NULL UNIQUE,
-password   VARCHAR2(10) NOT NULL
+password   VARCHAR2(40) NOT NULL
            CHECK(LENGTH(password)>=6)
 );
 GRANT SELECT, INSERT, UPDATE, DELETE 

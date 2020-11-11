@@ -48,13 +48,18 @@ public class SellController implements Serializable {
     	Customer customer = signinController.getCustomer();
     	
         try {
-            InputStream input = part.getInputStream();
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            for (int length = 0; (length = input.read(buffer)) > 0;) {
-                output.write(buffer, 0, length);
-            }
-            item.setFoto(scale(output.toByteArray()));
+        	if(part != null) {
+        		InputStream input = part.getInputStream();
+                ByteArrayOutputStream output = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                for (int length = 0; (length = input.read(buffer)) > 0;) {
+                    output.write(buffer, 0, length);
+                }
+                item.setFoto(scale(output.toByteArray()));
+        	}
+        	else {
+        		item.setFoto(null);
+        	}
             item.setStatus(statusActive);
             item.setSeller(customer);
             Long id = itemBeanLocal.persistItem(item);

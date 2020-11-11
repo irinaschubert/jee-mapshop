@@ -32,6 +32,7 @@
                 			minimum="6"
                 			maximum="40" />
                 	</h:inputText>
+                	<h:message for="email" />
                 </h:panelGroup>
                 <h:outputLabel value="#{msg['password']}:" />
                 <h:panelGroup>
@@ -45,6 +46,7 @@
                 			minimum="6"
                 			maximum="40" />
                 	</h:inputSecret>
+                	<h:message for="password" />
                 </h:panelGroup>
                 <h:commandButton 
                 	value="#{msg['change']}"

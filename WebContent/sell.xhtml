@@ -22,18 +22,60 @@
                     <h:outputText value="#{msg['sell']}" />
                 </f:facet>
                 <h:outputLabel value="#{msg['item.title']}:" />
-                <h:inputText
-                    id="title"
-                    value="#{sellController.item.title}" />
+                <h:panelGroup>
+	                <h:inputText
+	                    id="title"
+	                    label="#{msg['item.title']}"
+	                    required="true"
+	                    value="#{sellController.item.title}" >
+	                    <f:validateLength 
+	                		maximum="40" />
+	                </h:inputText>
+	                <h:message for="title" />
+                </h:panelGroup>
                 <h:outputLabel value="#{msg['item.description']}:" />
-                <h:inputTextarea
-                    value="#{sellController.item.description}" />
+                <h:panelGroup>
+	                <h:inputTextarea
+	                	id="description"
+	                	label="#{msg['item.description']}"
+	                    value="#{sellController.item.description}" >
+	                    <f:validateLength
+	                		maximum="1000" />
+	                </h:inputTextarea>
+	                <h:message for="description" />
+                </h:panelGroup>
                 <h:outputLabel value="#{msg['item.price']}:" />
-                <h:inputText value="#{sellController.item.price}" />
+                <h:panelGroup>
+	                <h:inputText
+	                	id="price"
+	                	label="#{msg['item.price']}"
+	                	required="true" 
+	                	value="#{sellController.item.price}" >
+	                	<f:validateLength
+	                		maximum="15" />
+	                </h:inputText>
+	                <h:message for="price" />
+                </h:panelGroup>
                 <h:outputLabel value="#{msg['item.stockNumber']}:" />
-                <h:inputText value="#{sellController.item.stockNumber}" />
+                <h:panelGroup>
+	                <h:inputText
+	                	id="stockNumber"
+	                	label="#{msg['item.stockNumber']}"
+	                	required="true" 
+	                	value="#{sellController.item.stockNumber}" >
+	                	<f:validateLength
+	                		maximum="6" />
+	                </h:inputText>
+	                <h:message for="stockNumber" />
+                </h:panelGroup>
                 <h:outputLabel value="#{msg['item.foto']}:" />
-                <h:inputFile value="#{sellController.part}" />
+                <h:panelGroup>
+	                <h:inputFile
+	                	id="foto"
+	                	label="#{msg['item.foto']}"
+	                	value="#{sellController.part}" />
+	                <h:message for="foto" />
+                </h:panelGroup>
                 <h:commandButton
                     value="#{msg['sell']}"
                     action="#{sellController.sellItem(signinSignoutController)}" />

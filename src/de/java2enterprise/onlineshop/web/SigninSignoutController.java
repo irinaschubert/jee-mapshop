@@ -108,9 +108,9 @@ public class SigninSignoutController implements Serializable {
                     .addMessage("editProfileForm", m);
     	}catch(Exception e) {
     		FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
+    				FacesMessage.SEVERITY_WARN,
+                    "Couldn't change profile!",
+                    "Please try again.");
             FacesContext
                     .getCurrentInstance()
                     .addMessage("editProfileForm", m);

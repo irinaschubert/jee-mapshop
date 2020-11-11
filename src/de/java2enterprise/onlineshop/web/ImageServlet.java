@@ -31,8 +31,10 @@ public class ImageServlet extends HttpServlet {
                                     + "where i.id = :id");
             query.setParameter("id", Long.parseLong(id));
             byte[] foto = (byte[]) query.getSingleResult();
-            response.reset();
-            response.getOutputStream().write(foto);
+            if(foto != null) {
+            	response.reset();
+                response.getOutputStream().write(foto);
+            }
         } catch (Exception ex) {
             throw new ServletException(ex.getMessage());
         }

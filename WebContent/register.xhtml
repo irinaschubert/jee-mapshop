@@ -16,24 +16,36 @@
                 warnClass="warn"
                 errorClass="error"
                 fatalClass="fatal" />
-            <h:panelGrid columns="3">
+            <h:panelGrid columns="2">
                 <f:facet name="header">
                     <h:outputText value="#{msg['register']}" />
                 </f:facet>
                 <h:outputLabel value="#{msg['email']}:" />
-                <h:inputText
-                    id="email"
-                    value="#{registerDeregisterController.customer.email}"
-                    required="true"
-                    requiredMessage="Please provide your email."/>
-                <h:message for="email" />
+                <h:panelGroup>
+	                <h:inputText
+	                    id="email"
+	                    label="#{msg['email']}"
+	                    value="#{registerDeregisterController.customer.email}"
+	                    required="true">
+	                    <f:validateLength 
+			                minimum="6"
+			                maximum="40" />
+	                </h:inputText>
+	                <h:message for="email" />
+                </h:panelGroup>
                 <h:outputLabel value="#{msg['password']}:" />
-                <h:inputSecret
-                    id="password"
-                    value="#{registerDeregisterController.customer.password}" 
-                    required="true"
-                    requiredMessage="Please provide a password."/>
-                <h:message for="password" />
+                <h:panelGroup>
+	                <h:inputSecret
+	                    id="password"
+	                    label="#{msg['password']}"
+	                    value="#{registerDeregisterController.customer.password}" 
+	                    required="true">
+	                    <f:validateLength 
+		                	minimum="6"
+		                	maximum="40" />
+		            </h:inputSecret>
+	                <h:message for="password" />
+                </h:panelGroup>
                 <h:commandButton
                     id="registerButton"
                     action="#{registerDeregisterController.registerCustomer()}"

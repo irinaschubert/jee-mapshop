@@ -9,33 +9,40 @@
         <h:form
             id="signinForm"
             prependId="false">
-            <h:message for="signinForm"
+            <h:message 
+            	for="signinForm"
                 showSummary="true"
                 infoClass="info"
                 warnClass="warn"
                 errorClass="error"
                 fatalClass="fatal" />
-            <h:panelGrid columns="3">
+            <h:panelGrid columns="2">
                 <f:facet name="header">
                     <h:outputText value="#{msg['signin']}" />
                 </f:facet>
                 <h:outputLabel value="#{msg['email']}:" />
-                <h:inputText
-                    id="email"
-                    value="#{signinSignoutController.customer.email}">
-                </h:inputText>
-                <h:message for="email" />
+                <h:panelGroup>
+	                <h:inputText
+	                    id="email"
+	                    label="#{msg['email']}"
+	                    required="true"
+	                    value="#{signinSignoutController.customer.email}"/>
+	                <h:message for="email" />
+	            </h:panelGroup>
                 <h:outputLabel value="#{msg['password']}:" />
-                <h:inputSecret
-                    id="password"
-                    value="#{signinSignoutController.customer.password}">
-                </h:inputSecret>
-                <h:message for="password" />
-                <h:commandButton
-                    id="signinButton"
-                    action="#{signinSignoutController.signin()}"
-                    value="#{msg['signin']}" />
-                <h:message for="signinButton" />
+                <h:panelGroup>
+	                <h:inputSecret
+	                    id="password"
+	                    label="#{msg['password']}"
+	                    required="true"
+	                    value="#{signinSignoutController.customer.password}"/>
+	                <h:message for="password" />
+	            </h:panelGroup>
+	            <h:commandButton
+	                id="signinButton"
+	                action="#{signinSignoutController.signin()}"
+	                value="#{msg['signin']}" />
+	            <h:message for="signinButton" />
             </h:panelGrid>
         </h:form>
     </ui:define>
