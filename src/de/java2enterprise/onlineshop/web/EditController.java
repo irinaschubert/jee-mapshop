@@ -47,11 +47,9 @@ public class EditController implements Serializable {
     private ItemBeanLocal itemBeanLocal;
     
 	public String editThisItem(Long id) {
-		System.out.println("ID ist: " + id);
 		if(conversation.isTransient()) {
 			conversation.begin();
 			item = itemBeanLocal.findItem(id);
-			System.out.println("Item ist: " + item);
 		}
     	return "/editItem.xhtml";
     }
