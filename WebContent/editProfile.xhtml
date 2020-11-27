@@ -51,10 +51,14 @@
                 <h:commandButton 
                 	value="#{msg['change']}"
                 	action="editProfile" />
+                <h:commandButton
+        			value="#{msg['deregister']}"
+            		action="#{registerDeregisterController.deregisterCustomer(signinSignoutController)}"/>
+            	<h:commandButton
+		            action="#{sellController.cancel()}"
+		            value="#{msg['cancel']}"
+		            immediate="true"  />
             </h:panelGrid>
-            <h:commandButton
-        		value="#{msg['deregister']}"
-            	action="#{registerDeregisterController.deregisterCustomer(signinSignoutController)}"/>
         </h:form>
     </ui:define>
 </ui:composition>

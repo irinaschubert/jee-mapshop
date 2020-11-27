@@ -16,25 +16,26 @@
                 warnClass="warn"
                 errorClass="error"
                 fatalClass="fatal" />
-            <h:panelGrid columns="3">
+            <h:panelGrid columns="2">
                 <f:facet name="header">
                     <h:outputText value="#{msg['search']}" />
                 </f:facet>
-                <h:outputLabel value="#{msg['searchTerm']}:" />
-                <h:inputText
-                    id="term"
-                    value="#{searchController.term}">
-                </h:inputText>
-                <h:message for="searchTerm" />
+                <h:panelGroup>
+	                <h:inputText
+	                    id="term"
+	                    value="#{searchController.term}">
+	                </h:inputText>
+	                <h:message for="searchTerm" />
+	            </h:panelGroup>
                 <h:commandButton
                     id="search"
                     action="#{searchController.findItems()}"
                     value="#{msg['search']}" />
-                <h:message for="search" />
             </h:panelGrid>
         </h:form>
     	<h:form>
             <h:dataTable
+                class="searchTable"
             	value="#{searchController.findItems()}"
                 var="item">
                 <h:column>
@@ -47,7 +48,8 @@
                         <h:outputText value="#{item.price}" />
                         <h:outputText value="#{msg['item.stockNumber']}:" />
                         <h:outputText value="#{item.stockNumber}" />
-                        <h:outputText 
+                        
+                        <h:outputText
                         	value="#{msg['warnOwnItem']}" 
                         	rendered="#{signinSignoutController.customer.id == item.seller.id}"/>
                         <h:commandButton

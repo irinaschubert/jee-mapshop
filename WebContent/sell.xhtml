@@ -79,6 +79,10 @@
                 <h:commandButton
                     value="#{msg['sell']}"
                     action="#{sellController.sellItem(signinSignoutController)}" />
+                <h:commandButton
+		            action="#{sellController.cancel()}"
+		            value="#{msg['cancel']}"
+		            immediate="true"  />
             </h:panelGrid>
         </h:form>
         </ui:define>

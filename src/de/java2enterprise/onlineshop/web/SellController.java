@@ -97,6 +97,10 @@ public class SellController implements Serializable {
         }
         return "sell.jsf";
     }
+    
+    public String cancel() {
+        return "account.jsf";
+    }
 	
 	
     public byte[] scale(byte[] foto) throws IOException {

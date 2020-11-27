@@ -42,6 +42,10 @@ public class RegisterDeregisterController implements Serializable {
     
     @EJB
     private ItemBeanLocal itemBeanLocal;
+    
+    public String cancel() {
+        return "signin.jsf";
+    }
 
     public String registerCustomer() {
     	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();

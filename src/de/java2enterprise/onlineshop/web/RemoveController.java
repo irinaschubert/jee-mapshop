@@ -31,6 +31,39 @@ public class RemoveController implements Serializable {
     @EJB
     private StatusBeanLocal statusBeanLocal;
 
+    public String activateItem(Long id) {
+    	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        String success = ResourceBundle.getBundle("messages",locale).getString("success");
+    	String error = ResourceBundle.getBundle("messages",locale).getString("error");
+    	String tryAgain = ResourceBundle.getBundle("messages",locale).getString("tryAgain");
+    	
+    	Status statusActive = statusBeanLocal.findStatus(1L);
+        try {
+        	Item item = itemBeanLocal.findItem(id);
+            item.setStatus(statusActive);
+            item.setStockNumber(1L);
+            itemBeanLocal.editItem(item);
+            
+            String successDetail = ResourceBundle.getBundle("messages",locale).getString("successActivateItemDetail");
+            FacesMessage m = new FacesMessage(
+                    success,
+                    successDetail);
+            FacesContext
+                .getCurrentInstance()
+                .addMessage("accountForm", m);
+        } catch (Exception e) {
+        	log.severe(e.getMessage());
+            FacesMessage m = new FacesMessage(
+            		FacesMessage.SEVERITY_ERROR,
+                    error,
+                    tryAgain);
+            FacesContext
+                    .getCurrentInstance()
+                    .addMessage("accountForm", m);
+        }
+        return "account.jsf";
+    }
+    
     public String deactivateItem(Long id) {
     	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
         String success = ResourceBundle.getBundle("messages",locale).getString("success");

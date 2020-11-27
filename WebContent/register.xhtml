@@ -50,6 +50,10 @@
                     id="registerButton"
                     action="#{registerDeregisterController.registerCustomer()}"
                     value="#{msg['register']}" />
+                <h:commandButton
+		            action="#{registerDeregisterController.cancel()}"
+		            value="#{msg['cancel']}"
+		            immediate="true"  />
                 <h:message for="registerButton" />
             </h:panelGrid>
         </h:form>

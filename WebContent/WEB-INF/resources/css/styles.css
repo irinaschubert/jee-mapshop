@@ -2,6 +2,7 @@
   font-family: 'Kurale', sans-serif;
   padding: 9px;
   color: gray;
+  border-radius: 5px;
 }
 
 body {
@@ -51,14 +52,41 @@ a:hover {
   padding: 0;
 }
 
+thead {
+  text-align: left;
+  text-shadow: 0 0 20px white, 0 0 20px white;
+}
+
+tbody {
+  font-size: small;
+}
+
+.searchTable > tbody > tr {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.searchTable {
+  border-collapse:separate; 
+  border-spacing:0 15px; 
+}
+
 input:not([type='image']), textarea {
   width: 200px;
   margin-right: 9px;
+  border: #bfbfbf solid 1px;
+}
+
+input:not([type='image']):hover{
+  background: rgba(255, 255, 255, 0.5);
 }
 
 input[type='image']{
-  width: 25px;
-  height: 20px;
+  width: 30px;
+  height: 25px;
+}
+
+input[type='image']:hover{
+  opacity: 0.8;
 }
 
 .info{
