@@ -46,6 +46,10 @@ public class RegisterDeregisterController implements Serializable {
     public String cancel() {
         return "signin.jsf";
     }
+    
+    public String cancelConfirmation() {
+        return "editProfile.jsf";
+    }
 
     public String registerCustomer() {
     	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
@@ -86,6 +90,10 @@ public class RegisterDeregisterController implements Serializable {
                 .addMessage("registerForm", m);
             return "register.jsf";
     	}
+    }
+    
+    public String confirmDeregisterCustomer() {
+    	return "confirmationDeregistration.jsf";
     }
 
     public String deregisterCustomer(SigninSignoutController signinController) {

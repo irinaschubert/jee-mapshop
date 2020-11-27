@@ -1,0 +1,32 @@
+<ui:composition
+    template="/template.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="content">
+    	<h:messages globalOnly="true"/>
+        <h:form
+            id="confirmationForm"
+            prependId="false">
+            <h:message
+                for="confirmationForm"
+                showSummary="true"
+                infoClass="info"
+                warnClass="warn"
+                errorClass="error"
+                fatalClass="fatal" />
+            <h:panelGrid columns="2">
+                <f:facet name="header">
+                    <h:outputText value="#{msg['confirmationDeregistration']}" />
+                </f:facet>
+                <h:commandButton
+		            action="#{registerDeregisterController.deregisterCustomer(signinSignoutController)}"
+		            value="#{msg['ok']}" />
+            	<h:commandButton
+		            action="#{registerDeregisterController.cancelConfirmation()}"
+		            value="#{msg['cancel']}" />
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

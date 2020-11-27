@@ -27,10 +27,12 @@
 		            value="#{msg['search']}" />
 		        <h:link
 		            outcome="register"
-		            value="#{msg['register']}" />
+		            value="#{msg['register']}" 
+		            rendered="#{empty signinSignoutController.customer.email}"/>
 		        <h:link
 		            outcome="signin"
-		            value="#{msg['signin']}" />
+		            value="#{msg['signin']}" 
+		            rendered="#{empty signinSignoutController.customer.email}"/>
 		        <h:link
 		            outcome="sell"
 		            value="#{msg['sell']}" 

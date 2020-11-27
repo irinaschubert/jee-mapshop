@@ -33,6 +33,14 @@ public class CartController implements Serializable {
     @EJB
     private ItemBeanLocal itemBeanLocal;
     
+    public String cancelConfirmation() {
+        return "cart.jsf";
+    }
+    
+    public String confirmCheckout() {
+    	return "confirmationCheckout.jsf";
+    }
+    
     public String reserveItem(Long id, SigninSignoutController signinSignoutController) {
     	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
     	String success = ResourceBundle.getBundle("messages",locale).getString("success");

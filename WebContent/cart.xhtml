@@ -41,7 +41,7 @@
             </h:dataTable>
             <h:commandButton
                 value="#{msg['checkout']}"
-                action="#{buyController.buyItems(signinSignoutController)}" />
+                action="#{cartController.confirmCheckout()}" />
         </h:form>
 	</ui:define>
 </ui:composition>
