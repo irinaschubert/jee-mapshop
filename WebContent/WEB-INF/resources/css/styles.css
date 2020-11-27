@@ -1,29 +1,64 @@
 * {
-  font-family: sans-serif;
+  font-family: 'Kurale', sans-serif;
   padding: 9px;
   color: gray;
 }
+
+body {
+    background: #e6e6ff;
+}
+
 body > header {
-  background: url("#{resource['img:blue.jpg']}");
+  background: url("#{resource['img:map.jpg']}");
   border-radius: 10px;  
   box-shadow: 5px 5px 9px gray;
 }
+
+body > footer {
+    font-size: small;
+    text-align: right;
+    bottom: 10px; /* Position the footer at the bottom of the page */
+    z-index: 3;
+}
+
 a {
   color: black;
+  font-weight: bold;
   text-decoration: none;
 }
-a:hover, .title {
-  color: white;
+
+a:hover {
+  color: gray;
+}
+
+.title {
+  font-size: xx-large;
   text-shadow: 0 0 10px white, 0 0 20px white;
 }
+
+.navigation {
+  font-size: small;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.signOutButton {
+  float: right;
+  padding: 0px 9px;
+}
+
+.language {
+  text-align: right;
+  padding: 0;
+}
+
 input:not([type='image']), textarea {
   width: 200px;
   margin-right: 9px;
 }
 
 input[type='image']{
-  width: 37px;
-  height: 31px;
+  width: 25px;
+  height: 20px;
 }
 
 .info{

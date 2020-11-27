@@ -89,6 +89,7 @@ public class SigninSignoutController implements Serializable {
     }
     
     public String signout() {
+    	System.out.println("hallo so");
     	Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
         String success = ResourceBundle.getBundle("messages",locale).getString("success");
     	

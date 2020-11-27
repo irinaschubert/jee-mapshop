@@ -1,0 +1,19 @@
+CREATE TABLESPACE mapshop_tablespace
+DATAFILE 'C:\oraclexe\app\oracle\oradata\XE\MAPSHOP.DBF'
+SIZE 100M
+AUTOEXTEND ON
+MAXSIZE UNLIMITED;
+
+CREATE USER mapshop IDENTIFIED BY io
+DEFAULT TABLESPACE mapshop_tablespace;
+
+CREATE USER mapshop_user IDENTIFIED BY io
+DEFAULT TABLESPACE mapshop_tablespace;
+
+GRANT CREATE SESSION TO mapshop;
+GRANT CREATE TABLE TO mapshop;
+GRANT UNLIMITED TABLESPACE TO mapshop;
+GRANT CONNECT TO mapshop_user;
+GRANT CONNECT, RESOURCE TO mapshop;
+
+ALTER SYSTEM SET processes=200 scope=spfile;

@@ -40,6 +40,7 @@ public class EditController implements Serializable {
     
     @Inject
     private Item item;
+    
     private Part part;
     
     @Inject

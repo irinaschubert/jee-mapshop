@@ -9,48 +9,50 @@
 	            <h:outputText value="#{msg['title']}" />
 	        </h1>
 	    </hgroup>
-	    <nav>
-	        <h:link
-	            outcome="index"
-	            value="#{msg['home']}" />
-	        <h:link
-	            outcome="search"
-	            value="#{msg['search']}" />
-	        <h:link
-	            outcome="register"
-	            value="#{msg['register']}" />
-	        <h:link
-	            outcome="signin"
-	            value="#{msg['signin']}" />
-	        <h:link
-	            outcome="sell"
-	            value="#{msg['sell']}" 
-	            rendered="#{not empty signinSignoutController.customer.email}" />
-	        <h:link
-	            outcome="account"
-	            value="#{msg['account']}" 
-	            rendered="#{not empty signinSignoutController.customer.email}" />
-	        <h:link
-	            outcome="cart"
-	            value="#{msg['cart']}" 
-	            rendered="#{not empty signinSignoutController.customer.email}" />
-	        <h:link
-		        outcome="editProfile"
-	            value="#{msg['editProfile']}"
-	            rendered="#{not empty signinSignoutController.customer.email}" />
-	        <br />
-	    </nav>
-	    <h:form>
+	    <h:form class="language">
 	        <h:commandButton
 	            action="#{localeController.change('en')}"
 	            image="#{resource['img:us.gif']}" />
 	        <h:commandButton
 	            action="#{localeController.change('de')}"
 	            image="#{resource['img:de.gif']}" />
-	        <h:commandButton
-	            action="#{signinSignoutController.signout()}"
-	            image="#{resource['img:logout.svg']}"
-	            rendered="#{not empty signinSignoutController.customer.email}" />
+	    </h:form>
+	    <h:form class="navigation">
+		    <nav>
+		        <h:link
+		            outcome="index"
+		            value="#{msg['home']}" />
+		        <h:link
+		            outcome="search"
+		            value="#{msg['search']}" />
+		        <h:link
+		            outcome="register"
+		            value="#{msg['register']}" />
+		        <h:link
+		            outcome="signin"
+		            value="#{msg['signin']}" />
+		        <h:link
+		            outcome="sell"
+		            value="#{msg['sell']}" 
+		            rendered="#{not empty signinSignoutController.customer.email}" />
+		        <h:link
+		            outcome="account"
+		            value="#{msg['account']}" 
+		            rendered="#{not empty signinSignoutController.customer.email}" />
+		        <h:link
+		            outcome="cart"
+		            value="#{msg['cart']}" 
+		            rendered="#{not empty signinSignoutController.customer.email}" />
+		        <h:link
+			        outcome="editProfile"
+		            value="#{msg['editProfile']}"
+		            rendered="#{not empty signinSignoutController.customer.email}" />
+		        <h:commandButton
+		        	class="signOutButton"
+		            action="#{signinSignoutController.signout()}"
+		            image="#{resource['img:logout.svg']}"
+		            rendered="#{not empty signinSignoutController.customer.email}" />
+		    </nav>
 	    </h:form>
 	</header>
 </html>
