@@ -12,12 +12,3 @@ Die Webapplikation stellt einen Webshop dar, über den Landkarten gekauft und ve
     * Anpassung von Produkten (Anzahl im Lager, Name, ID, usw.)
 
 Für die Attribute siehe das Schema im Buch, Abschnitt 6.6
-
-## Version 1.0
-![first version][version1]<br/>
-
-## Installation
-...
-
-
-[version1]: /res/minesweeper_start.PNG "first version"
