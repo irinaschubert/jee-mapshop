@@ -28,10 +28,11 @@
 	                    label="#{msg['item.title']}"
 	                    required="true"
 	                    value="#{editController.item.title}" 
-	                    valueChangeListener="#{editController.titleChanged}" >
-		                <f:validateLength 
-	                		minimum="3"
-	                		maximum="40" />
+	                    valueChangeListener="#{editController.titleChanged}" 
+	                    size="40" 
+	                    maxlength="40">
+	                    <f:validateLength 
+	                		minimum="3" />
 	                </h:inputText>
 	                <h:message for="title" />
                 </h:panelGroup>
@@ -41,9 +42,11 @@
 		                id="description"
 		                label="#{msg['item.description']}"
 	                    value="#{editController.item.description}"
-	                    valueChangeListener="#{editController.descriptionChanged}" >
+	                    valueChangeListener="#{editController.descriptionChanged}" 
+	                    size="1000"
+	                    maxlength="1000">
 	                    <f:validateLength
-                	    	maximum="1000" />
+	                		minimum="0" />
 	                </h:inputTextarea>
 	                <h:message for="description" />
                 </h:panelGroup>
@@ -55,8 +58,9 @@
 	                	required="true"
 	                	value="#{editController.item.price}"
 	                	valueChangeListener="#{editController.priceChanged}" >
-	                	<f:validateLength
-	                    	maximum="15" />
+	                	<f:validateDoubleRange
+	                		minimum="0.05" 
+	                		maximum="9999999999.95" />
 	                </h:inputText>
 	                <h:message for="price" />
                 </h:panelGroup>
@@ -68,8 +72,9 @@
 	                	required="true"
 	                	value="#{editController.item.stockNumber}"
 	                	valueChangeListener="#{editController.stockNumberChanged}" >
-	                	<f:validateLength
-	                		maximum="6" />
+	                	<f:validateLongRange
+	                		minimum="1"
+	                		maximum="999999999999" />
 	                </h:inputText>
 	                <h:message for="stockNumber" />
                 </h:panelGroup>

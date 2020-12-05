@@ -27,11 +27,11 @@ ON status TO mapshop_user;
 
 CREATE TABLE item (
 id           NUMBER(19) PRIMARY KEY,
-product_id   NUMBER(10),
+product_id   NUMBER(19),
 title        VARCHAR2(40) NOT NULL,
 description  VARCHAR2(1000),
 price        NUMBER(12,2) NOT NULL,
-stockNumber  NUMBER(6) NOT NULL,
+stockNumber  NUMBER(12) NOT NULL,
 foto         BLOB,
 sold         TIMESTAMP(3),
 seller_id    NUMBER(19),

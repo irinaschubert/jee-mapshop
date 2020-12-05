@@ -27,10 +27,13 @@
                 		label="#{msg['email']}"
                 		value="#{signinSignoutController.customer.email}"
                 		valueChangeListener="#{signinSignoutController.emailChanged}"
-                		required="true">
+                		required="true"
+	                    size="40"
+                		maxlength="40">
                 		<f:validateLength 
-                			minimum="6"
-                			maximum="40" />
+                			minimum="6" />
+                		<f:validateRegex
+                		    pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" />
                 	</h:inputText>
                 	<h:message for="email" />
                 </h:panelGroup>
@@ -41,10 +44,11 @@
                 		label="#{msg['password']}"
                 		value="#{signinSignoutController.customer.password}"
                 		valueChangeListener="#{signinSignoutController.passwordChanged}"
-                		required="true">
+                		required="true"
+	                    size="40"
+                		maxlength="40">
                 		<f:validateLength 
-                			minimum="6"
-                			maximum="40" />
+                			minimum="6" />
                 	</h:inputSecret>
                 	<h:message for="password" />
                 </h:panelGroup>

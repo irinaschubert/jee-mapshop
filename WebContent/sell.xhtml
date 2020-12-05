@@ -27,9 +27,11 @@
 	                    id="title"
 	                    label="#{msg['item.title']}"
 	                    required="true"
-	                    value="#{sellController.item.title}" >
+	                    value="#{sellController.item.title}"
+	                    size="40" 
+	                    maxlength="40">
 	                    <f:validateLength 
-	                		maximum="40" />
+	                		minimum="3" />
 	                </h:inputText>
 	                <h:message for="title" />
                 </h:panelGroup>
@@ -38,9 +40,11 @@
 	                <h:inputTextarea
 	                	id="description"
 	                	label="#{msg['item.description']}"
-	                    value="#{sellController.item.description}" >
+	                    value="#{sellController.item.description}" 
+	                    size="1000"
+	                    maxlength="1000">
 	                    <f:validateLength
-	                		maximum="1000" />
+	                		minimum="0" />
 	                </h:inputTextarea>
 	                <h:message for="description" />
                 </h:panelGroup>
@@ -51,8 +55,9 @@
 	                	label="#{msg['item.price']}"
 	                	required="true" 
 	                	value="#{sellController.item.price}" >
-	                	<f:validateLength
-	                		maximum="15" />
+	                	<f:validateDoubleRange
+	                		minimum="0.05" 
+	                		maximum="9999999999.95" />
 	                </h:inputText>
 	                <h:message for="price" />
                 </h:panelGroup>
@@ -63,8 +68,9 @@
 	                	label="#{msg['item.stockNumber']}"
 	                	required="true" 
 	                	value="#{sellController.item.stockNumber}" >
-	                	<f:validateLength
-	                		maximum="6" />
+	                	<f:validateLongRange
+	                		minimum="1"
+	                		maximum="999999999999" />
 	                </h:inputText>
 	                <h:message for="stockNumber" />
                 </h:panelGroup>
