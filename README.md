@@ -11,4 +11,3 @@ Die Webapplikation stellt einen Webshop dar, über den Landkarten gekauft und ve
     * Hinzufügen und Entfernen von Produkten
     * Anpassung von Produkten (Anzahl im Lager, Name, ID, usw.)
 
-Für die Attribute siehe das Schema im Buch, Abschnitt 6.6
